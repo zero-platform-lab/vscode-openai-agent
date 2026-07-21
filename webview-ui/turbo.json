@@ -7,6 +7,9 @@
 		},
 		"build:nightly": {
 			"outputs": ["../apps/vscode-nightly/build/webview-ui/**"]
+		},
+		"build:internal": {
+			"outputs": ["../apps/vscode-internal/build/webview-ui/**"]
 		}
 	}
 }

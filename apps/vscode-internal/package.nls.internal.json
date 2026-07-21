@@ -1,0 +1,9 @@
+{
+	"extension.displayName": "OpenAI Compatible Agent",
+	"extension.description": "AI coding agent for OpenAI-compatible LLM endpoints (vLLM, Ollama, TGI, Azure OpenAI).",
+	"views.contextMenu.label": "OpenAI Compatible Agent",
+	"views.terminalMenu.label": "OpenAI Compatible Agent",
+	"views.activitybar.title": "OpenAI Compatible Agent",
+	"views.sidebar.name": "OpenAI Compatible Agent",
+	"configuration.title": "OpenAI Compatible Agent"
+}

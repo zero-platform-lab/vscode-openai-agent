@@ -206,24 +206,10 @@ export const refreshModels = async (options: GetModelsOptions): Promise<ModelRec
  * Should be called once during extension activation.
  */
 export async function initializeModelCacheRefresh(): Promise<void> {
-	// Wait for extension to fully activate before refreshing
-	setTimeout(async () => {
-		// Providers that work without API keys
-		const publicProviders: Array<{ provider: RouterName; options: GetModelsOptions }> = [
-			{ provider: "openrouter", options: { provider: "openrouter" } },
-			{ provider: "vercel-ai-gateway", options: { provider: "vercel-ai-gateway" } },
-		]
-
-		// Refresh each provider in background (fire and forget)
-		for (const { options } of publicProviders) {
-			refreshModels(options).catch(() => {
-				// Silent fail - old cache remains available
-			})
-
-			// Small delay between refreshes to avoid API rate limits
-			await new Promise((resolve) => setTimeout(resolve, 500))
-		}
-	}, 2000)
+	// [INTERNAL] Disabled automatic external model list fetching.
+	// In the internal build we only connect to the explicitly configured endpoint.
+	// The original code fetched model lists from openrouter.ai and vercel-ai-gateway
+	// on startup; that external traffic is unnecessary for an on-premise deployment.
 }
 
 /**

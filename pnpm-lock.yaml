@@ -281,6 +281,12 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
 
+  apps/vscode-internal:
+    devDependencies:
+      '@roo-code/build':
+        specifier: workspace:^
+        version: link:../../packages/build
+
   apps/vscode-nightly:
     devDependencies:
       '@roo-code/build':

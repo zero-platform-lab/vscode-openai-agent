@@ -11,8 +11,9 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"build:nightly": "tsc -b && vite build --mode nightly",
+		"build:internal": "tsc -b && vite build --mode internal",
 		"preview": "vite preview",
-		"clean": "rimraf ../src/webview-ui ../apps/vscode-nightly/build/webview-ui tsconfig.tsbuildinfo .turbo"
+		"clean": "rimraf ../src/webview-ui ../apps/vscode-nightly/build/webview-ui ../apps/vscode-internal/build/webview-ui tsconfig.tsbuildinfo .turbo"
 	},
 	"dependencies": {
 		"@radix-ui/react-alert-dialog": "^1.1.6",

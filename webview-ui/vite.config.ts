@@ -81,6 +81,18 @@ export default defineConfig(({ mode }) => {
 		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("Roo-Code-Nightly")
 	}
 
+	if (mode === "internal") {
+		outDir = "../apps/vscode-internal/build/webview-ui/build"
+
+		const internalPkg = JSON.parse(
+			fs.readFileSync(path.join(__dirname, "..", "apps", "vscode-internal", "package.internal.json"), "utf8"),
+		)
+
+		define["process.env.PKG_NAME"] = JSON.stringify(internalPkg.name)
+		define["process.env.PKG_VERSION"] = JSON.stringify(internalPkg.version)
+		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("OpenAI-Compatible-Agent")
+	}
+
 	const plugins: PluginOption[] = [
 		react({
 			babel: {
