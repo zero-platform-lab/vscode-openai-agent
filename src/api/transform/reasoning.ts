@@ -12,7 +12,7 @@ export type OpenRouterReasoningParams = {
 	exclude?: boolean
 }
 
-export type RooReasoningParams = {
+export type AgentReasoningParams = {
 	enabled?: boolean
 	effort?: ReasoningEffortExtended
 }
@@ -55,11 +55,11 @@ export const getOpenRouterReasoning = ({
 				: undefined
 			: undefined
 
-export const getRooReasoning = ({
+export const getAgentReasoning = ({
 	model,
 	reasoningEffort,
 	settings,
-}: GetModelReasoningOptions): RooReasoningParams | undefined => {
+}: GetModelReasoningOptions): AgentReasoningParams | undefined => {
 	// Check if model supports reasoning effort
 	if (!model.supportsReasoningEffort) {
 		return undefined

@@ -485,7 +485,6 @@
 	"retiredProvider": {
 		"title": "プロバイダーのサポート終了",
 		"message": "This provider is no longer supported. Please select a different provider in your API profile settings.",
-		"openSettings": "設定を開く",
-		"rooMessage": "As part of our decision to sunset the OpenAI Compatible Agent extension, we also ended the OpenAI Compatible Agent Router, which only existed to support the extension. Sorry about the hassle."
+		"openSettings": "設定を開く"
 	}
 }

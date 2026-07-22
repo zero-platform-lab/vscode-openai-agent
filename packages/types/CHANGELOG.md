@@ -1,4 +1,4 @@
-# @roo-code/types
+# @openai-agent/types
 
 ## 0.0.1
 

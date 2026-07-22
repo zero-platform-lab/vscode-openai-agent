@@ -1,13 +1,13 @@
 import {
 	rooCliOutputFormats,
-	type RooCliCost,
-	type RooCliEventType,
-	type RooCliFinalOutput,
-	type RooCliOutputFormat,
-	type RooCliQueueItem,
-	type RooCliStreamEvent,
-	type RooCliToolResult,
-	type RooCliToolUse,
+	type AgentCliCost,
+	type AgentCliEventType,
+	type AgentCliFinalOutput,
+	type AgentCliOutputFormat,
+	type AgentCliQueueItem,
+	type AgentCliStreamEvent,
+	type AgentCliToolResult,
+	type AgentCliToolUse,
 } from "@openai-agent/types"
 
 /**
@@ -28,7 +28,7 @@ import {
  */
 export const OUTPUT_FORMATS = rooCliOutputFormats
 
-export type OutputFormat = RooCliOutputFormat
+export type OutputFormat = AgentCliOutputFormat
 
 export function isValidOutputFormat(format: string): format is OutputFormat {
 	return (OUTPUT_FORMATS as readonly string[]).includes(format)
@@ -37,24 +37,24 @@ export function isValidOutputFormat(format: string): format is OutputFormat {
 /**
  * Event type discriminators for JSON output.
  */
-export type JsonEventType = RooCliEventType
+export type JsonEventType = AgentCliEventType
 
-export type JsonEventQueueItem = RooCliQueueItem
+export type JsonEventQueueItem = AgentCliQueueItem
 
 /**
  * Tool use information for tool_use events.
  */
-export type JsonEventToolUse = RooCliToolUse
+export type JsonEventToolUse = AgentCliToolUse
 
 /**
  * Tool result information for tool_result events.
  */
-export type JsonEventToolResult = RooCliToolResult
+export type JsonEventToolResult = AgentCliToolResult
 
 /**
  * Cost and token usage information.
  */
-export type JsonEventCost = RooCliCost
+export type JsonEventCost = AgentCliCost
 
 /**
  * Base JSON event structure.
@@ -64,7 +64,7 @@ export type JsonEventCost = RooCliCost
  * - Each delta includes `id` for easy correlation
  * - Final message has `done: true`
  */
-export type JsonEvent = RooCliStreamEvent & {
+export type JsonEvent = AgentCliStreamEvent & {
 	/** Event type discriminator */
 	type: JsonEventType
 	/** Protocol schema version (included on system.init) */
@@ -107,7 +107,7 @@ export type JsonEvent = RooCliStreamEvent & {
  * Final JSON output for "json" mode (single object at end).
  * Contains the result and accumulated messages.
  */
-export type JsonFinalOutput = RooCliFinalOutput & {
+export type JsonFinalOutput = AgentCliFinalOutput & {
 	/** Final result type */
 	type: "result"
 	/** Whether the task succeeded */

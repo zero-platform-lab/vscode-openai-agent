@@ -236,7 +236,7 @@ export type GlobalSettings = z.infer<typeof globalSettingsSchema>
 export const GLOBAL_SETTINGS_KEYS = globalSettingsSchema.keyof().options
 
 /**
- * RooCodeSettings
+ * AgentSettings
  */
 
 export const rooCodeSettingsSchema = providerSettingsSchema.merge(globalSettingsSchema)

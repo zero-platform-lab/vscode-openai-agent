@@ -4,27 +4,27 @@ describe("custom-instructions path detection", () => {
 	it("should use exact path comparison instead of string includes", () => {
 		// Test the logic that our fix implements
 		const fakeHomeDir = "/Users/john.roo.smith"
-		const globalRooDir = path.join(fakeHomeDir, ".agent") // "/Users/john.roo.smith/.roo"
-		const projectRooDir = "/projects/my-project/.roo"
+		const globalAgentDir = path.join(fakeHomeDir, ".agent") // "/Users/john.roo.smith/.roo"
+		const projectAgentDir = "/projects/my-project/.roo"
 
 		// Old implementation (fragile):
 		// const isGlobal = agentDir.includes(path.join(os.homedir(), ".agent"))
 		// This could fail if the home directory path contains ".agent" elsewhere
 
 		// New implementation (robust):
-		// const isGlobal = path.resolve(agentDir) === path.resolve(getGlobalRooDirectory())
+		// const isGlobal = path.resolve(agentDir) === path.resolve(getGlobalAgentDirectory())
 
 		// Test the new logic
-		const isGlobalForGlobalDir = path.resolve(globalRooDir) === path.resolve(globalRooDir)
-		const isGlobalForProjectDir = path.resolve(projectRooDir) === path.resolve(globalRooDir)
+		const isGlobalForGlobalDir = path.resolve(globalAgentDir) === path.resolve(globalAgentDir)
+		const isGlobalForProjectDir = path.resolve(projectAgentDir) === path.resolve(globalAgentDir)
 
 		expect(isGlobalForGlobalDir).toBe(true)
 		expect(isGlobalForProjectDir).toBe(false)
 
 		// Verify that the old implementation would have been problematic
 		// if the home directory contained ".agent" in the path
-		const oldLogicGlobal = globalRooDir.includes(path.join(fakeHomeDir, ".agent"))
-		const oldLogicProject = projectRooDir.includes(path.join(fakeHomeDir, ".agent"))
+		const oldLogicGlobal = globalAgentDir.includes(path.join(fakeHomeDir, ".agent"))
+		const oldLogicProject = projectAgentDir.includes(path.join(fakeHomeDir, ".agent"))
 
 		expect(oldLogicGlobal).toBe(true) // This works
 		expect(oldLogicProject).toBe(false) // This also works, but is fragile

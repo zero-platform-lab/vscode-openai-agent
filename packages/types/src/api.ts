@@ -135,7 +135,7 @@ export interface AgentAPI extends EventEmitter<AgentAPIEvents> {
 	setActiveProfile(name: string): Promise<string | undefined>
 }
 
-export interface RooCodeIpcServer extends EventEmitter<IpcServerEvents> {
+export interface AgentIpcServer extends EventEmitter<IpcServerEvents> {
 	listen(): void
 	broadcast(message: IpcMessage): void
 	send(client: string | Socket, message: IpcMessage): void

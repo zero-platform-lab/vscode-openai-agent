@@ -24,7 +24,7 @@ import { supportPrompt } from "../../shared/support-prompt"
 
 type GlobalStateKey = keyof GlobalState
 type SecretStateKey = keyof SecretState
-type RooCodeSettingsKey = keyof AgentSettings
+type AgentSettingsKey = keyof AgentSettings
 
 const PASS_THROUGH_STATE_KEYS = ["taskHistory"]
 
@@ -488,16 +488,16 @@ export class ContextProxy {
 	}
 
 	/**
-	 * RooCodeSettings
+	 * AgentSettings
 	 */
 
-	public async setValue<K extends RooCodeSettingsKey>(key: K, value: AgentSettings[K]) {
+	public async setValue<K extends AgentSettingsKey>(key: K, value: AgentSettings[K]) {
 		return isSecretStateKey(key)
 			? this.storeSecret(key as SecretStateKey, value as string)
 			: this.updateGlobalState(key as GlobalStateKey, value)
 	}
 
-	public getValue<K extends RooCodeSettingsKey>(key: K): AgentSettings[K] {
+	public getValue<K extends AgentSettingsKey>(key: K): AgentSettings[K] {
 		return isSecretStateKey(key)
 			? (this.getSecret(key as SecretStateKey) as AgentSettings[K])
 			: (this.getGlobalState(key as GlobalStateKey) as AgentSettings[K])
@@ -512,7 +512,7 @@ export class ContextProxy {
 	}
 
 	public async setValues(values: AgentSettings) {
-		const entries = Object.entries(values) as [RooCodeSettingsKey, unknown][]
+		const entries = Object.entries(values) as [AgentSettingsKey, unknown][]
 		await Promise.all(entries.map(([key, value]) => this.setValue(key, value)))
 	}
 

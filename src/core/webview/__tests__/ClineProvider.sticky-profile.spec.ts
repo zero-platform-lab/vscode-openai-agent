@@ -173,12 +173,12 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 	let mockOutputChannel: vscode.OutputChannel
 	let mockWebviewView: vscode.WebviewView
 	let mockPostMessage: any
-	let originalRooCliRuntimeEnv: string | undefined
+	let originalAgentCliRuntimeEnv: string | undefined
 
 	beforeEach(async () => {
 		vi.clearAllMocks()
 		taskIdCounter = 0
-		originalRooCliRuntimeEnv = process.env.ROO_CLI_RUNTIME
+		originalAgentCliRuntimeEnv = process.env.ROO_CLI_RUNTIME
 		delete process.env.ROO_CLI_RUNTIME
 
 		const globalState: Record<string, string | undefined> = {
@@ -265,10 +265,10 @@ describe("ClineProvider - Sticky Provider Profile", () => {
 	})
 
 	afterEach(() => {
-		if (originalRooCliRuntimeEnv === undefined) {
+		if (originalAgentCliRuntimeEnv === undefined) {
 			delete process.env.ROO_CLI_RUNTIME
 		} else {
-			process.env.ROO_CLI_RUNTIME = originalRooCliRuntimeEnv
+			process.env.ROO_CLI_RUNTIME = originalAgentCliRuntimeEnv
 		}
 	})
 

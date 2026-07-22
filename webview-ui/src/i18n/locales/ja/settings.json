@@ -545,8 +545,7 @@
 			"placeholder": "デフォルト：claude",
 			"maxTokensLabel": "最大出力トークン",
 			"maxTokensDescription": "Claude Codeレスポンスの最大出力トークン数。デフォルトは8000です。"
-		},
-		"retiredRooProviderMessage": "As part of our decision to sunset the OpenAI Compatible Agent extension, we also ended the OpenAI Compatible Agent Router, which only existed to support the extension. Sorry about the hassle."
+		}
 	},
 	"checkpoints": {
 		"timeout": {

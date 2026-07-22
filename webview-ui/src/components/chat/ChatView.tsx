@@ -26,7 +26,7 @@ import { vscode } from "@src/utils/vscode"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { useSelectedModel } from "@src/components/ui/hooks/useSelectedModel"
-import RooHero from "@src/components/welcome/RooHero"
+import AgentHero from "@src/components/welcome/AgentHero"
 import { StandardTooltip, Button } from "@src/components/ui"
 import VersionIndicator from "../common/VersionIndicator"
 import HistoryPreview from "../history/HistoryPreview"
@@ -1592,7 +1592,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 					<div className="flex flex-col items-start gap-2 justify-center h-full min-[400px]:px-6">
 						<VersionIndicator className="absolute top-2 right-3 z-10" />
 						<div className="flex flex-col gap-4 w-full">
-							<RooHero />
+							<AgentHero />
 							{taskHistory.length > 0 && <HistoryPreview />}
 						</div>
 					</div>
@@ -1727,11 +1727,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				<div className="px-[15px] py-1">
 					<WarningRow
 						title={t("chat:retiredProvider.title")}
-						message={t(
-							apiConfiguration?.apiProvider === "roo"
-								? "chat:retiredProvider.rooMessage"
-								: "chat:retiredProvider.message",
-						)}
+						message={t("chat:retiredProvider.message")}
 						actionText={t("chat:retiredProvider.openSettings")}
 						onAction={() => vscode.postMessage({ type: "switchTab", tab: "settings" })}
 					/>

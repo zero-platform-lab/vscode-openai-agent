@@ -86,7 +86,7 @@ const GLOBAL_AGENTS_DIR = p(HOME_DIR, ".agents")
 
 // Mock agent-config
 vi.mock("../../agent-config", () => ({
-	getGlobalRooDirectory: () => GLOBAL_ROO_DIR,
+	getGlobalAgentDirectory: () => GLOBAL_ROO_DIR,
 	getGlobalAgentsDirectory: () => GLOBAL_AGENTS_DIR,
 	getProjectAgentsDirectoryForCwd: (cwd: string) => p(cwd, ".agents"),
 	directoryExists: mockDirectoryExists,
@@ -120,8 +120,8 @@ describe("SkillsManager", () => {
 	const globalSkillsDir = p(GLOBAL_ROO_DIR, "skills")
 	const globalSkillsCodeDir = p(GLOBAL_ROO_DIR, "skills-code")
 	const globalSkillsArchitectDir = p(GLOBAL_ROO_DIR, "skills-architect")
-	const projectRooDir = p(PROJECT_DIR, ".agent")
-	const projectSkillsDir = p(projectRooDir, "skills")
+	const projectAgentDir = p(PROJECT_DIR, ".agent")
+	const projectSkillsDir = p(projectAgentDir, "skills")
 	// .agents directory paths
 	const globalAgentsSkillsDir = p(GLOBAL_AGENTS_DIR, "skills")
 	const globalAgentsSkillsCodeDir = p(GLOBAL_AGENTS_DIR, "skills-code")

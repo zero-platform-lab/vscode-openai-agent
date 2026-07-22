@@ -1,19 +1,19 @@
-# @roo-code/cli
+# @openai-agent/cli
 
-Command Line Interface for Roo Code - Run the Roo Code agent from the terminal without VSCode.
+Command Line Interface for OpenAI Compatible Agent - Run the OpenAI Compatible Agent agent from the terminal without VSCode.
 
 ## Overview
 
-This CLI uses the `@roo-code/vscode-shim` package to provide a VSCode API compatibility layer, allowing the main Roo Code extension to run in a Node.js environment.
+This CLI uses the `@openai-agent/vscode-shim` package to provide a VSCode API compatibility layer, allowing the main OpenAI Compatible Agent extension to run in a Node.js environment.
 
 ## Installation
 
 ### Quick Install (Recommended)
 
-Install the Roo Code CLI with a single command:
+Install the OpenAI Compatible Agent CLI with a single command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/RooCodeInc/Roo-Code/main/apps/cli/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/zero-platform-lab/vscode-openai-agent/main/apps/cli/install.sh | sh
 ```
 
 **Requirements:**
@@ -24,13 +24,13 @@ curl -fsSL https://raw.githubusercontent.com/RooCodeInc/Roo-Code/main/apps/cli/i
 **Custom installation directory:**
 
 ```bash
-ROO_INSTALL_DIR=/opt/roo-code ROO_BIN_DIR=/usr/local/bin curl -fsSL ... | sh
+AGENT_INSTALL_DIR=/opt/agent AGENT_BIN_DIR=/usr/local/bin curl -fsSL ... | sh
 ```
 
 **Install a specific version:**
 
 ```bash
-ROO_VERSION=0.1.0 curl -fsSL https://raw.githubusercontent.com/RooCodeInc/Roo-Code/main/apps/cli/install.sh | sh
+AGENT_VERSION=0.1.0 curl -fsSL https://raw.githubusercontent.com/zero-platform-lab/vscode-openai-agent/main/apps/cli/install.sh | sh
 ```
 
 ### Updating
@@ -38,19 +38,19 @@ ROO_VERSION=0.1.0 curl -fsSL https://raw.githubusercontent.com/RooCodeInc/Roo-Co
 Re-run the install script to update to the latest version:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/RooCodeInc/Roo-Code/main/apps/cli/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/zero-platform-lab/vscode-openai-agent/main/apps/cli/install.sh | sh
 ```
 
 Or run:
 
 ```bash
-roo upgrade
+agent upgrade
 ```
 
 ### Uninstalling
 
 ```bash
-rm -rf ~/.roo/cli ~/.local/bin/roo
+rm -rf ~/.agent/cli ~/.local/bin/agent
 ```
 
 ## Usage
@@ -62,13 +62,13 @@ By default, the CLI auto-approves actions and runs in interactive TUI mode:
 ```bash
 export OPENROUTER_API_KEY=sk-or-v1-...
 
-roo "What is this project?" -w ~/Documents/my-project
+agent "What is this project?" -w ~/Documents/my-project
 ```
 
 You can also run without a prompt and enter it interactively in TUI mode:
 
 ```bash
-roo -w ~/Documents/my-project
+agent -w ~/Documents/my-project
 ```
 
 In interactive mode:
@@ -83,7 +83,7 @@ In interactive mode:
 If you want manual approval prompts, enable approval-required mode:
 
 ```bash
-roo "Refactor the utils.ts file" --require-approval -w ~/Documents/my-project
+agent "Refactor the utils.ts file" --require-approval -w ~/Documents/my-project
 ```
 
 In approval-required mode:
@@ -97,10 +97,10 @@ Use `--print` for non-interactive execution and machine-readable output:
 
 ```bash
 # Prompt is required
-roo --print "Summarize this repository"
+agent --print "Summarize this repository"
 
 # Create a new task with a specific session ID (UUID)
-roo --print --create-with-session-id 018f7fc8-7c96-7f7c-98aa-2ec4ff7f6d87 "Summarize this repository"
+agent --print --create-with-session-id 018f7fc8-7c96-7f7c-98aa-2ec4ff7f6d87 "Summarize this repository"
 ```
 
 ### Stdin Stream Mode (`--stdin-prompt-stream`)
@@ -109,10 +109,10 @@ For programmatic control (one process, multiple prompts), use `--stdin-prompt-st
 Send NDJSON commands via stdin:
 
 ```bash
-printf '{"command":"start","requestId":"1","prompt":"1+1=?"}\n' | roo --print --stdin-prompt-stream --output-format stream-json
+printf '{"command":"start","requestId":"1","prompt":"1+1=?"}\n' | agent --print --stdin-prompt-stream --output-format stream-json
 
 # Optional: provide taskId per start command
-printf '{"command":"start","requestId":"1","taskId":"018f7fc8-7c96-7f7c-98aa-2ec4ff7f6d87","prompt":"1+1=?"}\n' | roo --print --stdin-prompt-stream --output-format stream-json
+printf '{"command":"start","requestId":"1","taskId":"018f7fc8-7c96-7f7c-98aa-2ec4ff7f6d87","prompt":"1+1=?"}\n' | agent --print --stdin-prompt-stream --output-format stream-json
 ```
 
 ## Options
@@ -181,7 +181,7 @@ The CLI will look for API keys in environment variables if not provided via `--a
 
 2. **ExtensionHost** (`extension-host.ts`):
 
-    - Creates a VSCode API mock using `@roo-code/vscode-shim`
+    - Creates a VSCode API mock using `@openai-agent/vscode-shim`
     - Intercepts `require('vscode')` to return the mock
     - Loads and activates the extension bundle
     - Manages bidirectional message flow

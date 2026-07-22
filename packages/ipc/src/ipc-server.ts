@@ -6,14 +6,14 @@ import ipc from "node-ipc"
 
 import {
 	type IpcServerEvents,
-	type RooCodeIpcServer,
+	type AgentIpcServer,
 	IpcOrigin,
 	IpcMessageType,
 	type IpcMessage,
 	ipcMessageSchema,
 } from "@openai-agent/types"
 
-export class IpcServer extends EventEmitter<IpcServerEvents> implements RooCodeIpcServer {
+export class IpcServer extends EventEmitter<IpcServerEvents> implements AgentIpcServer {
 	private readonly _socketPath: string
 	private readonly _log: (...args: unknown[]) => void
 	private readonly _clients: Map<string, Socket>

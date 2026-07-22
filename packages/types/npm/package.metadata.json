@@ -16,7 +16,7 @@
 	"bugs": {
 		"url": "https://github.com/zero-platform-lab/vscode-openai-agent/issues"
 	},
-	"homepage": "https://roocode.com",
-	"keywords": ["roo", "roo-code", "ai"],
+	"homepage": "https://github.com/zero-platform-lab/vscode-openai-agent",
+	"keywords": ["openai", "agent", "ai"],
 	"files": ["dist"]
 }

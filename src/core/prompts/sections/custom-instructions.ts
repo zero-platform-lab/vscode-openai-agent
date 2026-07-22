@@ -12,7 +12,7 @@ import {
 	getAgentDirectoriesForCwd,
 	getAllAgentDirectoriesForCwd,
 	getAgentsDirectoriesForCwd,
-	getGlobalRooDirectory,
+	getGlobalAgentDirectory,
 } from "../../../services/agent-config"
 
 /**

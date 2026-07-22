@@ -33,7 +33,7 @@ vi.mock("../../common/Tab", () => ({
 	TabContent: ({ children }: any) => <div data-testid="tab-content">{children}</div>,
 }))
 
-vi.mock("../RooHero", () => ({
+vi.mock("../AgentHero", () => ({
 	default: () => <div data-testid="roo-hero">Roo Hero</div>,
 }))
 

@@ -27,9 +27,9 @@ vi.mock("../../search/file-search", () => ({
 }))
 
 import {
-	getGlobalRooDirectory,
+	getGlobalAgentDirectory,
 	getGlobalAgentsDirectory,
-	getProjectRooDirectoryForCwd,
+	getProjectAgentDirectoryForCwd,
 	getProjectAgentsDirectoryForCwd,
 	directoryExists,
 	fileExists,
@@ -37,7 +37,7 @@ import {
 	getAgentDirectoriesForCwd,
 	getAllAgentDirectoriesForCwd,
 	getAgentsDirectoriesForCwd,
-	discoverSubfolderRooDirectories,
+	discoverSubfolderAgentDirectories,
 	loadConfiguration,
 } from "../index"
 
@@ -51,23 +51,23 @@ describe("RooConfigService", () => {
 		vi.restoreAllMocks()
 	})
 
-	describe("getGlobalRooDirectory", () => {
+	describe("getGlobalAgentDirectory", () => {
 		it("should return correct path for global .roo directory", () => {
-			const result = getGlobalRooDirectory()
+			const result = getGlobalAgentDirectory()
 			expect(result).toBe(path.join("/mock/home", ".agent"))
 		})
 
 		it("should handle different home directories", () => {
 			mockHomedir.mockReturnValue("/different/home")
-			const result = getGlobalRooDirectory()
+			const result = getGlobalAgentDirectory()
 			expect(result).toBe(path.join("/different/home", ".agent"))
 		})
 	})
 
-	describe("getProjectRooDirectoryForCwd", () => {
+	describe("getProjectAgentDirectoryForCwd", () => {
 		it("should return correct path for given cwd", () => {
 			const cwd = "/custom/project/path"
-			const result = getProjectRooDirectoryForCwd(cwd)
+			const result = getProjectAgentDirectoryForCwd(cwd)
 			expect(result).toBe(path.join(cwd, ".agent"))
 		})
 	})
@@ -330,11 +330,11 @@ describe("RooConfigService", () => {
 		})
 	})
 
-	describe("discoverSubfolderRooDirectories", () => {
+	describe("discoverSubfolderAgentDirectories", () => {
 		it("should return empty array when no subfolder .roo directories found", async () => {
 			mockExecuteRipgrep.mockResolvedValue([])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([])
 		})
@@ -346,7 +346,7 @@ describe("RooConfigService", () => {
 				{ path: "package-b/.agent/rules-code/rule.md", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([
 				path.join("/project/path", "package-a", ".agent"),
@@ -361,7 +361,7 @@ describe("RooConfigService", () => {
 				{ path: "mango/.agent/rules/rule.md", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([
 				path.join("/project/path", "apple", ".agent"),
@@ -377,7 +377,7 @@ describe("RooConfigService", () => {
 				{ path: "subfolder/.agent/rules/rule.md", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			// Should only include subfolder, not root
 			expect(result).toEqual([path.join("/project/path", "subfolder", ".agent")])
@@ -389,7 +389,7 @@ describe("RooConfigService", () => {
 				{ path: "packages/utils/.agent/rules-code/rule.md", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([
 				path.join("/project/path", "packages/core", ".agent"),
@@ -400,7 +400,7 @@ describe("RooConfigService", () => {
 		it("should return empty array on ripgrep error", async () => {
 			mockExecuteRipgrep.mockRejectedValue(new Error("ripgrep failed"))
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([])
 		})
@@ -412,7 +412,7 @@ describe("RooConfigService", () => {
 				{ path: "package-a/.agent/rules-code/rule3.md", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			// Should only include package-a/.roo once
 			expect(result).toEqual([path.join("/project/path", "package-a", ".agent")])
@@ -427,7 +427,7 @@ describe("RooConfigService", () => {
 				{ path: "package-d/.agent/config/settings.json", type: "file" },
 			])
 
-			const result = await discoverSubfolderRooDirectories("/project/path")
+			const result = await discoverSubfolderAgentDirectories("/project/path")
 
 			expect(result).toEqual([
 				path.join("/project/path", "package-a", ".agent"),

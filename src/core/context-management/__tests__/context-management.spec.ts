@@ -844,9 +844,9 @@ describe("Context Management", () => {
 	})
 
 	/**
-	 * Tests for filesReadByRoo being passed to summarizeConversation
+	 * Tests for filesReadByAgent being passed to summarizeConversation
 	 */
-	describe("filesReadByRoo parameters", () => {
+	describe("filesReadByAgent parameters", () => {
 		const createModelInfo = (contextWindow: number, maxTokens?: number): ModelInfo => ({
 			contextWindow,
 			supportsPromptCache: true,
@@ -861,7 +861,7 @@ describe("Context Management", () => {
 			{ role: "user", content: "Fifth message" },
 		]
 
-		it("should pass filesReadByRoo, cwd, and rooIgnoreController to summarizeConversation when provided", async () => {
+		it("should pass filesReadByAgent, cwd, and rooIgnoreController to summarizeConversation when provided", async () => {
 			// Mock the summarizeConversation function
 			const mockSummary = "Summary with folded context"
 			const mockCost = 0.05
@@ -910,7 +910,7 @@ describe("Context Management", () => {
 				rooIgnoreController: mockAgentIgnoreController,
 			})
 
-			// Verify summarizeConversation was called with filesReadByRoo, cwd, and rooIgnoreController
+			// Verify summarizeConversation was called with filesReadByAgent, cwd, and rooIgnoreController
 			expect(summarizeSpy).toHaveBeenCalledWith({
 				messages: messagesWithSmallContent,
 				apiHandler: mockApiHandler,
@@ -934,7 +934,7 @@ describe("Context Management", () => {
 			summarizeSpy.mockRestore()
 		})
 
-		it("should pass undefined filesReadByRoo parameters when not provided", async () => {
+		it("should pass undefined filesReadByAgent parameters when not provided", async () => {
 			// Mock the summarizeConversation function
 			const mockSummary = "Summary without folded context"
 			const mockCost = 0.03
@@ -972,7 +972,7 @@ describe("Context Management", () => {
 				taskId,
 				profileThresholds: {},
 				currentProfileId: "default",
-				// filesReadByRoo, cwd, rooIgnoreController are NOT provided
+				// filesReadByAgent, cwd, rooIgnoreController are NOT provided
 			})
 
 			// Verify summarizeConversation was called with undefined parameters
@@ -994,7 +994,7 @@ describe("Context Management", () => {
 			summarizeSpy.mockRestore()
 		})
 
-		it("should pass empty array filesReadByRoo when provided as empty", async () => {
+		it("should pass empty array filesReadByAgent when provided as empty", async () => {
 			// Mock the summarizeConversation function
 			const mockSummary = "Summary with empty file list"
 			const mockCost = 0.04

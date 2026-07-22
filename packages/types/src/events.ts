@@ -5,7 +5,7 @@ import { modelInfoSchema } from "./model.js"
 import { toolNamesSchema, toolUsageSchema } from "./tool.js"
 
 /**
- * RooCodeEventName
+ * AgentEventName
  */
 
 export enum AgentEventName {
@@ -53,7 +53,7 @@ export enum AgentEventName {
 }
 
 /**
- * RooCodeEvents
+ * AgentEvents
  */
 
 export const agentEventsSchema = z.object({

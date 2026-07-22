@@ -7,20 +7,20 @@ const {
 	mockReadFile,
 	mockReaddir,
 	mockLstat,
-	mockGetRooDirectoriesForCwd,
-	mockGetAllRooDirectoriesForCwd,
+	mockGetAgentDirectoriesForCwd,
+	mockGetAllAgentDirectoriesForCwd,
 	mockGetAgentsDirectoriesForCwd,
-	mockGetGlobalRooDirectory,
+	mockGetGlobalAgentDirectory,
 } = vi.hoisted(() => ({
 	mockHomedir: vi.fn(),
 	mockStat: vi.fn(),
 	mockReadFile: vi.fn(),
 	mockReaddir: vi.fn(),
 	mockLstat: vi.fn(),
-	mockGetRooDirectoriesForCwd: vi.fn(),
-	mockGetAllRooDirectoriesForCwd: vi.fn(),
+	mockGetAgentDirectoriesForCwd: vi.fn(),
+	mockGetAllAgentDirectoriesForCwd: vi.fn(),
 	mockGetAgentsDirectoriesForCwd: vi.fn(),
-	mockGetGlobalRooDirectory: vi.fn(),
+	mockGetGlobalAgentDirectory: vi.fn(),
 }))
 
 // Mock os module
@@ -43,10 +43,10 @@ vi.mock("fs/promises", () => ({
 
 // Mock the agent-config service
 vi.mock("../../../../services/agent-config", () => ({
-	getAgentDirectoriesForCwd: mockGetRooDirectoriesForCwd,
-	getAllAgentDirectoriesForCwd: mockGetAllRooDirectoriesForCwd,
+	getAgentDirectoriesForCwd: mockGetAgentDirectoriesForCwd,
+	getAllAgentDirectoriesForCwd: mockGetAllAgentDirectoriesForCwd,
 	getAgentsDirectoriesForCwd: mockGetAgentsDirectoriesForCwd,
-	getGlobalRooDirectory: mockGetGlobalRooDirectory,
+	getGlobalAgentDirectory: mockGetGlobalAgentDirectory,
 }))
 
 import { loadRuleFiles, addCustomInstructions } from "../custom-instructions"
@@ -54,18 +54,18 @@ import { loadRuleFiles, addCustomInstructions } from "../custom-instructions"
 describe("custom-instructions global .roo support", () => {
 	const mockCwd = "/mock/project"
 	const mockHomeDir = "/mock/home"
-	const globalRooDir = path.join(mockHomeDir, ".agent")
-	const projectRooDir = path.join(mockCwd, ".agent")
+	const globalAgentDir = path.join(mockHomeDir, ".agent")
+	const projectAgentDir = path.join(mockCwd, ".agent")
 
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mockHomedir.mockReturnValue(mockHomeDir)
-		mockGetRooDirectoriesForCwd.mockReturnValue([globalRooDir, projectRooDir])
+		mockGetAgentDirectoriesForCwd.mockReturnValue([globalAgentDir, projectAgentDir])
 		// getAllAgentDirectoriesForCwd is now async and returns the same directories by default
-		mockGetAllRooDirectoriesForCwd.mockResolvedValue([globalRooDir, projectRooDir])
+		mockGetAllAgentDirectoriesForCwd.mockResolvedValue([globalAgentDir, projectAgentDir])
 		// getAgentsDirectoriesForCwd returns parent directories (without .roo)
 		mockGetAgentsDirectoriesForCwd.mockResolvedValue([mockCwd])
-		mockGetGlobalRooDirectory.mockReturnValue(globalRooDir)
+		mockGetGlobalAgentDirectory.mockReturnValue(globalAgentDir)
 		// Default lstat to reject (file not found)
 		mockLstat.mockRejectedValue(new Error("ENOENT"))
 	})

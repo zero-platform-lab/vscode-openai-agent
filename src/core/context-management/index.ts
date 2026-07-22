@@ -221,7 +221,7 @@ export type ContextManagementOptions = {
 	environmentDetails?: string
 	/** Optional array of file paths read by Agent during the task (will be folded via tree-sitter) */
 	filesReadByAgent?: string[]
-	/** Optional current working directory for resolving file paths (required if filesReadByRoo is provided) */
+	/** Optional current working directory for resolving file paths (required if filesReadByAgent is provided) */
 	cwd?: string
 	/** Optional controller for file access validation */
 	rooIgnoreController?: AgentIgnoreController

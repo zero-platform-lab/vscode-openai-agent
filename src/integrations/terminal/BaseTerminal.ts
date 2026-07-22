@@ -1,16 +1,16 @@
 import { truncateOutput, applyRunLengthEncoding } from "../misc/extract-text"
 
 import type {
-	RooTerminalProvider,
-	RooTerminal,
-	RooTerminalCallbacks,
+	AgentTerminalProvider,
+	AgentTerminal,
+	AgentTerminalCallbacks,
 	AgentTerminalProcess,
 	AgentTerminalProcessResultPromise,
 	ExitCodeDetails,
 } from "./types"
 
-export abstract class BaseTerminal implements RooTerminal {
-	public readonly provider: RooTerminalProvider
+export abstract class BaseTerminal implements AgentTerminal {
+	public readonly provider: AgentTerminalProvider
 	public readonly id: number
 	public readonly initialCwd: string
 
@@ -22,7 +22,7 @@ export abstract class BaseTerminal implements RooTerminal {
 	public process?: AgentTerminalProcess
 	public completedProcesses: AgentTerminalProcess[] = []
 
-	constructor(provider: RooTerminalProvider, id: number, cwd: string) {
+	constructor(provider: AgentTerminalProvider, id: number, cwd: string) {
 		this.provider = provider
 		this.id = id
 		this.initialCwd = cwd
@@ -37,7 +37,7 @@ export abstract class BaseTerminal implements RooTerminal {
 
 	abstract isClosed(): boolean
 
-	abstract runCommand(command: string, callbacks: RooTerminalCallbacks): AgentTerminalProcessResultPromise
+	abstract runCommand(command: string, callbacks: AgentTerminalCallbacks): AgentTerminalProcessResultPromise
 
 	/**
 	 * Sets the active stream for this terminal and notifies the process

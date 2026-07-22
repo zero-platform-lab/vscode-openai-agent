@@ -607,8 +607,7 @@
 			"placeholder": "Default: claude",
 			"maxTokensLabel": "Max Output Tokens",
 			"maxTokensDescription": "Maximum number of output tokens for Claude Code responses. Default is 8000."
-		},
-		"retiredRooProviderMessage": "As part of our decision to sunset the OpenAI Compatible Agent extension, we also ended the OpenAI Compatible Agent Router, which only existed to support the extension. Sorry about the hassle."
+		}
 	},
 	"checkpoints": {
 		"timeout": {

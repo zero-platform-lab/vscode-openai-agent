@@ -1,9 +1,9 @@
 import EventEmitter from "events"
 
-export type RooTerminalProvider = "vscode" | "execa"
+export type AgentTerminalProvider = "vscode" | "execa"
 
-export interface RooTerminal {
-	provider: RooTerminalProvider
+export interface AgentTerminal {
+	provider: AgentTerminalProvider
 	id: number
 	busy: boolean
 	running: boolean
@@ -11,7 +11,7 @@ export interface RooTerminal {
 	process?: AgentTerminalProcess
 	getCurrentWorkingDirectory(): string
 	isClosed: () => boolean
-	runCommand: (command: string, callbacks: RooTerminalCallbacks) => AgentTerminalProcessResultPromise
+	runCommand: (command: string, callbacks: AgentTerminalCallbacks) => AgentTerminalProcessResultPromise
 	setActiveStream(stream: AsyncIterable<string> | undefined, pid?: number): void
 	shellExecutionComplete(exitDetails: ExitCodeDetails): void
 	getProcessesWithOutput(): AgentTerminalProcess[]
@@ -20,7 +20,7 @@ export interface RooTerminal {
 	cleanCompletedProcessQueue(): void
 }
 
-export interface RooTerminalCallbacks {
+export interface AgentTerminalCallbacks {
 	onLine: (line: string, process: AgentTerminalProcess) => void
 	onCompleted: (output: string | undefined, process: AgentTerminalProcess) => void | Promise<void>
 	onShellExecutionStarted: (pid: number | undefined, process: AgentTerminalProcess) => void

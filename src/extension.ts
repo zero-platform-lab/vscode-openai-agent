@@ -233,7 +233,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// Allows other extensions to activate once Agent is ready.
 	vscode.commands.executeCommand(`${Package.name}.activationCompleted`)
 
-	// Implements the `RooCodeAPI` interface.
+	// Implements the `AgentAPI` interface.
 	const socketPath = process.env.ROO_CODE_IPC_SOCKET_PATH
 	const enableLogging = typeof socketPath === "string"
 

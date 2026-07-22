@@ -10,7 +10,7 @@ export const rooCliCommandNames = ["start", "message", "cancel", "ping", "shutdo
 
 export const rooCliCommandNameSchema = z.enum(rooCliCommandNames)
 
-export type RooCliCommandName = z.infer<typeof rooCliCommandNameSchema>
+export type AgentCliCommandName = z.infer<typeof rooCliCommandNameSchema>
 
 export const rooCliCommandBaseSchema = z.object({
 	command: rooCliCommandNameSchema,
@@ -32,7 +32,7 @@ export const rooCliStartCommandSchema = rooCliCommandBaseSchema.extend({
 	configuration: rooCodeSettingsSchema.optional(),
 })
 
-export type RooCliStartCommand = z.infer<typeof rooCliStartCommandSchema>
+export type AgentCliStartCommand = z.infer<typeof rooCliStartCommandSchema>
 
 export const rooCliMessageCommandSchema = rooCliCommandBaseSchema.extend({
 	command: z.literal("message"),
@@ -68,7 +68,7 @@ export const rooCliInputCommandSchema = z.discriminatedUnion("command", [
 	rooCliShutdownCommandSchema,
 ])
 
-export type RooCliInputCommand = z.infer<typeof rooCliInputCommandSchema>
+export type AgentCliInputCommand = z.infer<typeof rooCliInputCommandSchema>
 
 /**
  * Agent CLI stream-json output
@@ -78,7 +78,7 @@ export const rooCliOutputFormats = ["text", "json", "stream-json"] as const
 
 export const rooCliOutputFormatSchema = z.enum(rooCliOutputFormats)
 
-export type RooCliOutputFormat = z.infer<typeof rooCliOutputFormatSchema>
+export type AgentCliOutputFormat = z.infer<typeof rooCliOutputFormatSchema>
 
 export const rooCliEventTypes = [
 	"system",
@@ -95,7 +95,7 @@ export const rooCliEventTypes = [
 
 export const rooCliEventTypeSchema = z.enum(rooCliEventTypes)
 
-export type RooCliEventType = z.infer<typeof rooCliEventTypeSchema>
+export type AgentCliEventType = z.infer<typeof rooCliEventTypeSchema>
 
 export const rooCliControlSubtypes = ["ack", "done", "error"] as const
 
@@ -110,14 +110,14 @@ export const rooCliQueueItemSchema = z.object({
 	timestamp: z.number().optional(),
 })
 
-export type RooCliQueueItem = z.infer<typeof rooCliQueueItemSchema>
+export type AgentCliQueueItem = z.infer<typeof rooCliQueueItemSchema>
 
 export const rooCliToolUseSchema = z.object({
 	name: z.string(),
 	input: z.record(z.unknown()).optional(),
 })
 
-export type RooCliToolUse = z.infer<typeof rooCliToolUseSchema>
+export type AgentCliToolUse = z.infer<typeof rooCliToolUseSchema>
 
 export const rooCliToolResultSchema = z.object({
 	name: z.string(),
@@ -126,7 +126,7 @@ export const rooCliToolResultSchema = z.object({
 	exitCode: z.number().optional(),
 })
 
-export type RooCliToolResult = z.infer<typeof rooCliToolResultSchema>
+export type AgentCliToolResult = z.infer<typeof rooCliToolResultSchema>
 
 export const rooCliCostSchema = z.object({
 	totalCost: z.number().optional(),
@@ -136,7 +136,7 @@ export const rooCliCostSchema = z.object({
 	cacheReads: z.number().optional(),
 })
 
-export type RooCliCost = z.infer<typeof rooCliCostSchema>
+export type AgentCliCost = z.infer<typeof rooCliCostSchema>
 
 export const rooCliStreamEventSchema = z
 	.object({
@@ -161,7 +161,7 @@ export const rooCliStreamEventSchema = z
 	})
 	.passthrough()
 
-export type RooCliStreamEvent = z.infer<typeof rooCliStreamEventSchema>
+export type AgentCliStreamEvent = z.infer<typeof rooCliStreamEventSchema>
 
 export const rooCliControlEventSchema = rooCliStreamEventSchema.extend({
 	type: z.literal("control"),
@@ -179,4 +179,4 @@ export const rooCliFinalOutputSchema = z.object({
 	events: z.array(rooCliStreamEventSchema),
 })
 
-export type RooCliFinalOutput = z.infer<typeof rooCliFinalOutputSchema>
+export type AgentCliFinalOutput = z.infer<typeof rooCliFinalOutputSchema>

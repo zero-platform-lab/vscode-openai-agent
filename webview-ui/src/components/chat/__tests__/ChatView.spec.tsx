@@ -133,16 +133,16 @@ vi.mock("../QueuedMessages", () => ({
 	},
 }))
 
-// Mock RooTips component
-vi.mock("@src/components/welcome/RooTips", () => ({
-	default: function MockRooTips() {
+// Mock AgentTips component
+vi.mock("@src/components/welcome/AgentTips", () => ({
+	default: function MockAgentTips() {
 		return <div data-testid="roo-tips">Tips content</div>
 	},
 }))
 
-// Mock RooHero component
-vi.mock("@src/components/welcome/RooHero", () => ({
-	default: function MockRooHero() {
+// Mock AgentHero component
+vi.mock("@src/components/welcome/AgentHero", () => ({
+	default: function MockAgentHero() {
 		return <div data-testid="roo-hero">Hero content</div>
 	},
 }))
@@ -681,7 +681,7 @@ describe("ChatView - Welcome Content Display Tests", () => {
 		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
 	})
 
-	it("shows RooTips when user has only run 3 tasks in their history", () => {
+	it("shows AgentTips when user has only run 3 tasks in their history", () => {
 		const { queryByTestId } = renderChatView()
 
 		mockPostMessage({
@@ -747,7 +747,7 @@ describe("ChatView - Welcome Content Display Tests", () => {
 		})
 	})
 
-	it("shows RooTips for newer users", () => {
+	it("shows AgentTips for newer users", () => {
 		const { queryByTestId, getByTestId } = renderChatView()
 
 		mockPostMessage({
@@ -764,7 +764,7 @@ describe("ChatView - Welcome Content Display Tests", () => {
 		expect(getByTestId("roo-tips")).toBeInTheDocument()
 	})
 
-	it("shows RooTips when user has fewer than 6 tasks", () => {
+	it("shows AgentTips when user has fewer than 6 tasks", () => {
 		const { queryByTestId, getByTestId } = renderChatView()
 
 		mockPostMessage({

@@ -18,12 +18,12 @@ import fs from "fs/promises"
  *
  * @example Usage:
  * ```typescript
- * const globalDir = getGlobalRooDirectory()
+ * const globalDir = getGlobalAgentDirectory()
  * // Returns: "/Users/john/.agent" (on macOS/Linux)
  * // Returns: "C:\\Users\\john\\.agent" (on Windows)
  * ```
  */
-export function getGlobalRooDirectory(): string {
+export function getGlobalAgentDirectory(): string {
 	const homeDir = os.homedir()
 	return path.join(homeDir, ".agent")
 }
@@ -80,10 +80,10 @@ export function getProjectAgentsDirectoryForCwd(cwd: string): string {
  *
  * @example
  * ```typescript
- * const projectDir = getProjectRooDirectoryForCwd('/Users/john/my-project')
+ * const projectDir = getProjectAgentDirectoryForCwd('/Users/john/my-project')
  * // Returns: "/Users/john/my-project/.agent"
  *
- * const windowsProjectDir = getProjectRooDirectoryForCwd('C:\\Users\\john\\my-project')
+ * const windowsProjectDir = getProjectAgentDirectoryForCwd('C:\\Users\\john\\my-project')
  * // Returns: "C:\\Users\\john\\my-project\\.agent"
  * ```
  *
@@ -101,7 +101,7 @@ export function getProjectAgentsDirectoryForCwd(cwd: string): string {
  * └── package.json
  * ```
  */
-export function getProjectRooDirectoryForCwd(cwd: string): string {
+export function getProjectAgentDirectoryForCwd(cwd: string): string {
 	return path.join(cwd, ".agent")
 }
 
@@ -164,7 +164,7 @@ export async function readFileIfExists(filePath: string): Promise<string | null>
  *
  * @example
  * ```typescript
- * const subfolderRoos = await discoverSubfolderRooDirectories('/Users/john/monorepo')
+ * const subfolderRoos = await discoverSubfolderAgentDirectories('/Users/john/monorepo')
  * // Returns:
  * // [
  * //   '/Users/john/monorepo/package-a/.agent',
@@ -176,7 +176,7 @@ export async function readFileIfExists(filePath: string): Promise<string | null>
  * @example Directory structure:
  * ```
  * /Users/john/monorepo/
- * ├── .agent/                    # Root .agent (NOT included - use getProjectRooDirectoryForCwd)
+ * ├── .agent/                    # Root .agent (NOT included - use getProjectAgentDirectoryForCwd)
  * ├── package-a/
  * │   └── .agent/                # Included
  * │       └── rules/
@@ -189,7 +189,7 @@ export async function readFileIfExists(filePath: string): Promise<string | null>
  *             └── rules/
  * ```
  */
-export async function discoverSubfolderRooDirectories(cwd: string): Promise<string[]> {
+export async function discoverSubfolderAgentDirectories(cwd: string): Promise<string[]> {
 	try {
 		// Dynamic import to avoid vscode dependency at module load time
 		// This is necessary because file-search.ts imports vscode, which is not
@@ -223,7 +223,7 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 			const match = result.path.match(/^(.+?)[/\\]\.agent[/\\]/)
 			if (match) {
 				const agentDir = path.join(cwd, match[1], ".agent")
-				// Exclude the root .agent directory (already handled by getProjectRooDirectoryForCwd)
+				// Exclude the root .agent directory (already handled by getProjectAgentDirectoryForCwd)
 				if (agentDir !== rootRooDir) {
 					agentDirs.add(agentDir)
 				}
@@ -275,10 +275,10 @@ export function getAgentDirectoriesForCwd(cwd: string): string[] {
 	const directories: string[] = []
 
 	// Add global directory first
-	directories.push(getGlobalRooDirectory())
+	directories.push(getGlobalAgentDirectory())
 
 	// Add project-local directory second
-	directories.push(getProjectRooDirectoryForCwd(cwd))
+	directories.push(getProjectAgentDirectoryForCwd(cwd))
 
 	return directories
 }
@@ -306,13 +306,13 @@ export async function getAllAgentDirectoriesForCwd(cwd: string): Promise<string[
 	const directories: string[] = []
 
 	// Add global directory first
-	directories.push(getGlobalRooDirectory())
+	directories.push(getGlobalAgentDirectory())
 
 	// Add project-local directory second
-	directories.push(getProjectRooDirectoryForCwd(cwd))
+	directories.push(getProjectAgentDirectoryForCwd(cwd))
 
 	// Discover and add subfolder .agent directories
-	const subfolderDirs = await discoverSubfolderRooDirectories(cwd)
+	const subfolderDirs = await discoverSubfolderAgentDirectories(cwd)
 	directories.push(...subfolderDirs)
 
 	return directories
@@ -337,10 +337,10 @@ export async function getAgentsDirectoriesForCwd(cwd: string): Promise<string[]>
 	directories.push(cwd)
 
 	// Get all subfolder .agent directories
-	const subfolderRooDirs = await discoverSubfolderRooDirectories(cwd)
+	const subfolderAgentDirs = await discoverSubfolderAgentDirectories(cwd)
 
 	// Extract parent directories (remove .agent from path)
-	for (const agentDir of subfolderRooDirs) {
+	for (const agentDir of subfolderAgentDirs) {
 		const parentDir = path.dirname(agentDir)
 		directories.push(parentDir)
 	}
@@ -407,8 +407,8 @@ export async function loadConfiguration(
 	project: string | null
 	merged: string
 }> {
-	const globalDir = getGlobalRooDirectory()
-	const projectDir = getProjectRooDirectoryForCwd(cwd)
+	const globalDir = getGlobalAgentDirectory()
+	const projectDir = getProjectAgentDirectoryForCwd(cwd)
 
 	const globalFilePath = path.join(globalDir, relativePath)
 	const projectFilePath = path.join(projectDir, relativePath)

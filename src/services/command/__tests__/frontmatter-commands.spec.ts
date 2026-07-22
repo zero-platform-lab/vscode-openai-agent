@@ -6,8 +6,8 @@ import { getCommand, getCommands } from "../commands"
 // Mock fs and path modules
 vi.mock("fs/promises")
 vi.mock("../agent-config", () => ({
-	getGlobalRooDirectory: vi.fn(() => "/mock/global/.roo"),
-	getProjectRooDirectoryForCwd: vi.fn(() => "/mock/project/.roo"),
+	getGlobalAgentDirectory: vi.fn(() => "/mock/global/.roo"),
+	getProjectAgentDirectoryForCwd: vi.fn(() => "/mock/project/.roo"),
 }))
 vi.mock("../built-in-commands", () => ({
 	getBuiltInCommands: vi.fn(() => Promise.resolve([])),

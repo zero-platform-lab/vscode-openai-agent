@@ -15,7 +15,7 @@ import { Task } from "../task/Task"
 import { ToolUse, ToolResponse } from "../../shared/tools"
 import { formatResponse } from "../prompts/responses"
 import { unescapeHtmlEntities } from "../../utils/text-normalization"
-import { ExitCodeDetails, RooTerminalCallbacks, AgentTerminalProcess } from "../../integrations/terminal/types"
+import { ExitCodeDetails, AgentTerminalCallbacks, AgentTerminalProcess } from "../../integrations/terminal/types"
 import { TerminalRegistry } from "../../integrations/terminal/TerminalRegistry"
 import { Terminal } from "../../integrations/terminal/Terminal"
 import { OutputInterceptor } from "../../integrations/terminal/OutputInterceptor"
@@ -287,7 +287,7 @@ export async function executeCommandInTerminal(
 		resolveOnCompleted = resolve
 	})
 
-	const callbacks: RooTerminalCallbacks = {
+	const callbacks: AgentTerminalCallbacks = {
 		onLine: async (lines: string, process: AgentTerminalProcess) => {
 			accumulatedOutput += lines
 

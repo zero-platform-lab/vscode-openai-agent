@@ -1,4 +1,4 @@
-import type { RooTerminalCallbacks, AgentTerminalProcessResultPromise } from "./types"
+import type { AgentTerminalCallbacks, AgentTerminalProcessResultPromise } from "./types"
 import { BaseTerminal } from "./BaseTerminal"
 import { ExecaTerminalProcess } from "./ExecaTerminalProcess"
 import { mergePromise } from "./mergePromise"
@@ -15,7 +15,7 @@ export class ExecaTerminal extends BaseTerminal {
 		return false
 	}
 
-	public override runCommand(command: string, callbacks: RooTerminalCallbacks): AgentTerminalProcessResultPromise {
+	public override runCommand(command: string, callbacks: AgentTerminalCallbacks): AgentTerminalProcessResultPromise {
 		this.busy = true
 
 		const process = new ExecaTerminalProcess(this)

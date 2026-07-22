@@ -141,7 +141,6 @@ export const retiredProviderNames = [
 	"groq",
 	"huggingface",
 	"io-intelligence",
-	"roo",
 ] as const
 
 export const retiredProviderNamesSchema = z.enum(retiredProviderNames)

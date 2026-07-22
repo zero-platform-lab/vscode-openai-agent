@@ -3,12 +3,12 @@ import Mocha from "mocha"
 import { glob } from "glob"
 import * as vscode from "vscode"
 
-import type { RooCodeAPI } from "@openai-agent/types"
+import type { AgentAPI } from "@openai-agent/types"
 
 import { waitFor } from "./utils"
 
 export async function run() {
-	const extension = vscode.extensions.getExtension<RooCodeAPI>("internal.openai-agent")
+	const extension = vscode.extensions.getExtension<AgentAPI>("internal.openai-agent")
 
 	if (!extension) {
 		throw new Error("Extension not found")

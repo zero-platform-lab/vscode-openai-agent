@@ -220,9 +220,9 @@ vi.mock("../providers/Roo", () => ({
 	),
 }))
 
-// Mock RooBalanceDisplay for tests
-vi.mock("../providers/RooBalanceDisplay", () => ({
-	RooBalanceDisplay: () => <div data-testid="roo-balance-display">Balance: $10.00</div>,
+// Mock AgentBalanceDisplay for tests
+vi.mock("../providers/AgentBalanceDisplay", () => ({
+	AgentBalanceDisplay: () => <div data-testid="roo-balance-display">Balance: $10.00</div>,
 }))
 
 vi.mock("@src/components/ui/hooks/useSelectedModel", () => ({
@@ -582,15 +582,15 @@ describe("ApiOptions", () => {
 		expect(screen.queryByTestId("litellm-provider")).not.toBeInTheDocument()
 	})
 
-	it("renders Roo-specific retired provider message for Roo Code Router", () => {
+	it("renders retired provider message for a retired provider", () => {
 		renderApiOptions({
 			apiConfiguration: {
-				apiProvider: "roo" as any,
+				apiProvider: "groq" as any,
 			},
 		})
 
 		expect(screen.getByTestId("retired-provider-message")).toHaveTextContent(
-			"settings:providers.retiredRooProviderMessage",
+			"settings:providers.retiredProviderMessage",
 		)
 	})
 

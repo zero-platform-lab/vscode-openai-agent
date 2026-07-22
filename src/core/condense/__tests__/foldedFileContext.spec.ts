@@ -339,7 +339,7 @@ describe("foldedFileContext", () => {
 			expect(apiFileBlock.text).toContain("fetchData")
 		})
 
-		it("should not include file context section when filesReadByRoo is empty", async () => {
+		it("should not include file context section when filesReadByAgent is empty", async () => {
 			const { summarizeConversation } = await import("../index")
 
 			const mockApiHandler = new MockApiHandler()
@@ -368,7 +368,7 @@ describe("foldedFileContext", () => {
 				cwd: "/test/project",
 			})
 
-			// generateFoldedFileContext should NOT be called when filesReadByRoo is empty
+			// generateFoldedFileContext should NOT be called when filesReadByAgent is empty
 			expect(mockedGenerateFoldedFileContext).not.toHaveBeenCalled()
 
 			// Find the summary message

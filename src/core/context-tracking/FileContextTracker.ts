@@ -27,7 +27,7 @@ export class FileContextTracker {
 	// File tracking and watching
 	private fileWatchers = new Map<string, vscode.FileSystemWatcher>()
 	private recentlyModifiedFiles = new Set<string>()
-	private recentlyEditedByRoo = new Set<string>()
+	private recentlyEditedByAgent = new Set<string>()
 	private checkpointPossibleFiles = new Set<string>()
 
 	constructor(provider: ClineProvider, taskId: string) {
@@ -64,8 +64,8 @@ export class FileContextTracker {
 
 		// Track file changes
 		watcher.onDidChange(() => {
-			if (this.recentlyEditedByRoo.has(filePath)) {
-				this.recentlyEditedByRoo.delete(filePath) // This was an edit by Agent, no need to inform Agent
+			if (this.recentlyEditedByAgent.has(filePath)) {
+				this.recentlyEditedByAgent.delete(filePath) // This was an edit by Agent, no need to inform Agent
 			} else {
 				this.recentlyModifiedFiles.add(filePath) // This was a user edit, we will inform Agent
 				this.trackFileContext(filePath, "user_edited") // Update the task metadata with file tracking
@@ -267,7 +267,7 @@ export class FileContextTracker {
 
 	// Marks a file as edited by Agent to prevent false positives in file watchers
 	markFileAsEditedByRoo(filePath: string): void {
-		this.recentlyEditedByRoo.add(filePath)
+		this.recentlyEditedByAgent.add(filePath)
 	}
 
 	// Disposes all file watchers

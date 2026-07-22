@@ -1,4 +1,4 @@
-import { RooCodeSettings } from "@openai-agent/types"
+import { AgentSettings } from "@openai-agent/types"
 
 import type { SupportedProvider } from "@/types/index.js"
 
@@ -23,8 +23,8 @@ export function getProviderSettings(
 	provider: SupportedProvider,
 	apiKey: string | undefined,
 	model: string | undefined,
-): RooCodeSettings {
-	const config: RooCodeSettings = { apiProvider: provider }
+): AgentSettings {
+	const config: AgentSettings = { apiProvider: provider }
 
 	switch (provider) {
 		case "anthropic":

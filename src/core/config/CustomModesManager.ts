@@ -10,13 +10,13 @@ import { type ModeConfig, type PromptComponent, customModesSettingsSchema, modeC
 
 import { fileExistsAtPath } from "../../utils/fs"
 import { getWorkspacePath } from "../../utils/path"
-import { getGlobalRooDirectory } from "../../services/agent-config"
+import { getGlobalAgentDirectory } from "../../services/agent-config"
 import { logger } from "../../utils/logging"
 import { GlobalFileNames } from "../../shared/globalFileNames"
 import { ensureSettingsDirectoryExists } from "../../utils/globalContext"
 import { t } from "../../i18n"
 
-const ROOMODES_FILENAME = ".agentmodes"
+const AGENTMODES_FILENAME = ".agentmodes"
 
 // Type definitions for import/export functionality
 interface RuleFile {
@@ -90,7 +90,7 @@ export class CustomModesManager {
 		}
 	}
 
-	private async getWorkspaceRoomodes(): Promise<string | undefined> {
+	private async getWorkspaceAgentmodes(): Promise<string | undefined> {
 		const workspaceFolders = vscode.workspace.workspaceFolders
 
 		if (!workspaceFolders || workspaceFolders.length === 0) {
@@ -98,7 +98,7 @@ export class CustomModesManager {
 		}
 
 		const workspaceRoot = getWorkspacePath()
-		const agentmodesPath = path.join(workspaceRoot, ROOMODES_FILENAME)
+		const agentmodesPath = path.join(workspaceRoot, AGENTMODES_FILENAME)
 		const exists = await fileExistsAtPath(agentmodesPath)
 		return exists ? agentmodesPath : undefined
 	}
@@ -155,7 +155,7 @@ export class CustomModesManager {
 			return parsed ?? {}
 		} catch (yamlError) {
 			// For .agentmodes files, try JSON as fallback
-			if (filePath.endsWith(ROOMODES_FILENAME)) {
+			if (filePath.endsWith(AGENTMODES_FILENAME)) {
 				try {
 					// Try parsing the original content as JSON (not the cleaned content)
 					return JSON.parse(content)
@@ -196,7 +196,7 @@ export class CustomModesManager {
 				console.error(`[CustomModesManager] Schema validation failed for ${filePath}:`, result.error)
 
 				// Show user-friendly error for .agentmodes files
-				if (filePath.endsWith(ROOMODES_FILENAME)) {
+				if (filePath.endsWith(AGENTMODES_FILENAME)) {
 					const issues = result.error.issues
 						.map((issue) => `• ${issue.path.join(".")}: ${issue.message}`)
 						.join("\n")
@@ -208,8 +208,8 @@ export class CustomModesManager {
 			}
 
 			// Determine source based on file path
-			const isRoomodes = filePath.endsWith(ROOMODES_FILENAME)
-			const source = isRoomodes ? ("project" as const) : ("global" as const)
+			const isAgentmodes = filePath.endsWith(AGENTMODES_FILENAME)
+			const source = isAgentmodes ? ("project" as const) : ("global" as const)
 
 			// Add source to each mode
 			return result.data.customModes.map((mode) => ({ ...mode, source }))
@@ -295,7 +295,7 @@ export class CustomModesManager {
 				}
 
 				// Get modes from .agentmodes if it exists (takes precedence)
-				const agentmodesPath = await this.getWorkspaceRoomodes()
+				const agentmodesPath = await this.getWorkspaceAgentmodes()
 				const agentmodesModes = agentmodesPath ? await this.loadModesFromFile(agentmodesPath) : []
 
 				// Merge modes from both sources (.agentmodes takes precedence)
@@ -317,10 +317,10 @@ export class CustomModesManager {
 		const workspaceFolders = vscode.workspace.workspaceFolders
 		if (workspaceFolders && workspaceFolders.length > 0) {
 			const workspaceRoot = getWorkspacePath()
-			const agentmodesPath = path.join(workspaceRoot, ROOMODES_FILENAME)
+			const agentmodesPath = path.join(workspaceRoot, AGENTMODES_FILENAME)
 			const agentmodesWatcher = vscode.workspace.createFileSystemWatcher(agentmodesPath)
 
-			const handleRoomodesChange = async () => {
+			const handleAgentmodesChange = async () => {
 				try {
 					const settingsModes = await this.loadModesFromFile(settingsPath)
 					const agentmodesModes = await this.loadModesFromFile(agentmodesPath)
@@ -334,8 +334,8 @@ export class CustomModesManager {
 				}
 			}
 
-			this.disposables.push(agentmodesWatcher.onDidChange(handleRoomodesChange))
-			this.disposables.push(agentmodesWatcher.onDidCreate(handleRoomodesChange))
+			this.disposables.push(agentmodesWatcher.onDidChange(handleAgentmodesChange))
+			this.disposables.push(agentmodesWatcher.onDidCreate(handleAgentmodesChange))
 			this.disposables.push(
 				agentmodesWatcher.onDidDelete(async () => {
 					// When .agentmodes is deleted, refresh with only settings modes
@@ -366,7 +366,7 @@ export class CustomModesManager {
 		const settingsModes = await this.loadModesFromFile(settingsPath)
 
 		// Get modes from .agentmodes if it exists.
-		const agentmodesPath = await this.getWorkspaceRoomodes()
+		const agentmodesPath = await this.getWorkspaceAgentmodes()
 		const agentmodesModes = agentmodesPath ? await this.loadModesFromFile(agentmodesPath) : []
 
 		// Create maps to store modes by source.
@@ -427,10 +427,10 @@ export class CustomModesManager {
 				}
 
 				const workspaceRoot = getWorkspacePath()
-				targetPath = path.join(workspaceRoot, ROOMODES_FILENAME)
+				targetPath = path.join(workspaceRoot, AGENTMODES_FILENAME)
 				const exists = await fileExistsAtPath(targetPath)
 
-				logger.info(`${exists ? "Updating" : "Creating"} project mode in ${ROOMODES_FILENAME}`, {
+				logger.info(`${exists ? "Updating" : "Creating"} project mode in ${AGENTMODES_FILENAME}`, {
 					slug,
 					workspace: workspaceRoot,
 				})
@@ -495,7 +495,7 @@ export class CustomModesManager {
 
 	private async refreshMergedState(): Promise<void> {
 		const settingsPath = await this.getCustomModesFilePath()
-		const agentmodesPath = await this.getWorkspaceRoomodes()
+		const agentmodesPath = await this.getWorkspaceAgentmodes()
 
 		const settingsModes = await this.loadModesFromFile(settingsPath)
 		const agentmodesModes = agentmodesPath ? await this.loadModesFromFile(agentmodesPath) : []
@@ -511,7 +511,7 @@ export class CustomModesManager {
 	public async deleteCustomMode(slug: string): Promise<void> {
 		try {
 			const settingsPath = await this.getCustomModesFilePath()
-			const agentmodesPath = await this.getWorkspaceRoomodes()
+			const agentmodesPath = await this.getWorkspaceAgentmodes()
 
 			const settingsModes = await this.loadModesFromFile(settingsPath)
 			const agentmodesModes = agentmodesPath ? await this.loadModesFromFile(agentmodesPath) : []
@@ -631,7 +631,7 @@ export class CustomModesManager {
 					return false
 				}
 
-				const agentmodesPath = path.join(workspacePath, ROOMODES_FILENAME)
+				const agentmodesPath = path.join(workspacePath, AGENTMODES_FILENAME)
 				try {
 					const agentmodesExists = await fileExistsAtPath(agentmodesPath)
 					if (agentmodesExists) {
@@ -658,8 +658,8 @@ export class CustomModesManager {
 
 			if (isGlobalMode) {
 				// For global modes, check in global .agent directory
-				const globalRooDir = getGlobalRooDirectory()
-				modeRulesDir = path.join(globalRooDir, `rules-${slug}`)
+				const globalAgentDir = getGlobalAgentDirectory()
+				modeRulesDir = path.join(globalAgentDir, `rules-${slug}`)
 			} else {
 				// For project modes, check in workspace .agent directory
 				const workspacePath = getWorkspacePath()
@@ -726,7 +726,7 @@ export class CustomModesManager {
 				// Only check workspace-based modes if workspace is available
 				const workspacePath = getWorkspacePath()
 				if (workspacePath) {
-					const agentmodesPath = path.join(workspacePath, ROOMODES_FILENAME)
+					const agentmodesPath = path.join(workspacePath, AGENTMODES_FILENAME)
 					try {
 						const agentmodesExists = await fileExistsAtPath(agentmodesPath)
 						if (agentmodesExists) {
@@ -759,7 +759,7 @@ export class CustomModesManager {
 			let baseDir: string
 			if (isGlobalMode) {
 				// For global modes, use the global .agent directory
-				baseDir = getGlobalRooDirectory()
+				baseDir = getGlobalAgentDirectory()
 			} else {
 				// For project modes, use the workspace directory
 				const workspacePath = getWorkspacePath()
@@ -852,7 +852,7 @@ export class CustomModesManager {
 		let rulesFolderPath: string
 
 		if (source === "global") {
-			baseDir = getGlobalRooDirectory()
+			baseDir = getGlobalAgentDirectory()
 			rulesFolderPath = path.join(baseDir, `rules-${importMode.slug}`)
 		} else {
 			const workspacePath = getWorkspacePath()

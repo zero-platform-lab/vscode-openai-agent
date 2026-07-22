@@ -55,7 +55,7 @@ export class API extends EventEmitter<AgentEvents> implements AgentAPI {
 				console.log(args)
 			}
 
-			this.logfile = path.join(os.tmpdir(), "roo-code-messages.log")
+			this.logfile = path.join(os.tmpdir(), "agent-messages.log")
 		} else {
 			this.log = () => {}
 		}

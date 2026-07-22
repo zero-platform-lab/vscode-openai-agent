@@ -112,12 +112,9 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 	const { apiProvider, ...options } = configuration
 
 	if (apiProvider && isRetiredProvider(apiProvider)) {
-		const retiredProviderMessage =
-			apiProvider === "roo"
-				? "As part of our decision to sunset the Agent extension, we also ended the Agent Router, which only existed to support the extension. Sorry about the hassle."
-				: "This provider is no longer supported."
-
-		throw new Error(`${retiredProviderMessage}\n\nPlease select a different provider in your API profile settings.`)
+		throw new Error(
+			"This provider is no longer supported.\n\nPlease select a different provider in your API profile settings.",
+		)
 	}
 
 	switch (apiProvider) {
