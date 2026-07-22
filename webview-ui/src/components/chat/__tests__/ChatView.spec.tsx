@@ -774,9 +774,13 @@ describe("ChatView - Message Queueing Tests", () => {
 			],
 		})
 
-		// Wait for state to be updated
+		// Wait for the spinner state to actually be applied (sending disabled),
+		// not merely for the textarea to render. Otherwise a not-yet-applied
+		// api_req_started state races the send and the message is treated as a
+		// new task instead of being queued.
 		await waitFor(() => {
-			expect(getByTestId("chat-textarea")).toBeInTheDocument()
+			const input = getByTestId("chat-textarea").querySelector("input")!
+			expect(input.getAttribute("data-sending-disabled")).toBe("true")
 		})
 
 		// Clear message calls before simulating user input
