@@ -510,7 +510,7 @@ description: ${longDescription}
 			const sharedSkillDir = p(SHARED_DIR, "shared-skill")
 			const sharedSkillMd = p(sharedSkillDir, "SKILL.md")
 
-			// Simulate .roo/skills being a symlink to /shared/skills
+			// Simulate .agent/skills being a symlink to /shared/skills
 			mockDirectoryExists.mockImplementation(async (dir: string) => {
 				return dir === globalSkillsDir
 			})
@@ -567,7 +567,7 @@ Instructions here...`
 			const myAliasDir = p(globalSkillsDir, "my-alias")
 			const myAliasMd = p(myAliasDir, "SKILL.md")
 
-			// Simulate .roo/skills/my-alias being a symlink to /external/actual-skill
+			// Simulate .agent/skills/my-alias being a symlink to /external/actual-skill
 			mockDirectoryExists.mockImplementation(async (dir: string) => {
 				return dir === globalSkillsDir
 			})
@@ -717,11 +717,11 @@ Instructions here...`
 			expect(skills[0].source).toBe("project")
 		})
 
-		it("should prioritize .roo skills over .agents skills with same name", async () => {
+		it("should prioritize .agent skills over .agents skills with same name", async () => {
 			const agentSkillDir = p(globalAgentsSkillsDir, "common-skill")
 			const agentSkillMd = p(agentSkillDir, "SKILL.md")
-			const rooSkillDir = p(globalSkillsDir, "common-skill")
-			const rooSkillMd = p(rooSkillDir, "SKILL.md")
+			const agentDirSkillDir = p(globalSkillsDir, "common-skill")
+			const agentDirSkillMd = p(agentDirSkillDir, "SKILL.md")
 
 			mockDirectoryExists.mockImplementation(async (dir: string) => {
 				return dir === globalAgentsSkillsDir || dir === globalSkillsDir
@@ -737,14 +737,14 @@ Instructions here...`
 			})
 
 			mockStat.mockImplementation(async (pathArg: string) => {
-				if (pathArg === agentSkillDir || pathArg === rooSkillDir) {
+				if (pathArg === agentSkillDir || pathArg === agentDirSkillDir) {
 					return { isDirectory: () => true }
 				}
 				throw new Error("Not found")
 			})
 
 			mockFileExists.mockImplementation(async (file: string) => {
-				return file === agentSkillMd || file === rooSkillMd
+				return file === agentSkillMd || file === agentDirSkillMd
 			})
 
 			mockReadFile.mockImplementation(async (file: string) => {
@@ -756,7 +756,7 @@ description: Agent version (should be overridden)
 
 # Agent Common Skill`
 				}
-				if (file === rooSkillMd) {
+				if (file === agentDirSkillMd) {
 					return `---
 name: common-skill
 description: Agent version (should take priority)
@@ -772,7 +772,7 @@ description: Agent version (should take priority)
 			const skills = skillsManager.getSkillsForMode("code")
 			const commonSkill = skills.find((s) => s.name === "common-skill")
 			expect(commonSkill).toBeDefined()
-			// .roo should override .agents
+			// .agent should override .agents
 			expect(commonSkill?.description).toBe("Agent version (should take priority)")
 		})
 

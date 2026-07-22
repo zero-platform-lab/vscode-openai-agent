@@ -1080,7 +1080,7 @@ describe("CustomModesManager", () => {
 
 				expect(result.success).toBe(true)
 
-				// Verify that no files were written outside the .roo directory
+				// Verify that no files were written outside the .agent directory
 				const mockWorkspacePath = path.resolve("/mock/workspace")
 				const writtenRuleFiles = writtenFiles.filter((p) => !p.includes(".agentmodes"))
 				writtenRuleFiles.forEach((filePath) => {
@@ -1572,7 +1572,7 @@ describe("CustomModesManager", () => {
 			expect(result.yaml).toContain("test-mode")
 		})
 
-		it("should successfully export global mode with rules from global .roo directory", async () => {
+		it("should successfully export global mode with rules from global .agent directory", async () => {
 			// Mock a global mode
 			const globalMode = {
 				slug: "global-test-mode",

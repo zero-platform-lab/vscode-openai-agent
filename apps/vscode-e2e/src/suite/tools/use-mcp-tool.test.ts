@@ -37,7 +37,7 @@ suite.skip("OpenAI Compatible Agent use_mcp_tool Tool", function () {
 		await fs.writeFile(testFiles.simple, "Initial content for MCP test")
 		await fs.writeFile(testFiles.testData, JSON.stringify({ test: "data", value: 42 }, null, 2))
 
-		// Create .roo directory and MCP configuration file
+		// Create .agent directory and MCP configuration file
 		const agentDir = path.join(workspaceDir, ".agent")
 		await fs.mkdir(agentDir, { recursive: true })
 
@@ -74,7 +74,7 @@ suite.skip("OpenAI Compatible Agent use_mcp_tool Tool", function () {
 			}
 		}
 
-		// Clean up .roo directory
+		// Clean up .agent directory
 		const workspaceDir = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || tempDir
 		const agentDir = path.join(workspaceDir, ".agent")
 		try {
@@ -517,10 +517,10 @@ suite.skip("OpenAI Compatible Agent use_mcp_tool Tool", function () {
 				responseText.includes("mcp-data-") || responseText.includes(path.basename(testFiles.testData))
 			const hasAgentDir = responseText.includes(".agent")
 
-			// At least one of our test files or the .roo directory should be present
+			// At least one of our test files or the .agent directory should be present
 			assert.ok(
 				hasTestFile || hasDataFile || hasAgentDir,
-				`MCP server response should contain our test files or .roo directory. Expected to find: '${path.basename(testFiles.simple)}', '${path.basename(testFiles.testData)}', or '.agent'. Got: ${responseText.substring(0, 200)}...`,
+				`MCP server response should contain our test files or .agent directory. Expected to find: '${path.basename(testFiles.simple)}', '${path.basename(testFiles.testData)}', or '.agent'. Got: ${responseText.substring(0, 200)}...`,
 			)
 
 			// Check for typical directory listing indicators

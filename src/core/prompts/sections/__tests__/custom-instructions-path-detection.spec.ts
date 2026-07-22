@@ -4,8 +4,8 @@ describe("custom-instructions path detection", () => {
 	it("should use exact path comparison instead of string includes", () => {
 		// Test the logic that our fix implements
 		const fakeHomeDir = "/Users/john.roo.smith"
-		const globalAgentDir = path.join(fakeHomeDir, ".agent") // "/Users/john.roo.smith/.roo"
-		const projectAgentDir = "/projects/my-project/.roo"
+		const globalAgentDir = path.join(fakeHomeDir, ".agent") // "/Users/john.roo.smith/.agent"
+		const projectAgentDir = "/projects/my-project/.agent"
 
 		// Old implementation (fragile):
 		// const isGlobal = agentDir.includes(path.join(os.homedir(), ".agent"))
@@ -37,18 +37,18 @@ describe("custom-instructions path detection", () => {
 		// Test various edge cases that exact path comparison handles better
 		const testCases = [
 			{
-				global: "/Users/test/.roo",
-				project: "/Users/test/project/.roo",
+				global: "/Users/test/.agent",
+				project: "/Users/test/project/.agent",
 				expected: { global: true, project: false },
 			},
 			{
-				global: "/home/user/.roo",
-				project: "/home/user/.roo", // Same directory
+				global: "/home/user/.agent",
+				project: "/home/user/.agent", // Same directory
 				expected: { global: true, project: true },
 			},
 			{
-				global: "/Users/john.roo.smith/.roo",
-				project: "/projects/app/.roo",
+				global: "/Users/john.roo.smith/.agent",
+				project: "/projects/app/.agent",
 				expected: { global: true, project: false },
 			},
 		]

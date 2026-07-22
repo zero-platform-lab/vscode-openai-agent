@@ -220,8 +220,10 @@ describe("loadRuleFiles", () => {
 
 		const result = await loadRuleFiles("/fake/path")
 		// Paths in output should be relative to cwd
-		const expectedRelativePath1 = process.platform === "win32" ? ".roo\\rules\\file1.txt" : ".agent/rules/file1.txt"
-		const expectedRelativePath2 = process.platform === "win32" ? ".roo\\rules\\file2.txt" : ".agent/rules/file2.txt"
+		const expectedRelativePath1 =
+			process.platform === "win32" ? ".agent\\rules\\file1.txt" : ".agent/rules/file1.txt"
+		const expectedRelativePath2 =
+			process.platform === "win32" ? ".agent\\rules\\file2.txt" : ".agent/rules/file2.txt"
 		expect(result).toContain(`# Rules from ${expectedRelativePath1}:`)
 		expect(result).toContain("content of file1")
 		expect(result).toContain(`# Rules from ${expectedRelativePath2}:`)
@@ -229,11 +231,16 @@ describe("loadRuleFiles", () => {
 
 		// We expect both checks because our new implementation checks the files again for validation
 		// These are the absolute paths used internally
-		const expectedRulesDir = process.platform === "win32" ? "\\fake\\path\\.roo\\rules" : "/fake/path/.agent/rules"
+		const expectedRulesDir =
+			process.platform === "win32" ? "\\fake\\path\\.agent\\rules" : "/fake/path/.agent/rules"
 		const expectedFile1Path =
-			process.platform === "win32" ? "\\fake\\path\\.roo\\rules\\file1.txt" : "/fake/path/.agent/rules/file1.txt"
+			process.platform === "win32"
+				? "\\fake\\path\\.agent\\rules\\file1.txt"
+				: "/fake/path/.agent/rules/file1.txt"
 		const expectedFile2Path =
-			process.platform === "win32" ? "\\fake\\path\\.roo\\rules\\file2.txt" : "/fake/path/.agent/rules/file2.txt"
+			process.platform === "win32"
+				? "\\fake\\path\\.agent\\rules\\file2.txt"
+				: "/fake/path/.agent/rules/file2.txt"
 
 		expect(statMock).toHaveBeenCalledWith(expectedRulesDir)
 		expect(statMock).toHaveBeenCalledWith(expectedFile1Path)
@@ -487,12 +494,12 @@ describe("loadRuleFiles", () => {
 
 		// Check root file content - paths in output should be relative
 		const expectedRelativeRootPath =
-			process.platform === "win32" ? ".roo\\rules\\root.txt" : ".agent/rules/root.txt"
+			process.platform === "win32" ? ".agent\\rules\\root.txt" : ".agent/rules/root.txt"
 		const expectedRelativeNested1Path =
-			process.platform === "win32" ? ".roo\\rules\\subdir\\nested1.txt" : ".agent/rules/subdir/nested1.txt"
+			process.platform === "win32" ? ".agent\\rules\\subdir\\nested1.txt" : ".agent/rules/subdir/nested1.txt"
 		const expectedRelativeNested2Path =
 			process.platform === "win32"
-				? ".roo\\rules\\subdir\\subdir2\\nested2.txt"
+				? ".agent\\rules\\subdir\\subdir2\\nested2.txt"
 				: ".agent/rules/subdir/subdir2/nested2.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeRootPath}:`)
@@ -506,14 +513,14 @@ describe("loadRuleFiles", () => {
 
 		// Verify correct absolute paths were checked internally
 		const expectedRootPath2 =
-			process.platform === "win32" ? "\\fake\\path\\.roo\\rules\\root.txt" : "/fake/path/.agent/rules/root.txt"
+			process.platform === "win32" ? "\\fake\\path\\.agent\\rules\\root.txt" : "/fake/path/.agent/rules/root.txt"
 		const expectedNested1Path2 =
 			process.platform === "win32"
-				? "\\fake\\path\\.roo\\rules\\subdir\\nested1.txt"
+				? "\\fake\\path\\.agent\\rules\\subdir\\nested1.txt"
 				: "/fake/path/.agent/rules/subdir/nested1.txt"
 		const expectedNested2Path2 =
 			process.platform === "win32"
-				? "\\fake\\path\\.roo\\rules\\subdir\\subdir2\\nested2.txt"
+				? "\\fake\\path\\.agent\\rules\\subdir\\subdir2\\nested2.txt"
 				: "/fake/path/.agent/rules/subdir/subdir2/nested2.txt"
 
 		expect(statMock).toHaveBeenCalledWith(expectedRootPath2)
@@ -1094,9 +1101,9 @@ describe("addCustomInstructions", () => {
 
 		// Paths in output should be relative
 		const expectedRelativeRule1Path =
-			process.platform === "win32" ? ".roo\\rules-test-mode\\rule1.txt" : ".agent/rules-test-mode/rule1.txt"
+			process.platform === "win32" ? ".agent\\rules-test-mode\\rule1.txt" : ".agent/rules-test-mode/rule1.txt"
 		const expectedRelativeRule2Path =
-			process.platform === "win32" ? ".roo\\rules-test-mode\\rule2.txt" : ".agent/rules-test-mode/rule2.txt"
+			process.platform === "win32" ? ".agent\\rules-test-mode\\rule2.txt" : ".agent/rules-test-mode/rule2.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeRule1Path}:`)
 		expect(result).toContain("mode specific rule 1")
@@ -1105,14 +1112,14 @@ describe("addCustomInstructions", () => {
 
 		// Verify absolute paths were used internally
 		const expectedAbsTestModeDir =
-			process.platform === "win32" ? "\\fake\\path\\.roo\\rules-test-mode" : "/fake/path/.agent/rules-test-mode"
+			process.platform === "win32" ? "\\fake\\path\\.agent\\rules-test-mode" : "/fake/path/.agent/rules-test-mode"
 		const expectedAbsRule1Path =
 			process.platform === "win32"
-				? "\\fake\\path\\.roo\\rules-test-mode\\rule1.txt"
+				? "\\fake\\path\\.agent\\rules-test-mode\\rule1.txt"
 				: "/fake/path/.agent/rules-test-mode/rule1.txt"
 		const expectedAbsRule2Path =
 			process.platform === "win32"
-				? "\\fake\\path\\.roo\\rules-test-mode\\rule2.txt"
+				? "\\fake\\path\\.agent\\rules-test-mode\\rule2.txt"
 				: "/fake/path/.agent/rules-test-mode/rule2.txt"
 
 		expect(statMock).toHaveBeenCalledWith(expectedAbsTestModeDir)
@@ -1224,7 +1231,7 @@ describe("addCustomInstructions", () => {
 
 		// Paths in output should be relative
 		const expectedRelativeRule1Path =
-			process.platform === "win32" ? ".roo\\rules-test-mode\\rule1.txt" : ".agent/rules-test-mode/rule1.txt"
+			process.platform === "win32" ? ".agent\\rules-test-mode\\rule1.txt" : ".agent/rules-test-mode/rule1.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeRule1Path}:`)
 		expect(result).toContain("mode specific rule content")
@@ -1254,7 +1261,8 @@ describe("Directory existence checks", () => {
 		await loadRuleFiles("/fake/path")
 
 		// Verify stat was called to check directory existence
-		const expectedRulesDir = process.platform === "win32" ? "\\fake\\path\\.roo\\rules" : "/fake/path/.agent/rules"
+		const expectedRulesDir =
+			process.platform === "win32" ? "\\fake\\path\\.agent\\rules" : "/fake/path/.agent/rules"
 		expect(statMock).toHaveBeenCalledWith(expectedRulesDir)
 	})
 
@@ -1374,15 +1382,15 @@ describe("Rules directory reading", () => {
 
 		// Verify both regular file and symlink target content are included (paths should be relative)
 		const expectedRelativeRegularPath =
-			process.platform === "win32" ? ".roo\\rules\\regular.txt" : ".agent/rules/regular.txt"
+			process.platform === "win32" ? ".agent\\rules\\regular.txt" : ".agent/rules/regular.txt"
 		const expectedRelativeSymlinkPath =
-			process.platform === "win32" ? ".roo\\symlink-target.txt" : ".agent/symlink-target.txt"
+			process.platform === "win32" ? ".agent\\symlink-target.txt" : ".agent/symlink-target.txt"
 		const expectedRelativeSubdirPath =
 			process.platform === "win32"
-				? ".roo\\rules\\symlink-target-dir\\subdir_link.txt"
+				? ".agent\\rules\\symlink-target-dir\\subdir_link.txt"
 				: ".agent/rules/symlink-target-dir/subdir_link.txt"
 		const expectedRelativeNestedPath =
-			process.platform === "win32" ? ".roo\\nested-symlink-target.txt" : ".agent/nested-symlink-target.txt"
+			process.platform === "win32" ? ".agent\\nested-symlink-target.txt" : ".agent/nested-symlink-target.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeRegularPath}:`)
 		expect(result).toContain("regular file content")
@@ -1454,11 +1462,11 @@ describe("Rules directory reading", () => {
 
 		// Paths in output should be relative
 		const expectedRelativeFile1Path =
-			process.platform === "win32" ? ".roo\\rules\\file1.txt" : ".agent/rules/file1.txt"
+			process.platform === "win32" ? ".agent\\rules\\file1.txt" : ".agent/rules/file1.txt"
 		const expectedRelativeFile2Path =
-			process.platform === "win32" ? ".roo\\rules\\file2.txt" : ".agent/rules/file2.txt"
+			process.platform === "win32" ? ".agent\\rules\\file2.txt" : ".agent/rules/file2.txt"
 		const expectedRelativeFile3Path =
-			process.platform === "win32" ? ".roo\\rules\\file3.txt" : ".agent/rules/file3.txt"
+			process.platform === "win32" ? ".agent\\rules\\file3.txt" : ".agent/rules/file3.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeFile1Path}:`)
 		expect(result).toContain("content of file1")
@@ -1514,11 +1522,11 @@ describe("Rules directory reading", () => {
 
 		// Verify the expected file paths are in the result (should be relative)
 		const expectedRelativeAlphaPath =
-			process.platform === "win32" ? ".roo\\rules\\alpha.txt" : ".agent/rules/alpha.txt"
+			process.platform === "win32" ? ".agent\\rules\\alpha.txt" : ".agent/rules/alpha.txt"
 		const expectedRelativeBetaPath =
-			process.platform === "win32" ? ".roo\\rules\\Beta.txt" : ".agent/rules/Beta.txt"
+			process.platform === "win32" ? ".agent\\rules\\Beta.txt" : ".agent/rules/Beta.txt"
 		const expectedRelativeZebraPath =
-			process.platform === "win32" ? ".roo\\rules\\zebra.txt" : ".agent/rules/zebra.txt"
+			process.platform === "win32" ? ".agent\\rules\\zebra.txt" : ".agent/rules/zebra.txt"
 
 		expect(result).toContain(`# Rules from ${expectedRelativeAlphaPath}:`)
 		expect(result).toContain(`# Rules from ${expectedRelativeBetaPath}:`)

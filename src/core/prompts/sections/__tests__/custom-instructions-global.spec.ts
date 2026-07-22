@@ -51,7 +51,7 @@ vi.mock("../../../../services/agent-config", () => ({
 
 import { loadRuleFiles, addCustomInstructions } from "../custom-instructions"
 
-describe("custom-instructions global .roo support", () => {
+describe("custom-instructions global .agent support", () => {
 	const mockCwd = "/mock/project"
 	const mockHomeDir = "/mock/home"
 	const globalAgentDir = path.join(mockHomeDir, ".agent")
@@ -63,7 +63,7 @@ describe("custom-instructions global .roo support", () => {
 		mockGetAgentDirectoriesForCwd.mockReturnValue([globalAgentDir, projectAgentDir])
 		// getAllAgentDirectoriesForCwd is now async and returns the same directories by default
 		mockGetAllAgentDirectoriesForCwd.mockResolvedValue([globalAgentDir, projectAgentDir])
-		// getAgentsDirectoriesForCwd returns parent directories (without .roo)
+		// getAgentsDirectoriesForCwd returns parent directories (without .agent)
 		mockGetAgentsDirectoriesForCwd.mockResolvedValue([mockCwd])
 		mockGetGlobalAgentDirectory.mockReturnValue(globalAgentDir)
 		// Default lstat to reject (file not found)
