@@ -290,7 +290,7 @@ describe("foldedFileContext", () => {
 				characterCount: mockFoldedSections.join("\n").length,
 			})
 
-			const filesReadByRoo = ["src/user.ts", "src/api.ts"]
+			const filesReadByAgent = ["src/user.ts", "src/api.ts"]
 			const cwd = "/test/project"
 
 			const result = await summarizeConversation({
@@ -299,12 +299,12 @@ describe("foldedFileContext", () => {
 				systemPrompt: "System prompt",
 				taskId,
 				isAutomaticTrigger: false,
-				filesReadByRoo,
+				filesReadByAgent,
 				cwd,
 			})
 
 			// Verify generateFoldedFileContext was called with the right arguments
-			expect(mockedGenerateFoldedFileContext).toHaveBeenCalledWith(filesReadByRoo, {
+			expect(mockedGenerateFoldedFileContext).toHaveBeenCalledWith(filesReadByAgent, {
 				cwd,
 				rooIgnoreController: undefined,
 			})
@@ -364,7 +364,7 @@ describe("foldedFileContext", () => {
 				systemPrompt: "System prompt",
 				taskId,
 				isAutomaticTrigger: false,
-				filesReadByRoo: [],
+				filesReadByAgent: [],
 				cwd: "/test/project",
 			})
 

@@ -887,7 +887,7 @@ describe("Context Management", () => {
 				{ ...messages[messages.length - 1], content: "" },
 			]
 
-			const filesReadByRoo = ["src/test.ts", "src/utils.ts"]
+			const filesReadByAgent = ["src/test.ts", "src/utils.ts"]
 			const cwd = "/test/project"
 			const mockAgentIgnoreController = {
 				filterPaths: vi.fn(),
@@ -905,7 +905,7 @@ describe("Context Management", () => {
 				taskId,
 				profileThresholds: {},
 				currentProfileId: "default",
-				filesReadByRoo,
+				filesReadByAgent,
 				cwd,
 				rooIgnoreController: mockAgentIgnoreController,
 			})
@@ -917,7 +917,7 @@ describe("Context Management", () => {
 				systemPrompt: "System prompt",
 				taskId,
 				isAutomaticTrigger: true,
-				filesReadByRoo,
+				filesReadByAgent,
 				cwd,
 				rooIgnoreController: mockAgentIgnoreController,
 			})
@@ -1032,7 +1032,7 @@ describe("Context Management", () => {
 				taskId,
 				profileThresholds: {},
 				currentProfileId: "default",
-				filesReadByRoo: [], // Empty array
+				filesReadByAgent: [], // Empty array
 				cwd: "/test/project",
 			})
 
@@ -1043,7 +1043,7 @@ describe("Context Management", () => {
 				systemPrompt: "System prompt",
 				taskId,
 				isAutomaticTrigger: true,
-				filesReadByRoo: [],
+				filesReadByAgent: [],
 				cwd: "/test/project",
 			})
 

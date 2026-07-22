@@ -228,7 +228,7 @@ export type SummarizeConversationOptions = {
 	customCondensingPrompt?: string
 	metadata?: ApiHandlerCreateMessageMetadata
 	environmentDetails?: string
-	filesReadByRoo?: string[]
+	filesReadByAgent?: string[]
 	cwd?: string
 	rooIgnoreController?: AgentIgnoreController
 }
@@ -261,7 +261,7 @@ export async function summarizeConversation(options: SummarizeConversationOption
 		customCondensingPrompt,
 		metadata,
 		environmentDetails,
-		filesReadByRoo,
+		filesReadByAgent,
 		cwd,
 		rooIgnoreController,
 	} = options
@@ -409,9 +409,9 @@ ${commandBlocks}
 
 	// Generate and add folded file context (smart code folding) if file paths are provided
 	// Each file gets its own <system-reminder> block as a separate content block
-	if (filesReadByRoo && filesReadByRoo.length > 0 && cwd) {
+	if (filesReadByAgent && filesReadByAgent.length > 0 && cwd) {
 		try {
-			const foldedResult = await generateFoldedFileContext(filesReadByRoo, {
+			const foldedResult = await generateFoldedFileContext(filesReadByAgent, {
 				cwd,
 				rooIgnoreController,
 			})

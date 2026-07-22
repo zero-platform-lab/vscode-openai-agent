@@ -8,27 +8,27 @@ export interface RooTerminal {
 	busy: boolean
 	running: boolean
 	taskId?: string
-	process?: RooTerminalProcess
+	process?: AgentTerminalProcess
 	getCurrentWorkingDirectory(): string
 	isClosed: () => boolean
-	runCommand: (command: string, callbacks: RooTerminalCallbacks) => RooTerminalProcessResultPromise
+	runCommand: (command: string, callbacks: RooTerminalCallbacks) => AgentTerminalProcessResultPromise
 	setActiveStream(stream: AsyncIterable<string> | undefined, pid?: number): void
 	shellExecutionComplete(exitDetails: ExitCodeDetails): void
-	getProcessesWithOutput(): RooTerminalProcess[]
+	getProcessesWithOutput(): AgentTerminalProcess[]
 	getUnretrievedOutput(): string
 	getLastCommand(): string
 	cleanCompletedProcessQueue(): void
 }
 
 export interface RooTerminalCallbacks {
-	onLine: (line: string, process: RooTerminalProcess) => void
-	onCompleted: (output: string | undefined, process: RooTerminalProcess) => void | Promise<void>
-	onShellExecutionStarted: (pid: number | undefined, process: RooTerminalProcess) => void
-	onShellExecutionComplete: (details: ExitCodeDetails, process: RooTerminalProcess) => void
-	onNoShellIntegration?: (message: string, process: RooTerminalProcess) => void
+	onLine: (line: string, process: AgentTerminalProcess) => void
+	onCompleted: (output: string | undefined, process: AgentTerminalProcess) => void | Promise<void>
+	onShellExecutionStarted: (pid: number | undefined, process: AgentTerminalProcess) => void
+	onShellExecutionComplete: (details: ExitCodeDetails, process: AgentTerminalProcess) => void
+	onNoShellIntegration?: (message: string, process: AgentTerminalProcess) => void
 }
 
-export interface RooTerminalProcess extends EventEmitter<RooTerminalProcessEvents> {
+export interface AgentTerminalProcess extends EventEmitter<AgentTerminalProcessEvents> {
 	command: string
 	isHot: boolean
 	run: (command: string) => Promise<void>
@@ -39,9 +39,9 @@ export interface RooTerminalProcess extends EventEmitter<RooTerminalProcessEvent
 	trimRetrievedOutput: () => void
 }
 
-export type RooTerminalProcessResultPromise = RooTerminalProcess & Promise<void>
+export type AgentTerminalProcessResultPromise = AgentTerminalProcess & Promise<void>
 
-export interface RooTerminalProcessEvents {
+export interface AgentTerminalProcessEvents {
 	line: [line: string]
 	continue: []
 	completed: [output?: string]

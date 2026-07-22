@@ -1,4 +1,4 @@
-import { RooCodeEventName, TodoItem } from "@openai-agent/types"
+import { AgentEventName, TodoItem } from "@openai-agent/types"
 
 import { AttemptCompletionToolUse } from "../../../shared/tools"
 
@@ -495,7 +495,7 @@ describe("attemptCompletionTool", () => {
 
 				expect(mockHandleError).not.toHaveBeenCalled()
 				expect(mockTask.emit).toHaveBeenCalledWith(
-					RooCodeEventName.TaskCompleted,
+					AgentEventName.TaskCompleted,
 					"task_1",
 					expect.anything(),
 					expect.anything(),
@@ -529,7 +529,7 @@ describe("attemptCompletionTool", () => {
 
 				expect(mockHandleError).not.toHaveBeenCalled()
 				expect(mockTask.emit).not.toHaveBeenCalledWith(
-					RooCodeEventName.TaskCompleted,
+					AgentEventName.TaskCompleted,
 					expect.anything(),
 					expect.anything(),
 					expect.anything(),

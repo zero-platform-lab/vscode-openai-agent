@@ -215,7 +215,7 @@ export class FileContextTracker {
 	 * @param sinceTimestamp - Optional timestamp to filter files read after this time
 	 * @returns Array of unique file paths that have been read, most recent first
 	 */
-	async getFilesReadByRoo(sinceTimestamp?: number): Promise<string[]> {
+	async getFilesReadByAgent(sinceTimestamp?: number): Promise<string[]> {
 		try {
 			const metadata = await this.getTaskMetadata(this.taskId)
 

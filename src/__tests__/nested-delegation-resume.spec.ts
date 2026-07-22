@@ -1,7 +1,7 @@
 // npx vitest run __tests__/nested-delegation-resume.spec.ts
 
 import { describe, it, expect, vi, beforeEach } from "vitest"
-import { RooCodeEventName } from "@openai-agent/types"
+import { AgentEventName } from "@openai-agent/types"
 
 // Mock safe-stable-stringify to avoid runtime error
 
@@ -198,8 +198,8 @@ describe("Nested delegation resume (A → B → C)", () => {
 
 		// Events emitted: C -> B hop
 		const eventNamesAfterC = emitSpy.mock.calls.map((c: any[]) => c[0])
-		expect(eventNamesAfterC).toContain(RooCodeEventName.TaskDelegationCompleted)
-		expect(eventNamesAfterC).toContain(RooCodeEventName.TaskDelegationResumed)
+		expect(eventNamesAfterC).toContain(AgentEventName.TaskDelegationCompleted)
+		expect(eventNamesAfterC).toContain(AgentEventName.TaskDelegationResumed)
 
 		// Step 2: B completes -> should reopen A automatically (parent reference missing, must use parentTaskId path)
 		const clineB = {
@@ -243,10 +243,8 @@ describe("Nested delegation resume (A → B → C)", () => {
 		// (asserted in createTaskWithHistoryItem mock)
 
 		// Provider emitted TaskDelegationCompleted/Resumed twice across both hops
-		const completedEvents = emitSpy.mock.calls.filter(
-			(c: any[]) => c[0] === RooCodeEventName.TaskDelegationCompleted,
-		)
-		const resumedEvents = emitSpy.mock.calls.filter((c: any[]) => c[0] === RooCodeEventName.TaskDelegationResumed)
+		const completedEvents = emitSpy.mock.calls.filter((c: any[]) => c[0] === AgentEventName.TaskDelegationCompleted)
+		const resumedEvents = emitSpy.mock.calls.filter((c: any[]) => c[0] === AgentEventName.TaskDelegationResumed)
 		expect(completedEvents.length).toBeGreaterThanOrEqual(2)
 		expect(resumedEvents.length).toBeGreaterThanOrEqual(2)
 

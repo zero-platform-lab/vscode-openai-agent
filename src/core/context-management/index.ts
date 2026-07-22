@@ -220,7 +220,7 @@ export type ContextManagementOptions = {
 	/** Optional environment details string to include in the condensed summary */
 	environmentDetails?: string
 	/** Optional array of file paths read by Agent during the task (will be folded via tree-sitter) */
-	filesReadByRoo?: string[]
+	filesReadByAgent?: string[]
 	/** Optional current working directory for resolving file paths (required if filesReadByRoo is provided) */
 	cwd?: string
 	/** Optional controller for file access validation */
@@ -255,7 +255,7 @@ export async function manageContext({
 	currentProfileId,
 	metadata,
 	environmentDetails,
-	filesReadByRoo,
+	filesReadByAgent,
 	cwd,
 	rooIgnoreController,
 }: ContextManagementOptions): Promise<ContextManagementResult> {
@@ -312,7 +312,7 @@ export async function manageContext({
 				customCondensingPrompt,
 				metadata,
 				environmentDetails,
-				filesReadByRoo,
+				filesReadByAgent,
 				cwd,
 				rooIgnoreController,
 			})

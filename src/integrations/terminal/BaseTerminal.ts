@@ -4,8 +4,8 @@ import type {
 	RooTerminalProvider,
 	RooTerminal,
 	RooTerminalCallbacks,
-	RooTerminalProcess,
-	RooTerminalProcessResultPromise,
+	AgentTerminalProcess,
+	AgentTerminalProcessResultPromise,
 	ExitCodeDetails,
 } from "./types"
 
@@ -19,8 +19,8 @@ export abstract class BaseTerminal implements RooTerminal {
 	protected streamClosed: boolean
 
 	public taskId?: string
-	public process?: RooTerminalProcess
-	public completedProcesses: RooTerminalProcess[] = []
+	public process?: AgentTerminalProcess
+	public completedProcesses: AgentTerminalProcess[] = []
 
 	constructor(provider: RooTerminalProvider, id: number, cwd: string) {
 		this.provider = provider
@@ -37,7 +37,7 @@ export abstract class BaseTerminal implements RooTerminal {
 
 	abstract isClosed(): boolean
 
-	abstract runCommand(command: string, callbacks: RooTerminalCallbacks): RooTerminalProcessResultPromise
+	abstract runCommand(command: string, callbacks: RooTerminalCallbacks): AgentTerminalProcessResultPromise
 
 	/**
 	 * Sets the active stream for this terminal and notifies the process
@@ -119,7 +119,7 @@ export abstract class BaseTerminal implements RooTerminal {
 	 * Gets all processes with unretrieved output
 	 * @returns Array of processes with unretrieved output
 	 */
-	public getProcessesWithOutput(): RooTerminalProcess[] {
+	public getProcessesWithOutput(): AgentTerminalProcess[] {
 		// Clean the queue first to remove any processes without output
 		this.cleanCompletedProcessQueue()
 		return [...this.completedProcesses]
