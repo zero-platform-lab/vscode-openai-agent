@@ -206,7 +206,7 @@ describe("flushPendingToolResultsToHistory", () => {
 		) as any
 
 		mockApiConfig = {
-			apiProvider: "anthropic",
+			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
 			apiKey: "test-api-key",
 		}

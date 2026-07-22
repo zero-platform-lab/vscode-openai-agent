@@ -5,36 +5,10 @@ import { isRetiredProvider, type ProviderSettings, type ModelInfo } from "@opena
 
 import { ApiStream } from "./transform/stream"
 
-import {
-	AnthropicHandler,
-	AwsBedrockHandler,
-	OpenRouterHandler,
-	PoeHandler,
-	VertexHandler,
-	AnthropicVertexHandler,
-	OpenAiHandler,
-	OpenAiCodexHandler,
-	LmStudioHandler,
-	GeminiHandler,
-	OpenAiNativeHandler,
-	DeepSeekHandler,
-	MoonshotHandler,
-	MistralHandler,
-	VsCodeLmHandler,
-	RequestyHandler,
-	UnboundHandler,
-	FakeAIHandler,
-	XAIHandler,
-	LiteLLMHandler,
-	QwenCodeHandler,
-	SambaNovaHandler,
-	ZAiHandler,
-	FireworksHandler,
-	VercelAiGatewayHandler,
-	MiniMaxHandler,
-	BasetenHandler,
-} from "./providers"
-import { NativeOllamaHandler } from "./providers/native-ollama"
+// [INTERNAL] Only the OpenAI Compatible provider (and the no-network fake-ai test
+// provider) are wired up. Other upstream provider handlers remain in ./providers but
+// are intentionally not instantiated — see buildApiHandler below.
+import { OpenAiHandler, FakeAIHandler } from "./providers"
 
 export interface SingleCompletionHandler {
 	completePrompt(prompt: string): Promise<string>
@@ -118,63 +92,20 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 	}
 
 	switch (apiProvider) {
-		case "anthropic":
-			return new AnthropicHandler(options)
-		case "openrouter":
-			return new OpenRouterHandler(options)
-		case "bedrock":
-			return new AwsBedrockHandler(options)
-		case "vertex":
-			return options.apiModelId?.startsWith("claude")
-				? new AnthropicVertexHandler(options)
-				: new VertexHandler(options)
 		case "openai":
 			return new OpenAiHandler(options)
-		case "ollama":
-			return new NativeOllamaHandler(options)
-		case "lmstudio":
-			return new LmStudioHandler(options)
-		case "gemini":
-			return new GeminiHandler(options)
-		case "openai-codex":
-			return new OpenAiCodexHandler(options)
-		case "openai-native":
-			return new OpenAiNativeHandler(options)
-		case "deepseek":
-			return new DeepSeekHandler(options)
-		case "qwen-code":
-			return new QwenCodeHandler(options)
-		case "moonshot":
-			return new MoonshotHandler(options)
-		case "vscode-lm":
-			return new VsCodeLmHandler(options)
-		case "mistral":
-			return new MistralHandler(options)
-		case "requesty":
-			return new RequestyHandler(options)
-		case "unbound":
-			return new UnboundHandler(options)
 		case "fake-ai":
+			// Internal test/faux provider; makes no network calls.
 			return new FakeAIHandler(options)
-		case "xai":
-			return new XAIHandler(options)
-		case "litellm":
-			return new LiteLLMHandler(options)
-		case "sambanova":
-			return new SambaNovaHandler(options)
-		case "zai":
-			return new ZAiHandler(options)
-		case "fireworks":
-			return new FireworksHandler(options)
-		case "vercel-ai-gateway":
-			return new VercelAiGatewayHandler(options)
-		case "minimax":
-			return new MiniMaxHandler(options)
-		case "baseten":
-			return new BasetenHandler(options)
-		case "poe":
-			return new PoeHandler(options)
 		default:
-			return new AnthropicHandler(options)
+			// [INTERNAL] Only the OpenAI Compatible provider is supported in this build.
+			// Every other upstream provider is intentionally disabled here so the
+			// extension can never instantiate a handler that contacts an endpoint other
+			// than the OpenAI-compatible one the user explicitly configures — even if a
+			// foreign provider is loaded via imported/migrated settings.
+			throw new Error(
+				`Provider "${apiProvider ?? "(none)"}" is not supported in this build. ` +
+					`Please use the OpenAI Compatible provider in your API profile settings.`,
+			)
 	}
 }

@@ -83,7 +83,7 @@ vi.mock("delay", () => ({
 describe("Task - sticky provider profile init race", () => {
 	it("does not overwrite task apiConfigName if set during async initialization", async () => {
 		const apiConfig: ProviderSettings = {
-			apiProvider: "anthropic",
+			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
 			apiKey: "test-api-key",
 		} as any
