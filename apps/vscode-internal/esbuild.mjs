@@ -8,6 +8,17 @@ import { getGitSha, copyPaths, copyWasms, generatePackageJson } from "@roo-code/
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+function patchBranding(text) {
+	return text
+		.replaceAll("https://github.com/RooCodeInc/Roo-Code", "https://github.com/zero-platform-lab/vscode-openai-agent")
+		.replaceAll("RooCodeStorage", "AgentStorage")
+		.replaceAll("roo-code-settings", "agent-settings")
+		.replaceAll("Roo Code", "OpenAI Compatible Agent")
+		.replaceAll("RooCode", "OpenAI-Compatible-Agent")
+		.replaceAll("Roo Cline", "OpenAI Compatible Agent")
+		.replace(/\bRoo\b/g, "Agent")
+}
+
 async function main() {
 	const name = "extension-internal"
 	const production = process.argv.includes("--production")
@@ -90,7 +101,9 @@ async function main() {
 						substitution: ["roo-cline", "openai-compatible-agent"],
 					})
 
-					fs.writeFileSync(path.join(buildDir, "package.json"), JSON.stringify(generatedPackageJson, null, 2))
+					const pkgStr = JSON.stringify(generatedPackageJson, null, 2)
+						.replaceAll("assets/icons/icon.svg", "assets/icons/icon-internal.svg")
+					fs.writeFileSync(path.join(buildDir, "package.json"), pkgStr)
 					console.log(`[generatePackageJson] Generated package.json`)
 
 					const allowedNls = ["package.nls.json", "package.nls.ja.json"]
@@ -113,12 +126,7 @@ async function main() {
 						const patched = {}
 						for (const [key, val] of Object.entries(obj)) {
 							if (typeof val === "string") {
-								patched[key] = val
-									.replaceAll("RooCodeStorage", "AgentStorage")
-									.replaceAll("roo-code-settings", "agent-settings")
-									.replaceAll("Roo Code", "OpenAI Compatible Agent")
-									.replaceAll("RooCode", "OpenAI-Compatible-Agent")
-									.replaceAll("Roo Cline", "OpenAI Compatible Agent")
+								patched[key] = patchBranding(val)
 							} else {
 								patched[key] = val
 							}
@@ -163,14 +171,7 @@ async function main() {
 							fs.mkdirSync(destLocaleDir, { recursive: true })
 							for (const file of fs.readdirSync(srcLocaleDir)) {
 								let content = fs.readFileSync(path.join(srcLocaleDir, file), "utf8")
-								content = content.replaceAll("https://github.com/RooCodeInc/Roo-Code", "https://github.com/zero-platform-lab/vscode-openai-agent")
-								content = content.replaceAll("Roo Code", "OpenAI Compatible Agent")
-								content = content.replaceAll("RooCode", "OpenAI-Compatible-Agent")
-								content = content.replaceAll("Roo Cline", "OpenAI Compatible Agent")
-								content = content.replaceAll("What should Roo do?", "What should the agent do?")
-								content = content.replaceAll("Rooにどんなことをさせますか？", "エージェントに何をさせますか？")
-								content = content.replaceAll("RooCodeStorage", "AgentStorage")
-								content = content.replaceAll("roo-code-settings", "agent-settings")
+								content = patchBranding(content)
 								fs.writeFileSync(path.join(destLocaleDir, file), content)
 							}
 						}
