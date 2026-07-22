@@ -3,14 +3,12 @@ import { CodeIndexServiceFactory } from "../service-factory"
 import { OpenAiEmbedder } from "../embedders/openai"
 import { CodeIndexOllamaEmbedder } from "../embedders/ollama"
 import { OpenAICompatibleEmbedder } from "../embedders/openai-compatible"
-import { GeminiEmbedder } from "../embedders/gemini"
 import { QdrantVectorStore } from "../vector-store/qdrant-client"
 
 // Mock the embedders and vector store
 vitest.mock("../embedders/openai")
 vitest.mock("../embedders/ollama")
 vitest.mock("../embedders/openai-compatible")
-vitest.mock("../embedders/gemini")
 vitest.mock("../vector-store/qdrant-client")
 
 // Mock the embedding models module
@@ -22,7 +20,6 @@ vitest.mock("../../../shared/embeddingModels", () => ({
 const MockedOpenAiEmbedder = OpenAiEmbedder as MockedClass<typeof OpenAiEmbedder>
 const MockedCodeIndexOllamaEmbedder = CodeIndexOllamaEmbedder as MockedClass<typeof CodeIndexOllamaEmbedder>
 const MockedOpenAICompatibleEmbedder = OpenAICompatibleEmbedder as MockedClass<typeof OpenAICompatibleEmbedder>
-const MockedGeminiEmbedder = GeminiEmbedder as MockedClass<typeof GeminiEmbedder>
 const MockedQdrantVectorStore = QdrantVectorStore as MockedClass<typeof QdrantVectorStore>
 
 // Import the mocked functions
@@ -256,86 +253,6 @@ describe("CodeIndexServiceFactory", () => {
 			expect(() => factory.createEmbedder()).toThrow("serviceFactory.openAiCompatibleConfigMissing")
 		})
 
-		it("should create GeminiEmbedder with default model when no modelId specified", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				geminiOptions: {
-					apiKey: "test-gemini-api-key",
-				},
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-
-			// Act
-			factory.createEmbedder()
-
-			// Assert
-			expect(MockedGeminiEmbedder).toHaveBeenCalledWith("test-gemini-api-key", undefined)
-		})
-
-		it("should create GeminiEmbedder with specified modelId", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				modelId: "gemini-embedding-001",
-				geminiOptions: {
-					apiKey: "test-gemini-api-key",
-				},
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-
-			// Act
-			factory.createEmbedder()
-
-			// Assert
-			expect(MockedGeminiEmbedder).toHaveBeenCalledWith("test-gemini-api-key", "gemini-embedding-001")
-		})
-
-		it("should pass deprecated text-embedding-004 modelId to GeminiEmbedder (migration happens inside GeminiEmbedder)", () => {
-			// Arrange - service-factory passes the config modelId directly;
-			// GeminiEmbedder handles the migration internally
-			const testConfig = {
-				embedderProvider: "gemini",
-				modelId: "text-embedding-004",
-				geminiOptions: {
-					apiKey: "test-gemini-api-key",
-				},
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-
-			// Act
-			factory.createEmbedder()
-
-			// Assert - factory passes the original modelId; GeminiEmbedder migrates it internally
-			expect(MockedGeminiEmbedder).toHaveBeenCalledWith("test-gemini-api-key", "text-embedding-004")
-		})
-
-		it("should throw error when Gemini API key is missing", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				geminiOptions: {
-					apiKey: undefined,
-				},
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-
-			// Act & Assert
-			expect(() => factory.createEmbedder()).toThrow("serviceFactory.geminiConfigMissing")
-		})
-
-		it("should throw error when Gemini options are missing", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				geminiOptions: undefined,
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-
-			// Act & Assert
-			expect(() => factory.createEmbedder()).toThrow("serviceFactory.geminiConfigMissing")
-		})
-
 		it("should throw error for invalid embedder provider", () => {
 			// Arrange
 			const testConfig = {
@@ -567,55 +484,6 @@ describe("CodeIndexServiceFactory", () => {
 			)
 		})
 
-		it("should use model-specific dimension for Gemini provider", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				modelId: "gemini-embedding-001",
-				qdrantUrl: "http://localhost:6333",
-				qdrantApiKey: "test-key",
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-			mockGetModelDimension.mockReturnValue(3072)
-
-			// Act
-			factory.createVectorStore()
-
-			// Assert
-			expect(mockGetModelDimension).toHaveBeenCalledWith("gemini", "gemini-embedding-001")
-			expect(MockedQdrantVectorStore).toHaveBeenCalledWith(
-				"/test/workspace",
-				"http://localhost:6333",
-				3072,
-				"test-key",
-			)
-		})
-
-		it("should use default model dimension for Gemini when modelId not specified", () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				qdrantUrl: "http://localhost:6333",
-				qdrantApiKey: "test-key",
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-			mockGetDefaultModelId.mockReturnValue("gemini-embedding-001")
-			mockGetModelDimension.mockReturnValue(3072)
-
-			// Act
-			factory.createVectorStore()
-
-			// Assert
-			expect(mockGetDefaultModelId).toHaveBeenCalledWith("gemini")
-			expect(mockGetModelDimension).toHaveBeenCalledWith("gemini", "gemini-embedding-001")
-			expect(MockedQdrantVectorStore).toHaveBeenCalledWith(
-				"/test/workspace",
-				"http://localhost:6333",
-				3072,
-				"test-key",
-			)
-		})
-
 		it("should use default model when config.modelId is undefined", () => {
 			// Arrange
 			const testConfig = {
@@ -763,27 +631,6 @@ describe("CodeIndexServiceFactory", () => {
 			}
 			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
 			MockedOpenAICompatibleEmbedder.mockImplementation(() => mockEmbedderInstance)
-			mockEmbedderInstance.validateConfiguration.mockResolvedValue({ valid: true })
-
-			// Act
-			const embedder = factory.createEmbedder()
-			const result = await factory.validateEmbedder(embedder)
-
-			// Assert
-			expect(result).toEqual({ valid: true })
-			expect(mockEmbedderInstance.validateConfiguration).toHaveBeenCalled()
-		})
-
-		it("should validate Gemini embedder successfully", async () => {
-			// Arrange
-			const testConfig = {
-				embedderProvider: "gemini",
-				geminiOptions: {
-					apiKey: "test-gemini-api-key",
-				},
-			}
-			mockConfigManager.getConfig.mockReturnValue(testConfig as any)
-			MockedGeminiEmbedder.mockImplementation(() => mockEmbedderInstance)
 			mockEmbedderInstance.validateConfiguration.mockResolvedValue({ valid: true })
 
 			// Act

@@ -74,7 +74,6 @@ import { setPanel } from "../../activate/registerCommands"
 import { t } from "../../i18n"
 
 import { buildApiHandler } from "../../api"
-import { forceFullModelDetailsLoad, hasLoadedFullDetails } from "../../api/providers/fetchers/lmstudio"
 
 import { ContextProxy } from "../config/ContextProxy"
 import { ProviderSettingsManager } from "../config/ProviderSettingsManager"
@@ -359,22 +358,9 @@ export class ClineProvider
 		}
 	}
 
-	async performPreparationTasks(cline: Task) {
-		// LMStudio: We need to force model loading in order to read its context
-		// size; we do it now since we're starting a task with that model selected.
-		if (cline.apiConfiguration && cline.apiConfiguration.apiProvider === "lmstudio") {
-			try {
-				if (!hasLoadedFullDetails(cline.apiConfiguration.lmStudioModelId!)) {
-					await forceFullModelDetailsLoad(
-						cline.apiConfiguration.lmStudioBaseUrl ?? "http://localhost:1234",
-						cline.apiConfiguration.lmStudioModelId!,
-					)
-				}
-			} catch (error) {
-				this.log(`Failed to load full model details for LM Studio: ${error}`)
-				vscode.window.showErrorMessage(error.message)
-			}
-		}
+	async performPreparationTasks(_cline: Task) {
+		// [INTERNAL] No provider-specific preparation is needed for the OpenAI
+		// Compatible provider (the former LM Studio model preloading was removed).
 	}
 
 	// Removes and destroys the top Cline instance (the current finished task),

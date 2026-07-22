@@ -15,15 +15,7 @@ import { getCacheDirectoryPath } from "../../../utils/storage"
 import type { RouterName } from "../../../shared/api"
 import { fileExistsAtPath } from "../../../utils/fs"
 
-import { getOpenRouterModels } from "./openrouter"
-import { getVercelAiGatewayModels } from "./vercel-ai-gateway"
-import { getRequestyModels } from "./requesty"
-import { getUnboundModels } from "./unbound"
-import { getLiteLLMModels } from "./litellm"
 import { GetModelsOptions } from "../../../shared/api"
-import { getOllamaModels } from "./ollama"
-import { getLMStudioModels } from "./lmstudio"
-import { getPoeModels } from "./poe"
 
 const memoryCache = new NodeCache({ stdTTL: 5 * 60, checkperiod: 5 * 60 })
 
@@ -55,46 +47,12 @@ async function readModels(router: RouterName): Promise<ModelRecord | undefined> 
  * @param options - Provider options for fetching models
  * @returns Fresh models from the provider API
  */
-async function fetchModelsFromProvider(options: GetModelsOptions): Promise<ModelRecord> {
-	const { provider } = options
-
-	let models: ModelRecord
-
-	switch (provider) {
-		case "openrouter":
-			models = await getOpenRouterModels()
-			break
-		case "requesty":
-			// Requesty models endpoint requires an API key for per-user custom policies.
-			models = await getRequestyModels(options.baseUrl, options.apiKey)
-			break
-		case "unbound":
-			models = await getUnboundModels(options.apiKey)
-			break
-		case "litellm":
-			// Type safety ensures apiKey and baseUrl are always provided for LiteLLM.
-			models = await getLiteLLMModels(options.apiKey, options.baseUrl)
-			break
-		case "ollama":
-			models = await getOllamaModels(options.baseUrl, options.apiKey)
-			break
-		case "lmstudio":
-			models = await getLMStudioModels(options.baseUrl)
-			break
-		case "vercel-ai-gateway":
-			models = await getVercelAiGatewayModels()
-			break
-		case "poe":
-			models = await getPoeModels(options.apiKey, options.baseUrl)
-			break
-		default: {
-			// Ensures router is exhaustively checked if RouterName is a strict union.
-			const exhaustiveCheck: never = provider
-			throw new Error(`Unknown provider: ${exhaustiveCheck}`)
-		}
-	}
-
-	return models
+async function fetchModelsFromProvider(_options: GetModelsOptions): Promise<ModelRecord> {
+	// [INTERNAL] This build supports only the OpenAI Compatible provider, which uses a
+	// manually entered model id rather than a dynamically fetched model list. The former
+	// per-provider model fetchers (openrouter, requesty, litellm, ollama, …) were removed,
+	// so there is no external model list to fetch.
+	return {}
 }
 
 /**

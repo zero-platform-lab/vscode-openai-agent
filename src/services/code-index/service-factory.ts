@@ -13,11 +13,6 @@ import { AgentIgnoreController } from "../../core/ignore/AgentIgnoreController"
 import { OpenAiEmbedder } from "./embedders/openai"
 import { CodeIndexOllamaEmbedder } from "./embedders/ollama"
 import { OpenAICompatibleEmbedder } from "./embedders/openai-compatible"
-import { GeminiEmbedder } from "./embedders/gemini"
-import { MistralEmbedder } from "./embedders/mistral"
-import { VercelAiGatewayEmbedder } from "./embedders/vercel-ai-gateway"
-import { BedrockEmbedder } from "./embedders/bedrock"
-import { OpenRouterEmbedder } from "./embedders/openrouter"
 import { QdrantVectorStore } from "./vector-store/qdrant-client"
 import { codeParser, DirectoryScanner, FileWatcher } from "./processors"
 import { ICodeParser, IEmbedder, IFileWatcher, IVectorStore } from "./interfaces"
@@ -69,37 +64,6 @@ export class CodeIndexServiceFactory {
 				config.openAiCompatibleOptions.baseUrl,
 				config.openAiCompatibleOptions.apiKey,
 				config.modelId,
-			)
-		} else if (provider === "gemini") {
-			if (!config.geminiOptions?.apiKey) {
-				throw new Error(t("embeddings:serviceFactory.geminiConfigMissing"))
-			}
-			return new GeminiEmbedder(config.geminiOptions.apiKey, config.modelId)
-		} else if (provider === "mistral") {
-			if (!config.mistralOptions?.apiKey) {
-				throw new Error(t("embeddings:serviceFactory.mistralConfigMissing"))
-			}
-			return new MistralEmbedder(config.mistralOptions.apiKey, config.modelId)
-		} else if (provider === "vercel-ai-gateway") {
-			if (!config.vercelAiGatewayOptions?.apiKey) {
-				throw new Error(t("embeddings:serviceFactory.vercelAiGatewayConfigMissing"))
-			}
-			return new VercelAiGatewayEmbedder(config.vercelAiGatewayOptions.apiKey, config.modelId)
-		} else if (provider === "bedrock") {
-			// Only region is required for Bedrock (profile is optional)
-			if (!config.bedrockOptions?.region) {
-				throw new Error(t("embeddings:serviceFactory.bedrockConfigMissing"))
-			}
-			return new BedrockEmbedder(config.bedrockOptions.region, config.bedrockOptions.profile, config.modelId)
-		} else if (provider === "openrouter") {
-			if (!config.openRouterOptions?.apiKey) {
-				throw new Error(t("embeddings:serviceFactory.openRouterConfigMissing"))
-			}
-			return new OpenRouterEmbedder(
-				config.openRouterOptions.apiKey,
-				config.modelId,
-				undefined, // maxItemTokens
-				config.openRouterOptions.specificProvider,
 			)
 		}
 

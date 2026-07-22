@@ -54,7 +54,6 @@ import { playTts, setTtsEnabled, setTtsSpeed, stopTts } from "../../utils/tts"
 import { searchCommits } from "../../utils/git"
 import { exportSettings, importSettingsWithFeedback } from "../config/importExport"
 import { getOpenAiModels } from "../../api/providers/openai"
-import { getVsCodeLmModels } from "../../api/providers/vscode-lm"
 import { openMention } from "../mentions"
 import { resolveImageMentions } from "../mentions/resolveImageMentions"
 import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
@@ -1069,9 +1068,8 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 
 			break
 		case "requestVsCodeLmModels":
-			const vsCodeLmModels = await getVsCodeLmModels()
-			// TODO: Cache like we do for OpenRouter, etc?
-			provider.postMessageToWebview({ type: "vsCodeLmModels", vsCodeLmModels })
+			// [INTERNAL] VS Code LM provider removed; report an empty model list.
+			provider.postMessageToWebview({ type: "vsCodeLmModels", vsCodeLmModels: [] })
 			break
 		case "openImage":
 			openImage(message.text!, { values: message.values })
