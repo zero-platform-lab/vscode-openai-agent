@@ -1,6 +1,6 @@
 {
 	"name": "@openai-agent/ipc",
-	"description": "IPC server and client for remote Roo Code access.",
+	"description": "IPC server and client for remote Agent access.",
 	"version": "0.0.1",
 	"type": "module",
 	"exports": "./src/index.ts",

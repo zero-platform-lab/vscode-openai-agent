@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as path from "path"
 import { fileURLToPath } from "url"
 
-import { generateRoomodesJsonSchema } from "../roomodes-schema.js"
+import { generateAgentmodesJsonSchema } from "../agentmodes-schema.js"
 
 /**
  * This test verifies that the checked-in schemas/roomodes.json matches what
@@ -19,7 +19,7 @@ describe("roomodes schema sync", () => {
 		const schemaPath = path.resolve(__dirname, "../../../../schemas/roomodes.json")
 		const checkedIn = JSON.parse(fs.readFileSync(schemaPath, "utf-8"))
 
-		const generated = generateRoomodesJsonSchema()
+		const generated = generateAgentmodesJsonSchema()
 
 		expect(checkedIn).toEqual(generated)
 	})

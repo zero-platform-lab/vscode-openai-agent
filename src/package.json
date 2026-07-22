@@ -1,10 +1,10 @@
 {
-	"name": "roo-cline",
+	"name": "openai-agent",
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
-	"publisher": "RooVeterinaryInc",
+	"publisher": "internal",
 	"version": "3.53.0",
-	"icon": "assets/icons/icon.png",
+	"icon": "assets/icons/icon-internal.png",
 	"galleryBanner": {
 		"color": "#617A91",
 		"theme": "dark"
@@ -14,13 +14,13 @@
 		"node": "20.19.2"
 	},
 	"author": {
-		"name": "Roo Code"
+		"name": "Zero Platform Lab"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/RooCodeInc/Roo-Code"
+		"url": "https://github.com/zero-platform-lab/vscode-openai-agent"
 	},
-	"homepage": "https://roocodeinc.github.io/Roo-Code/",
+	"homepage": "https://github.com/zero-platform-lab/vscode-openai-agent",
 	"categories": [
 		"AI",
 		"Chat",
@@ -54,109 +54,109 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "roo-cline-ActivityBar",
+					"id": "openai-agent-ActivityBar",
 					"title": "%views.activitybar.title%",
 					"icon": "assets/icons/icon.svg"
 				}
 			]
 		},
 		"views": {
-			"roo-cline-ActivityBar": [
+			"openai-agent-ActivityBar": [
 				{
 					"type": "webview",
-					"id": "roo-cline.SidebarProvider",
+					"id": "openai-agent.SidebarProvider",
 					"name": "%views.sidebar.name%"
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "roo-cline.plusButtonClicked",
+				"command": "openai-agent.plusButtonClicked",
 				"title": "%command.newTask.title%",
 				"icon": "$(edit)"
 			},
 			{
-				"command": "roo-cline.historyButtonClicked",
+				"command": "openai-agent.historyButtonClicked",
 				"title": "%command.history.title%",
 				"icon": "$(history)"
 			},
 			{
-				"command": "roo-cline.popoutButtonClicked",
+				"command": "openai-agent.popoutButtonClicked",
 				"title": "%command.openInEditor.title%",
 				"icon": "$(link-external)"
 			},
 			{
-				"command": "roo-cline.settingsButtonClicked",
+				"command": "openai-agent.settingsButtonClicked",
 				"title": "%command.settings.title%",
 				"icon": "$(settings-gear)"
 			},
 			{
-				"command": "roo-cline.openInNewTab",
+				"command": "openai-agent.openInNewTab",
 				"title": "%command.openInNewTab.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.explainCode",
+				"command": "openai-agent.explainCode",
 				"title": "%command.explainCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.fixCode",
+				"command": "openai-agent.fixCode",
 				"title": "%command.fixCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.improveCode",
+				"command": "openai-agent.improveCode",
 				"title": "%command.improveCode.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.addToContext",
+				"command": "openai-agent.addToContext",
 				"title": "%command.addToContext.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.newTask",
+				"command": "openai-agent.newTask",
 				"title": "%command.newTask.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.terminalAddToContext",
+				"command": "openai-agent.terminalAddToContext",
 				"title": "%command.terminal.addToContext.title%",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalFixCommand",
+				"command": "openai-agent.terminalFixCommand",
 				"title": "%command.terminal.fixCommand.title%",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.terminalExplainCommand",
+				"command": "openai-agent.terminalExplainCommand",
 				"title": "%command.terminal.explainCommand.title%",
 				"category": "Terminal"
 			},
 			{
-				"command": "roo-cline.setCustomStoragePath",
+				"command": "openai-agent.setCustomStoragePath",
 				"title": "%command.setCustomStoragePath.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.importSettings",
+				"command": "openai-agent.importSettings",
 				"title": "%command.importSettings.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.focusInput",
+				"command": "openai-agent.focusInput",
 				"title": "%command.focusInput.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.acceptInput",
+				"command": "openai-agent.acceptInput",
 				"title": "%command.acceptInput.title%",
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "roo-cline.toggleAutoApprove",
+				"command": "openai-agent.toggleAutoApprove",
 				"title": "%command.toggleAutoApprove.title%",
 				"category": "%configuration.title%"
 			}
@@ -164,92 +164,92 @@
 		"menus": {
 			"editor/context": [
 				{
-					"submenu": "roo-cline.contextMenu",
+					"submenu": "openai-agent.contextMenu",
 					"group": "1"
 				}
 			],
-			"roo-cline.contextMenu": [
+			"openai-agent.contextMenu": [
 				{
-					"command": "roo-cline.addToContext",
+					"command": "openai-agent.addToContext",
 					"group": "1_actions@1"
 				},
 				{
-					"command": "roo-cline.explainCode",
+					"command": "openai-agent.explainCode",
 					"group": "1_actions@2"
 				},
 				{
-					"command": "roo-cline.improveCode",
+					"command": "openai-agent.improveCode",
 					"group": "1_actions@3"
 				}
 			],
 			"terminal/context": [
 				{
-					"submenu": "roo-cline.terminalMenu",
+					"submenu": "openai-agent.terminalMenu",
 					"group": "2"
 				}
 			],
-			"roo-cline.terminalMenu": [
+			"openai-agent.terminalMenu": [
 				{
-					"command": "roo-cline.terminalAddToContext",
+					"command": "openai-agent.terminalAddToContext",
 					"group": "1_actions@1"
 				},
 				{
-					"command": "roo-cline.terminalFixCommand",
+					"command": "openai-agent.terminalFixCommand",
 					"group": "1_actions@2"
 				},
 				{
-					"command": "roo-cline.terminalExplainCommand",
+					"command": "openai-agent.terminalExplainCommand",
 					"group": "1_actions@3"
 				}
 			],
 			"view/title": [
 				{
-					"command": "roo-cline.plusButtonClicked",
+					"command": "openai-agent.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == openai-agent.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.settingsButtonClicked",
+					"command": "openai-agent.settingsButtonClicked",
 					"group": "navigation@2",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == openai-agent.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.historyButtonClicked",
+					"command": "openai-agent.historyButtonClicked",
 					"group": "overflow@1",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == openai-agent.SidebarProvider"
 				},
 				{
-					"command": "roo-cline.popoutButtonClicked",
+					"command": "openai-agent.popoutButtonClicked",
 					"group": "overflow@2",
-					"when": "view == roo-cline.SidebarProvider"
+					"when": "view == openai-agent.SidebarProvider"
 				}
 			],
 			"editor/title": [
 				{
-					"command": "roo-cline.plusButtonClicked",
+					"command": "openai-agent.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "activeWebviewPanelId == roo-cline.TabPanelProvider"
+					"when": "activeWebviewPanelId == openai-agent.TabPanelProvider"
 				},
 				{
-					"command": "roo-cline.settingsButtonClicked",
+					"command": "openai-agent.settingsButtonClicked",
 					"group": "navigation@2",
-					"when": "activeWebviewPanelId == roo-cline.TabPanelProvider"
+					"when": "activeWebviewPanelId == openai-agent.TabPanelProvider"
 				},
 				{
-					"command": "roo-cline.historyButtonClicked",
+					"command": "openai-agent.historyButtonClicked",
 					"group": "overflow@1",
-					"when": "activeWebviewPanelId == roo-cline.TabPanelProvider"
+					"when": "activeWebviewPanelId == openai-agent.TabPanelProvider"
 				},
 				{
-					"command": "roo-cline.popoutButtonClicked",
+					"command": "openai-agent.popoutButtonClicked",
 					"group": "overflow@2",
-					"when": "activeWebviewPanelId == roo-cline.TabPanelProvider"
+					"when": "activeWebviewPanelId == openai-agent.TabPanelProvider"
 				}
 			]
 		},
 		"keybindings": [
 			{
-				"command": "roo-cline.addToContext",
+				"command": "openai-agent.addToContext",
 				"key": "cmd+k cmd+a",
 				"mac": "cmd+k cmd+a",
 				"win": "ctrl+k ctrl+a",
@@ -257,7 +257,7 @@
 				"when": "editorTextFocus && editorHasSelection"
 			},
 			{
-				"command": "roo-cline.toggleAutoApprove",
+				"command": "openai-agent.toggleAutoApprove",
 				"key": "cmd+alt+a",
 				"mac": "cmd+alt+a",
 				"win": "ctrl+alt+a",
@@ -266,18 +266,18 @@
 		],
 		"submenus": [
 			{
-				"id": "roo-cline.contextMenu",
+				"id": "openai-agent.contextMenu",
 				"label": "%views.contextMenu.label%"
 			},
 			{
-				"id": "roo-cline.terminalMenu",
+				"id": "openai-agent.terminalMenu",
 				"label": "%views.terminalMenu.label%"
 			}
 		],
 		"configuration": {
 			"title": "%configuration.title%",
 			"properties": {
-				"roo-cline.allowedCommands": {
+				"openai-agent.allowedCommands": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -289,7 +289,7 @@
 					],
 					"description": "%commands.allowedCommands.description%"
 				},
-				"roo-cline.deniedCommands": {
+				"openai-agent.deniedCommands": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -297,14 +297,14 @@
 					"default": [],
 					"description": "%commands.deniedCommands.description%"
 				},
-				"roo-cline.commandExecutionTimeout": {
+				"openai-agent.commandExecutionTimeout": {
 					"type": "number",
 					"default": 0,
 					"minimum": 0,
 					"maximum": 600,
 					"description": "%commands.commandExecutionTimeout.description%"
 				},
-				"roo-cline.commandTimeoutAllowlist": {
+				"openai-agent.commandTimeoutAllowlist": {
 					"type": "array",
 					"items": {
 						"type": "string"
@@ -312,12 +312,12 @@
 					"default": [],
 					"description": "%commands.commandTimeoutAllowlist.description%"
 				},
-				"roo-cline.preventCompletionWithOpenTodos": {
+				"openai-agent.preventCompletionWithOpenTodos": {
 					"type": "boolean",
 					"default": false,
 					"description": "%commands.preventCompletionWithOpenTodos.description%"
 				},
-				"roo-cline.vsCodeLmModelSelector": {
+				"openai-agent.vsCodeLmModelSelector": {
 					"type": "object",
 					"properties": {
 						"vendor": {
@@ -331,70 +331,70 @@
 					},
 					"description": "%settings.vsCodeLmModelSelector.description%"
 				},
-				"roo-cline.customStoragePath": {
+				"openai-agent.customStoragePath": {
 					"type": "string",
 					"default": "",
 					"description": "%settings.customStoragePath.description%"
 				},
-				"roo-cline.enableCodeActions": {
+				"openai-agent.enableCodeActions": {
 					"type": "boolean",
 					"default": true,
 					"description": "%settings.enableCodeActions.description%"
 				},
-				"roo-cline.autoImportSettingsPath": {
+				"openai-agent.autoImportSettingsPath": {
 					"type": "string",
 					"default": "",
 					"description": "%settings.autoImportSettingsPath.description%"
 				},
-				"roo-cline.maximumIndexedFilesForFileSearch": {
+				"openai-agent.maximumIndexedFilesForFileSearch": {
 					"type": "number",
 					"default": 10000,
 					"minimum": 5000,
 					"maximum": 500000,
 					"description": "%settings.maximumIndexedFilesForFileSearch.description%"
 				},
-				"roo-cline.useAgentRules": {
+				"openai-agent.useAgentRules": {
 					"type": "boolean",
 					"default": true,
 					"description": "%settings.useAgentRules.description%"
 				},
-				"roo-cline.apiRequestTimeout": {
+				"openai-agent.apiRequestTimeout": {
 					"type": "number",
 					"default": 600,
 					"minimum": 0,
 					"maximum": 3600,
 					"description": "%settings.apiRequestTimeout.description%"
 				},
-				"roo-cline.newTaskRequireTodos": {
+				"openai-agent.newTaskRequireTodos": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.newTaskRequireTodos.description%"
 				},
-				"roo-cline.codeIndex.embeddingBatchSize": {
+				"openai-agent.codeIndex.embeddingBatchSize": {
 					"type": "number",
 					"default": 60,
 					"minimum": 1,
 					"maximum": 200,
 					"description": "%settings.codeIndex.embeddingBatchSize.description%"
 				},
-				"roo-cline.debug": {
+				"openai-agent.debug": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debug.description%"
 				},
-				"roo-cline.debugProxy.enabled": {
+				"openai-agent.debugProxy.enabled": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debugProxy.enabled.description%",
 					"markdownDescription": "%settings.debugProxy.enabled.description%"
 				},
-				"roo-cline.debugProxy.serverUrl": {
+				"openai-agent.debugProxy.serverUrl": {
 					"type": "string",
 					"default": "http://127.0.0.1:8888",
 					"description": "%settings.debugProxy.serverUrl.description%",
 					"markdownDescription": "%settings.debugProxy.serverUrl.description%"
 				},
-				"roo-cline.debugProxy.tlsInsecure": {
+				"openai-agent.debugProxy.tlsInsecure": {
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debugProxy.tlsInsecure.description%",

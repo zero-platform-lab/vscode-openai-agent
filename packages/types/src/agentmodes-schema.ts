@@ -44,15 +44,16 @@ const agentmodesZodSchema = z
  * Generates the JSON Schema object for .agentmodes configuration files.
  * Includes metadata fields ($id, title, description).
  */
-export function generateRoomodesJsonSchema(): Record<string, unknown> {
+export function generateAgentmodesJsonSchema(): Record<string, unknown> {
 	const jsonSchema = zodToJsonSchema(agentmodesZodSchema, {
 		$refStrategy: "none",
 		target: "jsonSchema7",
 	}) as Record<string, unknown>
 
-	jsonSchema["$id"] = "https://github.com/RooCodeInc/Roo-Code/blob/main/schemas/agentmodes.json"
-	jsonSchema["title"] = "Roo Code Custom Modes"
-	jsonSchema["description"] = "Schema for .agentmodes configuration files used by Roo Code to define custom modes."
+	jsonSchema["$id"] = "https://github.com/zero-platform-lab/vscode-openai-agent/blob/main/schemas/agentmodes.json"
+	jsonSchema["title"] = "OpenAI Compatible Agent Custom Modes"
+	jsonSchema["description"] =
+		"Schema for .agentmodes configuration files used by OpenAI Compatible Agent to define custom modes."
 
 	return jsonSchema
 }

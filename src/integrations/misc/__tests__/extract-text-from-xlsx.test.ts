@@ -152,13 +152,13 @@ describe("extractTextFromXLSX", () => {
 			const worksheet = workbook.addWorksheet("Sheet1")
 
 			worksheet.getCell("A1").value = {
-				text: "Roo Code",
-				hyperlink: "https://roocode.com/",
+				text: "Agent",
+				hyperlink: "https://github.com/zero-platform-lab/vscode-openai-agent/",
 			}
 
 			const result = await extractTextFromXLSX(workbook)
 
-			expect(result).toContain("Roo Code (https://roocode.com/)")
+			expect(result).toContain("Agent (https://github.com/zero-platform-lab/vscode-openai-agent/)")
 		})
 
 		it("should handle formulas with and without results", async () => {

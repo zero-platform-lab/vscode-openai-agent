@@ -15,7 +15,8 @@ export const GITHUB_MAIN_REPO_URL = "https://github.com/RooCodeInc/Roo-Code"
 export const GITHUB_ISSUES_MAIN_URL = `${GITHUB_MAIN_REPO_URL}/issues`
 
 // Download links
-export const VSCODE_MARKETPLACE_URL = "https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline"
-export const OPEN_VSX_URL = "https://open-vsx.org/extension/RooVeterinaryInc/roo-cline"
+export const VSCODE_MARKETPLACE_URL =
+	"https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.openai-agent"
+export const OPEN_VSX_URL = "https://open-vsx.org/extension/RooVeterinaryInc/openai-agent"
 
 export const EXTENSION_PRIVACY_URL = `${GITHUB_MAIN_REPO_URL}/blob/main/PRIVACY.md`

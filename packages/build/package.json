@@ -1,6 +1,6 @@
 {
 	"name": "@openai-agent/build",
-	"description": "ESBuild utilities for Roo Code.",
+	"description": "ESBuild utilities for OpenAI Compatible Agent.",
 	"private": true,
 	"type": "module",
 	"main": "./dist/index.js",
