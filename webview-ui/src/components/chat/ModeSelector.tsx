@@ -46,7 +46,7 @@ export const ModeSelector = ({
 	const selectedItemRef = React.useRef<HTMLDivElement>(null)
 	const scrollContainerRef = React.useRef<HTMLDivElement>(null)
 	const lastNotifiedInvalidModeRef = React.useRef<string | null>(null)
-	const portalContainer = useAgentPortal("roo-portal")
+	const portalContainer = useAgentPortal("agent-portal")
 	const { hasOpenedModeSelector, setHasOpenedModeSelector } = useExtensionState()
 	const { t } = useAppTranslation()
 

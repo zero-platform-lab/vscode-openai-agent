@@ -25,7 +25,7 @@ interface AutoApproveDropdownProps {
 
 export const AutoApproveDropdown = ({ disabled = false, triggerClassName = "" }: AutoApproveDropdownProps) => {
 	const [open, setOpen] = React.useState(false)
-	const portalContainer = useAgentPortal("roo-portal")
+	const portalContainer = useAgentPortal("agent-portal")
 	const { t } = useAppTranslation()
 
 	const {

@@ -1764,7 +1764,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				</div>
 			)}
 
-			<div id="roo-portal" />
+			<div id="agent-portal" />
 		</div>
 	)
 }

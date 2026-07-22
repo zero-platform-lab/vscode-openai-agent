@@ -594,7 +594,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 		},
 	)
 
-	const portalContainer = useAgentPortal("roo-portal")
+	const portalContainer = useAgentPortal("agent-portal")
 
 	return (
 		<>

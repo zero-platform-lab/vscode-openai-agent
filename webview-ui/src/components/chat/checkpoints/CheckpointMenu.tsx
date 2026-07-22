@@ -33,7 +33,7 @@ export const CheckpointMenu = ({
 	const [internalRestoreOpen, setInternalRestoreOpen] = useState(false)
 	const [restoreConfirming, setRestoreConfirming] = useState(false)
 	const [internalMoreOpen, setInternalMoreOpen] = useState(false)
-	const portalContainer = useAgentPortal("roo-portal")
+	const portalContainer = useAgentPortal("agent-portal")
 
 	const previousCommitHash = checkpoint?.from
 

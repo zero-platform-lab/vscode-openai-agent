@@ -22,7 +22,7 @@ export const WorktreeSelector = ({ disabled = false }: WorktreeSelectorProps) =>
 	const [worktrees, setWorktrees] = useState<Worktree[]>([])
 	const [isGitRepo, setIsGitRepo] = useState(true)
 	const [showCreateModal, setShowCreateModal] = useState(false)
-	const portalContainer = useAgentPortal("roo-portal")
+	const portalContainer = useAgentPortal("agent-portal")
 
 	// Find current worktree
 	const currentWorktree = useMemo(() => worktrees.find((w) => w.isCurrent), [worktrees])
