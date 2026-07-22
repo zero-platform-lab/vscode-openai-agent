@@ -2,6 +2,13 @@
 	"name": "openai-compatible-agent",
 	"publisher": "internal",
 	"version": "1.0.0",
-	"icon": "assets/icons/icon.png",
+	"icon": "assets/icons/icon-internal.png",
+	"homepage": "https://github.com/zero-platform-lab/vscode-openai-agent",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zero-platform-lab/vscode-openai-agent"
+	},
+	"author": {},
+	"keywords": ["openai", "llm", "ai", "coding", "agent", "azure"],
 	"scripts": {}
 }

@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as path from "path"
 import { fileURLToPath } from "url"
 
-import { getGitSha, copyPaths, copyLocales, copyWasms, generatePackageJson } from "@roo-code/build"
+import { getGitSha, copyPaths, copyWasms, generatePackageJson } from "@roo-code/build"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -63,8 +63,7 @@ async function main() {
 				build.onEnd(() => {
 					copyPaths(
 						[
-							["../README.md", "README.md"],
-							["../CHANGELOG.md", "CHANGELOG.md"],
+							["../README-internal.md", "README.md"],
 							["../LICENSE", "LICENSE"],
 							["../.env", ".env", { optional: true }],
 							[".vscodeignore", ".vscodeignore"],
@@ -94,10 +93,11 @@ async function main() {
 					fs.writeFileSync(path.join(buildDir, "package.json"), JSON.stringify(generatedPackageJson, null, 2))
 					console.log(`[generatePackageJson] Generated package.json`)
 
+					const allowedNls = ["package.nls.json", "package.nls.ja.json"]
 					let count = 0
 
 					fs.readdirSync(path.join(srcDir)).forEach((file) => {
-						if (file.startsWith("package.nls")) {
+						if (file.startsWith("package.nls") && allowedNls.includes(file)) {
 							fs.copyFileSync(path.join(srcDir, file), path.join(buildDir, file))
 							count++
 						}
@@ -105,18 +105,40 @@ async function main() {
 
 					console.log(`[generatePackageJson] Copied ${count} package.nls*.json files to ${buildDir}`)
 
-					const nlsPkg = JSON.parse(fs.readFileSync(path.join(srcDir, "package.nls.json"), "utf8"))
-
 					const nlsInternalPkg = JSON.parse(
 						fs.readFileSync(path.join(__dirname, "package.nls.internal.json"), "utf8"),
 					)
 
-					fs.writeFileSync(
-						path.join(buildDir, "package.nls.json"),
-						JSON.stringify({ ...nlsPkg, ...nlsInternalPkg }, null, 2),
-					)
+					const patchNls = (obj) => {
+						const patched = {}
+						for (const [key, val] of Object.entries(obj)) {
+							if (typeof val === "string") {
+								patched[key] = val
+									.replaceAll("RooCodeStorage", "AgentStorage")
+									.replaceAll("roo-code-settings", "agent-settings")
+									.replaceAll("Roo Code", "OpenAI Compatible Agent")
+									.replaceAll("RooCode", "OpenAI-Compatible-Agent")
+									.replaceAll("Roo Cline", "OpenAI Compatible Agent")
+							} else {
+								patched[key] = val
+							}
+						}
+						return patched
+					}
 
-					console.log(`[generatePackageJson] Generated package.nls.json`)
+					for (const nlsFile of allowedNls) {
+						const srcPath = path.join(srcDir, nlsFile)
+						if (fs.existsSync(srcPath)) {
+							let nlsData = JSON.parse(fs.readFileSync(srcPath, "utf8"))
+							nlsData = patchNls(nlsData)
+							if (nlsFile === "package.nls.json") {
+								nlsData = { ...nlsData, ...nlsInternalPkg }
+							}
+							fs.writeFileSync(path.join(buildDir, nlsFile), JSON.stringify(nlsData, null, 2))
+						}
+					}
+
+					console.log(`[generatePackageJson] Generated NLS files`)
 				})
 			},
 		},
@@ -129,7 +151,32 @@ async function main() {
 		{
 			name: "copyLocales",
 			setup(build) {
-				build.onEnd(() => copyLocales(srcDir, distDir))
+				build.onEnd(() => {
+					const allowedLocales = ["en", "ja"]
+					const srcLocalesDir = path.join(srcDir, "i18n", "locales")
+					const destLocalesDir = path.join(distDir, "i18n", "locales")
+
+					for (const locale of allowedLocales) {
+						const srcLocaleDir = path.join(srcLocalesDir, locale)
+						const destLocaleDir = path.join(destLocalesDir, locale)
+						if (fs.existsSync(srcLocaleDir)) {
+							fs.mkdirSync(destLocaleDir, { recursive: true })
+							for (const file of fs.readdirSync(srcLocaleDir)) {
+								let content = fs.readFileSync(path.join(srcLocaleDir, file), "utf8")
+								content = content.replaceAll("https://github.com/RooCodeInc/Roo-Code", "https://github.com/zero-platform-lab/vscode-openai-agent")
+								content = content.replaceAll("Roo Code", "OpenAI Compatible Agent")
+								content = content.replaceAll("RooCode", "OpenAI-Compatible-Agent")
+								content = content.replaceAll("Roo Cline", "OpenAI Compatible Agent")
+								content = content.replaceAll("What should Roo do?", "What should the agent do?")
+								content = content.replaceAll("Rooにどんなことをさせますか？", "エージェントに何をさせますか？")
+								content = content.replaceAll("RooCodeStorage", "AgentStorage")
+								content = content.replaceAll("roo-code-settings", "agent-settings")
+								fs.writeFileSync(path.join(destLocaleDir, file), content)
+							}
+						}
+					}
+					console.log(`[copyLocales] Copied and patched locales: ${allowedLocales.join(", ")}`)
+				})
 			},
 		},
 	]
