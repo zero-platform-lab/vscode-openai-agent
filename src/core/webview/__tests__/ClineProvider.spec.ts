@@ -465,10 +465,10 @@ describe("ClineProvider", () => {
 
 		expect(mockWebviewView.webview.html).toContain("<!DOCTYPE html>")
 
-		// Verify Content Security Policy contains the necessary API domains
-		expect(mockWebviewView.webview.html).toContain(
-			"connect-src vscode-webview://test-csp-source https://openrouter.ai https://api.requesty.ai",
-		)
+		// With the local dev server unreachable, the provider falls back to the production
+		// HTML, whose CSP locks connect-src to the webview's own origin only. The webview
+		// never talks to external domains directly — LLM requests go through the extension host.
+		expect(mockWebviewView.webview.html).toContain("connect-src vscode-webview://test-csp-source;")
 
 		// Extract the script-src directive section and verify required security elements
 		const html = mockWebviewView.webview.html
