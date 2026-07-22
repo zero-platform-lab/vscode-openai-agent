@@ -1,3 +1,3 @@
-# @roo-code/core
+# @openai-agent/core
 
 ## 0.0.1
