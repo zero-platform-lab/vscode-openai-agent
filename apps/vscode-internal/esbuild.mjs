@@ -44,6 +44,7 @@ async function main() {
 		sourcesContent: false,
 		platform: "node",
 		define: {
+			"process.env.PKG_PUBLISHER": '"internal"',
 			"process.env.PKG_NAME": '"openai-compatible-agent"',
 			"process.env.PKG_VERSION": `"${overrideJson.version}"`,
 			"process.env.PKG_OUTPUT_CHANNEL": '"OpenAI-Compatible-Agent"',

@@ -17,7 +17,7 @@ import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { Button, StandardTooltip } from "@src/components/ui"
 
 import { convertHeadersToObject } from "../utils/headers"
-import { inputEventTransform, noTransform } from "../transforms"
+import { inputEventTransform, urlInputEventTransform, noTransform } from "../transforms"
 import { ModelPicker } from "../ModelPicker"
 import { R1FormatSetting } from "../R1FormatSetting"
 import { ThinkingBudget } from "../ThinkingBudget"
@@ -128,7 +128,7 @@ export const OpenAICompatible = ({
 			<VSCodeTextField
 				value={apiConfiguration?.openAiBaseUrl || ""}
 				type="url"
-				onInput={handleInputChange("openAiBaseUrl")}
+				onInput={handleInputChange("openAiBaseUrl", urlInputEventTransform)}
 				placeholder={t("settings:placeholders.baseUrl")}
 				className="w-full">
 				<label className="block font-medium mb-1">{t("settings:providers.openAiBaseUrl")}</label>

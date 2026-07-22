@@ -2055,7 +2055,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					// Removing or merging it would destroy this metadata, causing all condensed
 					// messages to become "orphaned" and restored to active status — effectively
 					// undoing the condensation and sending the full history to the API.
-					// See: https://github.com/RooCodeInc/Roo-Code/issues/11487
+					// Condensation marker must not be merged with adjacent messages.
 					modifiedApiConversationHistory = [...existingApiConversationHistory]
 					modifiedOldUserContent = []
 				} else if (lastMessage.role === "assistant") {
