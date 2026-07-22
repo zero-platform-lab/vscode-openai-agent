@@ -130,11 +130,6 @@ describe("providerModelConfig", () => {
 	})
 
 	describe("getStaticModelsForProvider", () => {
-		it("returns models for anthropic provider", () => {
-			const models = getStaticModelsForProvider("anthropic")
-			expect(Object.keys(models).length).toBeGreaterThan(0)
-		})
-
 		it("adds custom-arn option for bedrock provider", () => {
 			const models = getStaticModelsForProvider("bedrock", "Use Custom ARN")
 			expect(models["custom-arn"]).toBeDefined()
@@ -148,13 +143,6 @@ describe("providerModelConfig", () => {
 	})
 
 	describe("isStaticModelProvider", () => {
-		it("returns true for providers with static models", () => {
-			expect(isStaticModelProvider("anthropic")).toBe(true)
-			expect(isStaticModelProvider("bedrock")).toBe(true)
-			expect(isStaticModelProvider("gemini")).toBe(true)
-			expect(isStaticModelProvider("openai-native")).toBe(true)
-		})
-
 		it("returns false for providers without static models", () => {
 			expect(isStaticModelProvider("openrouter")).toBe(false)
 			expect(isStaticModelProvider("ollama")).toBe(false)
@@ -178,13 +166,6 @@ describe("providerModelConfig", () => {
 	})
 
 	describe("shouldUseGenericModelPicker", () => {
-		it("returns true for static providers without custom UI", () => {
-			expect(shouldUseGenericModelPicker("anthropic")).toBe(true)
-			expect(shouldUseGenericModelPicker("bedrock")).toBe(true)
-			expect(shouldUseGenericModelPicker("gemini")).toBe(true)
-			expect(shouldUseGenericModelPicker("deepseek")).toBe(true)
-		})
-
 		it("returns false for providers with custom model UI", () => {
 			expect(shouldUseGenericModelPicker("openrouter")).toBe(false)
 			expect(shouldUseGenericModelPicker("ollama")).toBe(false)

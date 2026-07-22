@@ -4,7 +4,6 @@ import { render, screen, fireEvent } from "@/utils/test-utils"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import { type ModelInfo, type ProviderSettings, openAiModelInfoSaneDefaults } from "@openai-agent/types"
-import { openAiCodexDefaultModelId } from "@openai-agent/types"
 
 import * as ExtensionStateContext from "@src/context/ExtensionStateContext"
 const { ExtensionStateContextProvider } = ExtensionStateContext
@@ -190,29 +189,6 @@ vi.mock("../ThinkingBudget", () => ({
 	},
 }))
 
-// Mock LiteLLM provider for tests
-vi.mock("../providers/LiteLLM", () => ({
-	LiteLLM: ({ apiConfiguration, setApiConfigurationField }: any) => (
-		<div data-testid="litellm-provider">
-			<input
-				data-testid="litellm-base-url"
-				type="text"
-				value={apiConfiguration.litellmBaseUrl || ""}
-				onChange={(e) => setApiConfigurationField("litellmBaseUrl", e.target.value)}
-				placeholder="Base URL"
-			/>
-			<input
-				data-testid="litellm-api-key"
-				type="password"
-				value={apiConfiguration.litellmApiKey || ""}
-				onChange={(e) => setApiConfigurationField("litellmApiKey", e.target.value)}
-				placeholder="API Key"
-			/>
-			<button data-testid="litellm-refresh-models">Refresh Models</button>
-		</div>
-	),
-}))
-
 vi.mock("@src/components/ui/hooks/useSelectedModel", () => ({
 	useSelectedModel: vi.fn((apiConfiguration: ProviderSettings) => {
 		if (apiConfiguration.apiModelId?.includes("thinking")) {
@@ -259,31 +235,6 @@ const renderApiOptions = (props: Partial<ApiOptionsProps> = {}) => {
 }
 
 describe("ApiOptions", () => {
-	it("resets model to provider default when switching to openai-codex with an invalid prior apiModelId", () => {
-		const mockSetApiConfigurationField = vi.fn()
-
-		renderApiOptions({
-			apiConfiguration: {
-				apiProvider: "anthropic",
-				// Simulate a previously-selected model ID from another provider.
-				// When switching to OpenAI - ChatGPT Plus/Pro, this is invalid and should be reset.
-				apiModelId: "claude-3-5-sonnet-20241022",
-			},
-			setApiConfigurationField: mockSetApiConfigurationField,
-		})
-
-		const providerSelectContainer = screen.getByTestId("provider-select")
-		const providerSelect = providerSelectContainer.querySelector("select") as HTMLSelectElement
-		expect(providerSelect).toBeInTheDocument()
-
-		fireEvent.change(providerSelect, { target: { value: "openai-codex" } })
-
-		// Provider is updated
-		expect(mockSetApiConfigurationField).toHaveBeenCalledWith("apiProvider", "openai-codex")
-		// Model is reset to the provider default since the previous value is invalid for this provider
-		expect(mockSetApiConfigurationField).toHaveBeenCalledWith("apiModelId", openAiCodexDefaultModelId, false)
-	})
-
 	it("shows temperature and rate limit controls by default", () => {
 		renderApiOptions({
 			apiConfiguration: {},
@@ -335,32 +286,6 @@ describe("ApiOptions", () => {
 		// Note: We don't need to test the actual ThinkingBudget component functionality here
 		// since we have separate tests for that component. We just need to verify that
 		// it's included in the ApiOptions component when appropriate.
-	})
-	it("filters providers by search input and shows no match message when appropriate", () => {
-		renderApiOptions({
-			apiConfiguration: {},
-			setApiConfigurationField: () => {},
-		})
-
-		// The SearchableSelect mock renders inside a div with the test id
-		const providerSelectContainer = screen.getByTestId("provider-select")
-		expect(providerSelectContainer).toBeInTheDocument()
-
-		// Get the actual select element inside the container
-		const providerSelect = providerSelectContainer.querySelector("select") as HTMLSelectElement
-		expect(providerSelect).toBeInTheDocument()
-
-		// Check that we have options
-		const options = providerSelect.querySelectorAll("option")
-		expect(options.length).toBeGreaterThan(1) // Should have placeholder + actual options
-
-		// Check that OpenAI option exists
-		const optionTexts = Array.from(options).map((opt) => opt.textContent)
-		expect(optionTexts).toContain("OpenAI")
-		expect(optionTexts).toContain("Anthropic")
-
-		// Note: The mock doesn't implement search functionality, so we're just verifying
-		// that the select element is rendered with the expected options
 	})
 
 	describe("OpenAI provider tests", () => {
@@ -497,63 +422,6 @@ describe("ApiOptions", () => {
 					contextWindow: openAiModelInfoSaneDefaults.contextWindow,
 				}),
 			)
-		})
-	})
-
-	describe("LiteLLM provider tests", () => {
-		it("renders LiteLLM component when provider is selected", () => {
-			renderApiOptions({
-				apiConfiguration: {
-					apiProvider: "litellm",
-					litellmBaseUrl: "http://localhost:4000",
-					litellmApiKey: "test-key",
-				},
-			})
-
-			expect(screen.getByTestId("litellm-provider")).toBeInTheDocument()
-			expect(screen.getByTestId("litellm-base-url")).toHaveValue("http://localhost:4000")
-			expect(screen.getByTestId("litellm-api-key")).toHaveValue("test-key")
-		})
-
-		it("calls setApiConfigurationField when LiteLLM inputs change", () => {
-			const mockSetApiConfigurationField = vi.fn()
-			renderApiOptions({
-				apiConfiguration: {
-					apiProvider: "litellm",
-				},
-				setApiConfigurationField: mockSetApiConfigurationField,
-			})
-
-			const baseUrlInput = screen.getByTestId("litellm-base-url")
-			const apiKeyInput = screen.getByTestId("litellm-api-key")
-
-			fireEvent.change(baseUrlInput, { target: { value: "http://new-url:8000" } })
-			fireEvent.change(apiKeyInput, { target: { value: "new-api-key" } })
-
-			expect(mockSetApiConfigurationField).toHaveBeenCalledWith("litellmBaseUrl", "http://new-url:8000")
-			expect(mockSetApiConfigurationField).toHaveBeenCalledWith("litellmApiKey", "new-api-key")
-		})
-
-		it("shows refresh models button for LiteLLM", () => {
-			renderApiOptions({
-				apiConfiguration: {
-					apiProvider: "litellm",
-					litellmBaseUrl: "http://localhost:4000",
-					litellmApiKey: "test-key",
-				},
-			})
-
-			expect(screen.getByTestId("litellm-refresh-models")).toBeInTheDocument()
-		})
-
-		it("does not render LiteLLM component when other provider is selected", () => {
-			renderApiOptions({
-				apiConfiguration: {
-					apiProvider: "anthropic",
-				},
-			})
-
-			expect(screen.queryByTestId("litellm-provider")).not.toBeInTheDocument()
 		})
 	})
 

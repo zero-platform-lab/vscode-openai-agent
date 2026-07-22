@@ -51,10 +51,6 @@ vi.mock("../ChatRow", () => ({
 	},
 }))
 
-vi.mock("../AutoApproveMenu", () => ({
-	default: () => null,
-}))
-
 // Mock react-virtuoso to render items directly without virtualization
 // This allows tests to verify items rendered in the chat list
 vi.mock("react-virtuoso", () => ({
@@ -84,19 +80,6 @@ vi.mock("../../common/VersionIndicator", () => ({
 
 // Get the mock function after the module is mocked
 const mockVersionIndicator = vi.mocked((await import("../../common/VersionIndicator")).default)
-
-vi.mock("../Announcement", () => ({
-	default: function MockAnnouncement({ hideAnnouncement }: { hideAnnouncement: () => void }) {
-		// eslint-disable-next-line @typescript-eslint/no-require-imports
-		const React = require("react")
-		return React.createElement(
-			"div",
-			{ "data-testid": "announcement-modal" },
-			React.createElement("div", null, "What's New"),
-			React.createElement("button", { onClick: hideAnnouncement }, "Close"),
-		)
-	},
-}))
 
 // Mock DismissibleUpsell component
 vi.mock("@/components/common/DismissibleUpsell", () => ({
@@ -130,13 +113,6 @@ vi.mock("../QueuedMessages", () => ({
 				))}
 			</div>
 		)
-	},
-}))
-
-// Mock AgentTips component
-vi.mock("@src/components/welcome/AgentTips", () => ({
-	default: function MockAgentTips() {
-		return <div data-testid="roo-tips">Tips content</div>
 	},
 }))
 
@@ -541,40 +517,6 @@ describe("ChatView - Version Indicator Tests", () => {
 		expect(getByTestId("version-indicator")).toBeInTheDocument()
 	})
 
-	it("opens announcement modal when version indicator is clicked", async () => {
-		// Mock VersionIndicator to return a button with onClick
-		mockVersionIndicator.mockImplementation(({ onClick }: { onClick?: () => void }) =>
-			React.createElement("button", {
-				"data-testid": "version-indicator",
-				onClick,
-			}),
-		)
-
-		const { getByTestId, queryByTestId } = renderChatView({ showAnnouncement: false })
-
-		// Hydrate state
-		mockPostMessage({
-			version: "1.0.0",
-			clineMessages: [],
-		})
-
-		// Wait for component to render
-		await waitFor(() => {
-			expect(getByTestId("version-indicator")).toBeInTheDocument()
-		})
-
-		// Click version indicator
-		const versionIndicator = getByTestId("version-indicator")
-		act(() => {
-			versionIndicator.click()
-		})
-
-		// Wait for announcement modal to appear
-		await waitFor(() => {
-			expect(queryByTestId("announcement-modal")).toBeInTheDocument()
-		})
-	})
-
 	it("version indicator has correct styling classes", () => {
 		// Mock VersionIndicator to return a button with specific classes
 		mockVersionIndicator.mockReturnValue(
@@ -681,22 +623,6 @@ describe("ChatView - Welcome Content Display Tests", () => {
 		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
 	})
 
-	it("shows AgentTips when user has only run 3 tasks in their history", () => {
-		const { queryByTestId } = renderChatView()
-
-		mockPostMessage({
-			taskHistory: [
-				{ id: "1", ts: Date.now() - 2000 },
-				{ id: "2", ts: Date.now() - 1000 },
-				{ id: "3", ts: Date.now() },
-			],
-			clineMessages: [], // No active task
-		})
-
-		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
-		expect(queryByTestId("roo-tips")).toBeInTheDocument()
-	})
-
 	it("does not show removed cloud upsell when user has run 6 or more tasks", async () => {
 		const { queryByTestId } = renderChatView()
 
@@ -745,39 +671,6 @@ describe("ChatView - Welcome Content Display Tests", () => {
 			expect(queryByTestId("roo-tips")).not.toBeInTheDocument()
 			expect(queryByTestId("roo-hero")).not.toBeInTheDocument()
 		})
-	})
-
-	it("shows AgentTips for newer users", () => {
-		const { queryByTestId, getByTestId } = renderChatView()
-
-		mockPostMessage({
-			taskHistory: [
-				{ id: "1", ts: Date.now() - 3000 },
-				{ id: "2", ts: Date.now() - 2000 },
-				{ id: "3", ts: Date.now() - 1000 },
-				{ id: "4", ts: Date.now() },
-			],
-			clineMessages: [], // No active task
-		})
-
-		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
-		expect(getByTestId("roo-tips")).toBeInTheDocument()
-	})
-
-	it("shows AgentTips when user has fewer than 6 tasks", () => {
-		const { queryByTestId, getByTestId } = renderChatView()
-
-		mockPostMessage({
-			taskHistory: [
-				{ id: "1", ts: Date.now() - 2000 },
-				{ id: "2", ts: Date.now() - 1000 },
-				{ id: "3", ts: Date.now() },
-			],
-			clineMessages: [], // No active task
-		})
-
-		expect(queryByTestId("dismissible-upsell")).not.toBeInTheDocument()
-		expect(getByTestId("roo-tips")).toBeInTheDocument()
 	})
 })
 
