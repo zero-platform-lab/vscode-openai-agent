@@ -41,9 +41,7 @@ export const SambaNova = ({ apiConfiguration, setApiConfigurationField }: SambaN
 				{t("settings:providers.apiKeyStorageNotice")}
 			</div>
 			{!apiConfiguration?.sambaNovaApiKey && (
-				<VSCodeButtonLink
-					href="https://cloud.sambanova.ai/?utm_source=roocode&utm_medium=external&utm_campaign=cloud_signup"
-					appearance="secondary">
+				<VSCodeButtonLink href="https://cloud.sambanova.ai/" appearance="secondary">
 					{t("settings:providers.getSambaNovaApiKey")}
 				</VSCodeButtonLink>
 			)}

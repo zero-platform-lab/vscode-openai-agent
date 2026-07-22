@@ -333,7 +333,7 @@
 		"support": "<githubLink>GitHub</githubLink>でスターを付けてOpenAI Compatible Agentを応援してください。",
 		"finalRelease": {
 			"title": "OpenAI Compatible Agent 最後のリリース",
-			"intro": "これは OpenAI Compatible Agent の最後のリリースです。<announcementLink>数週間前にお知らせしたとおり</announcementLink>、私たちは今後、ソフトウェア開発の未来だと考えているクラウドエージェントプラットフォーム <roomoteLink>Roomote</roomoteLink> に注力することにしました。この約1年間のご支援、本当にありがとうございました。",
+			"intro": "これは OpenAI Compatible Agent の最後のリリースです。<announcementLink>数週間前にお知らせしたとおり</announcementLink>、私たちは今後、ソフトウェア開発の未来だと考えているクラウドエージェントプラットフォーム <roomoteLink>プロジェクト</roomoteLink> に注力することにしました。この約1年間のご支援、本当にありがとうございました。",
 			"continuity": "この拡張機能は今後も無期限に動作し続けるはずですが、バグ修正、新機能、モデル更新は提供されません。",
 			"alternatives": "拡張機能を使いたい場合は、コミュニティによる OpenAI Compatible Agent のフォークである <zooCodeLink>ZooCode</zooCodeLink> と、OpenAI Compatible Agent の出発点である <clineLink>Cline</clineLink> をぜひ確認してみてください。",
 			"signoff": "Happy coding!"

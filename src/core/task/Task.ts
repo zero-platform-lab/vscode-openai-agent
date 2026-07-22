@@ -1198,7 +1198,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			await this.providerRef.deref()?.updateTaskHistory(historyItem)
 			return true
 		} catch (error) {
-			console.error("Failed to save Roo messages:", error)
+			console.error("Failed to save Agent messages:", error)
 			return false
 		}
 	}
@@ -1595,7 +1595,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		try {
 			return await this.fileContextTracker.getFilesReadByRoo()
 		} catch (error) {
-			console.error(`[Task#${context}] Failed to get files read by Roo:`, error)
+			console.error(`[Task#${context}] Failed to get files read by Agent:`, error)
 			return undefined
 		}
 	}
@@ -1824,7 +1824,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	async sayAndCreateMissingParamError(toolName: ToolName, paramName: string, relPath?: string) {
 		await this.say(
 			"error",
-			`Roo tried to use ${toolName}${
+			`Agent tried to use ${toolName}${
 				relPath ? ` for '${relPath.toPosix()}'` : ""
 			} without value for required parameter '${paramName}'. Retrying...`,
 		)
@@ -3994,7 +3994,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				? await getEnvironmentDetails(this, true)
 				: undefined
 
-			// Get files read by Roo for code folding - only when context management will run
+			// Get files read by Agent for code folding - only when context management will run
 			const contextMgmtFilesReadByRoo =
 				contextManagementWillRun && autoCondenseContext
 					? await this.getFilesReadByRooSafely("attemptApiRequest")
