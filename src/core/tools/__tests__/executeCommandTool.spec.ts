@@ -237,7 +237,7 @@ describe("executeCommandTool", () => {
 			}
 
 			const mockAgentIgnoreError = "AgentIgnore error"
-			;(formatResponse.rooIgnoreError as any).mockReturnValue(mockAgentIgnoreError)
+			;(formatResponse.agentIgnoreError as any).mockReturnValue(mockAgentIgnoreError)
 
 			// Execute
 			await executeCommandTool.handle(mockCline as unknown as Task, mockToolUse, {
@@ -249,7 +249,7 @@ describe("executeCommandTool", () => {
 			// Verify
 			expect(validateCommandMock).toHaveBeenCalledWith("cat .env")
 			expect(mockCline.say).toHaveBeenCalledWith("agentignore_error", ".env")
-			expect(formatResponse.rooIgnoreError).toHaveBeenCalledWith(".env")
+			expect(formatResponse.agentIgnoreError).toHaveBeenCalledWith(".env")
 			expect(mockPushToolResult).toHaveBeenCalledWith(mockAgentIgnoreError)
 			expect(mockAskApproval).not.toHaveBeenCalled()
 			// executeCommandInTerminal should not be called since agentignore blocked it

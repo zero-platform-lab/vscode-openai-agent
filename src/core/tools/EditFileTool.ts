@@ -213,7 +213,7 @@ export class EditFileTool extends BaseTool<"edit_file"> {
 				await finalizePartialToolAskIfNeeded(relPath)
 				task.didToolFailInCurrentTurn = true
 				await task.say("agentignore_error", relPath)
-				pushToolResult(formatResponse.rooIgnoreError(relPath))
+				pushToolResult(formatResponse.agentIgnoreError(relPath))
 				return
 			}
 
@@ -451,7 +451,7 @@ export class EditFileTool extends BaseTool<"edit_file"> {
 
 			// Track file edit operation
 			if (relPath) {
-				await task.fileContextTracker.trackFileContext(relPath, "roo_edited" as RecordSource)
+				await task.fileContextTracker.trackFileContext(relPath, "agent_edited" as RecordSource)
 			}
 
 			task.didEditFile = true

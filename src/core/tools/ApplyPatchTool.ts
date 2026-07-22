@@ -111,7 +111,7 @@ export class ApplyPatchTool extends BaseTool<"apply_patch"> {
 				const accessAllowed = task.rooIgnoreController?.validateAccess(relPath)
 				if (!accessAllowed) {
 					await task.say("agentignore_error", relPath)
-					pushToolResult(formatResponse.rooIgnoreError(relPath))
+					pushToolResult(formatResponse.agentIgnoreError(relPath))
 					return
 				}
 
@@ -221,7 +221,7 @@ export class ApplyPatchTool extends BaseTool<"apply_patch"> {
 		}
 
 		// Track file edit operation
-		await task.fileContextTracker.trackFileContext(relPath, "roo_edited" as RecordSource)
+		await task.fileContextTracker.trackFileContext(relPath, "agent_edited" as RecordSource)
 		task.didEditFile = true
 
 		const message = await task.diffViewProvider.pushToolWriteResult(task, task.cwd, true)
@@ -378,7 +378,7 @@ export class ApplyPatchTool extends BaseTool<"apply_patch"> {
 			const moveAccessAllowed = task.rooIgnoreController?.validateAccess(change.movePath)
 			if (!moveAccessAllowed) {
 				await task.say("agentignore_error", change.movePath)
-				pushToolResult(formatResponse.rooIgnoreError(change.movePath))
+				pushToolResult(formatResponse.agentIgnoreError(change.movePath))
 				await task.diffViewProvider.reset()
 				return
 			}
@@ -430,7 +430,7 @@ export class ApplyPatchTool extends BaseTool<"apply_patch"> {
 				console.error(`Failed to delete original file after move: ${error}`)
 			}
 
-			await task.fileContextTracker.trackFileContext(change.movePath, "roo_edited" as RecordSource)
+			await task.fileContextTracker.trackFileContext(change.movePath, "agent_edited" as RecordSource)
 		} else {
 			// Save changes to the same file
 			if (isPreventFocusDisruptionEnabled) {
@@ -439,7 +439,7 @@ export class ApplyPatchTool extends BaseTool<"apply_patch"> {
 				await task.diffViewProvider.saveChanges(diagnosticsEnabled, writeDelayMs)
 			}
 
-			await task.fileContextTracker.trackFileContext(relPath, "roo_edited" as RecordSource)
+			await task.fileContextTracker.trackFileContext(relPath, "agent_edited" as RecordSource)
 		}
 
 		task.didEditFile = true

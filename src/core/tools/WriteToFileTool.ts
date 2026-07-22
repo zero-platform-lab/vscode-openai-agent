@@ -51,7 +51,7 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 
 		if (!accessAllowed) {
 			await task.say("agentignore_error", relPath)
-			pushToolResult(formatResponse.rooIgnoreError(relPath))
+			pushToolResult(formatResponse.agentIgnoreError(relPath))
 			return
 		}
 
@@ -170,7 +170,7 @@ export class WriteToFileTool extends BaseTool<"write_to_file"> {
 			}
 
 			if (relPath) {
-				await task.fileContextTracker.trackFileContext(relPath, "roo_edited" as RecordSource)
+				await task.fileContextTracker.trackFileContext(relPath, "agent_edited" as RecordSource)
 			}
 
 			task.didEditFile = true

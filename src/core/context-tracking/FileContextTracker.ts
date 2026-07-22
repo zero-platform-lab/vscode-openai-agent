@@ -165,7 +165,7 @@ export class FileContextTracker {
 				path: filePath,
 				record_state: "active",
 				record_source: source,
-				roo_read_date: getLatestDateForField(filePath, "roo_read_date"),
+				agent_read_date: getLatestDateForField(filePath, "agent_read_date"),
 				roo_edit_date: getLatestDateForField(filePath, "roo_edit_date"),
 				user_edit_date: getLatestDateForField(filePath, "user_edit_date"),
 			}
@@ -177,9 +177,9 @@ export class FileContextTracker {
 					this.recentlyModifiedFiles.add(filePath)
 					break
 
-				// roo_edited: Agent has edited the file
-				case "roo_edited":
-					newEntry.roo_read_date = now
+				// agent_edited: Agent has edited the file
+				case "agent_edited":
+					newEntry.agent_read_date = now
 					newEntry.roo_edit_date = now
 					this.checkpointPossibleFiles.add(filePath)
 					this.markFileAsEditedByAgent(filePath)
@@ -188,7 +188,7 @@ export class FileContextTracker {
 				// read_tool/file_mentioned: Agent has read the file via a tool or file mention
 				case "read_tool":
 				case "file_mentioned":
-					newEntry.roo_read_date = now
+					newEntry.agent_read_date = now
 					break
 			}
 
@@ -227,18 +227,18 @@ export class FileContextTracker {
 				}
 
 				// If sinceTimestamp is provided, only include files read after that time
-				if (sinceTimestamp && entry.roo_read_date) {
-					return entry.roo_read_date >= sinceTimestamp
+				if (sinceTimestamp && entry.agent_read_date) {
+					return entry.agent_read_date >= sinceTimestamp
 				}
 
 				return true
 			})
 
-			// Sort by roo_read_date descending (most recent first)
+			// Sort by agent_read_date descending (most recent first)
 			// Entries without a date go to the end
 			readEntries.sort((a, b) => {
-				const dateA = a.roo_read_date ?? 0
-				const dateB = b.roo_read_date ?? 0
+				const dateA = a.agent_read_date ?? 0
+				const dateB = b.agent_read_date ?? 0
 				return dateB - dateA
 			})
 

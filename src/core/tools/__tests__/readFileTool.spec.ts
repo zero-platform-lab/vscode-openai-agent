@@ -83,7 +83,7 @@ vi.mock("../../prompts/responses", () => ({
 			(feedback?: string) =>
 				`The user approved this operation and responded with the message:\n<user_message>\n${feedback}\n</user_message>`,
 		),
-		rooIgnoreError: vi.fn(
+		agentIgnoreError: vi.fn(
 			(filePath: string) =>
 				`Access to ${filePath} is blocked by the .agentignore file settings. You must try to continue in the task without using this file, or ask the user to update the .agentignore file.`,
 		),
@@ -287,7 +287,7 @@ describe("ReadFileTool", () => {
 			await readFileTool.execute({ path: "secret.env" }, mockTask as any, callbacks)
 
 			expect(mockTask.say).toHaveBeenCalledWith("agentignore_error", "secret.env")
-			expect(formatResponse.rooIgnoreError).toHaveBeenCalledWith("secret.env")
+			expect(formatResponse.agentIgnoreError).toHaveBeenCalledWith("secret.env")
 			expect(callbacks.pushToolResult).toHaveBeenCalledWith(
 				expect.stringContaining("blocked by the .agentignore"),
 			)

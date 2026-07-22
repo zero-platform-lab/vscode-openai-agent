@@ -68,7 +68,7 @@ export class EditTool extends BaseTool<"edit"> {
 
 			if (!accessAllowed) {
 				await task.say("agentignore_error", relPath)
-				pushToolResult(formatResponse.rooIgnoreError(relPath))
+				pushToolResult(formatResponse.agentIgnoreError(relPath))
 				return
 			}
 
@@ -220,7 +220,7 @@ export class EditTool extends BaseTool<"edit"> {
 
 			// Track file edit operation
 			if (relPath) {
-				await task.fileContextTracker.trackFileContext(relPath, "roo_edited" as RecordSource)
+				await task.fileContextTracker.trackFileContext(relPath, "agent_edited" as RecordSource)
 			}
 
 			task.didEditFile = true

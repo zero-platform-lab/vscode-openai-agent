@@ -62,7 +62,7 @@ export class ExecuteCommandTool extends BaseTool<"execute_command"> {
 
 			if (ignoredFileAttemptedToAccess) {
 				await task.say("agentignore_error", ignoredFileAttemptedToAccess)
-				pushToolResult(formatResponse.rooIgnoreError(ignoredFileAttemptedToAccess))
+				pushToolResult(formatResponse.agentIgnoreError(ignoredFileAttemptedToAccess))
 				return
 			}
 

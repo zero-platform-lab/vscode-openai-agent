@@ -34,7 +34,7 @@ vi.mock("../../../utils/fs", () => ({
 vi.mock("../../prompts/responses", () => ({
 	formatResponse: {
 		toolError: vi.fn((msg) => `Error: ${msg}`),
-		rooIgnoreError: vi.fn((path) => `Access denied: ${path}`),
+		agentIgnoreError: vi.fn((path) => `Access denied: ${path}`),
 		createPrettyPatch: vi.fn(() => "mock-diff"),
 	},
 }))
@@ -365,7 +365,7 @@ describe("writeToFileTool", () => {
 			expect(mockCline.diffViewProvider.update).toHaveBeenCalledWith(testContent, true)
 			expect(mockAskApproval).toHaveBeenCalled()
 			expect(mockCline.diffViewProvider.saveChanges).toHaveBeenCalled()
-			expect(mockCline.fileContextTracker.trackFileContext).toHaveBeenCalledWith(testFilePath, "roo_edited")
+			expect(mockCline.fileContextTracker.trackFileContext).toHaveBeenCalledWith(testFilePath, "agent_edited")
 			expect(mockCline.didEditFile).toBe(true)
 		})
 

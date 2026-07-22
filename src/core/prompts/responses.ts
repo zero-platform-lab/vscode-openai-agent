@@ -30,7 +30,7 @@ export const formatResponse = {
 			error,
 		}),
 
-	rooIgnoreError: (path: string) =>
+	agentIgnoreError: (path: string) =>
 		JSON.stringify({
 			status: "error",
 			type: "access_denied",

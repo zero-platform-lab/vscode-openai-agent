@@ -150,7 +150,7 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 				const accessAllowed = task.rooIgnoreController?.validateAccess(relPath)
 				if (!accessAllowed) {
 					await task.say("agentignore_error", relPath)
-					const errorMsg = formatResponse.rooIgnoreError(relPath)
+					const errorMsg = formatResponse.agentIgnoreError(relPath)
 					updateFileResult(relPath, {
 						status: "blocked",
 						error: errorMsg,
@@ -692,7 +692,7 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 			const accessAllowed = task.rooIgnoreController?.validateAccess(relPath)
 			if (!accessAllowed) {
 				await task.say("agentignore_error", relPath)
-				const errorMsg = formatResponse.rooIgnoreError(relPath)
+				const errorMsg = formatResponse.agentIgnoreError(relPath)
 				results.push(`File: ${relPath}\nError: ${errorMsg}`)
 				continue
 			}

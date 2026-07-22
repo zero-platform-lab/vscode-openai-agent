@@ -39,7 +39,7 @@ vi.mock("../../../utils/fs", () => ({
 vi.mock("../../prompts/responses", () => ({
 	formatResponse: {
 		toolError: vi.fn((msg: string) => `Error: ${msg}`),
-		rooIgnoreError: vi.fn((filePath: string) => `Access denied: ${filePath}`),
+		agentIgnoreError: vi.fn((filePath: string) => `Access denied: ${filePath}`),
 		createPrettyPatch: vi.fn(() => "mock-diff"),
 	},
 }))
@@ -417,7 +417,7 @@ describe("editTool", () => {
 		it("tracks file context after successful edit", async () => {
 			await executeEditTool()
 
-			expect(mockTask.fileContextTracker.trackFileContext).toHaveBeenCalledWith(testFilePath, "roo_edited")
+			expect(mockTask.fileContextTracker.trackFileContext).toHaveBeenCalledWith(testFilePath, "agent_edited")
 		})
 	})
 })
