@@ -34,7 +34,7 @@ vi.mock("../../common/Tab", () => ({
 }))
 
 vi.mock("../AgentHero", () => ({
-	default: () => <div data-testid="roo-hero">Roo Hero</div>,
+	default: () => <div data-testid="agent-hero">Agent Hero</div>,
 }))
 
 vi.mock("lucide-react", () => ({

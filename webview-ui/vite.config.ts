@@ -67,7 +67,7 @@ export default defineConfig(({ mode }) => {
 		...(gitSha ? { "process.env.PKG_SHA": JSON.stringify(gitSha) } : {}),
 	}
 
-	// TODO: We can use `@roo-code/build` to generate `define` once the
+	// TODO: We can use `@openai-agent/build` to generate `define` once the
 	// monorepo is deployed.
 	if (mode === "nightly") {
 		outDir = "../apps/vscode-nightly/build/webview-ui/build"
@@ -111,7 +111,7 @@ export default defineConfig(({ mode }) => {
 			alias: {
 				"@": resolve(__dirname, "./src"),
 				"@src": resolve(__dirname, "./src"),
-				"@roo": resolve(__dirname, "../src/shared"),
+				"@agent": resolve(__dirname, "../src/shared"),
 			},
 		},
 		build: {
@@ -126,7 +126,7 @@ export default defineConfig(({ mode }) => {
 			cssCodeSplit: false,
 			rollupOptions: {
 				// Externalize vscode module - it's imported by file-search.ts which is
-				// dynamically imported by roo-config/index.ts, but should never be bundled
+				// dynamically imported by agent-config/index.ts, but should never be bundled
 				// in the webview since it's not available in the browser context
 				external: ["vscode"],
 				input: {

@@ -41,7 +41,7 @@ import {
 	loadConfiguration,
 } from "../index"
 
-describe("RooConfigService", () => {
+describe("AgentConfigService", () => {
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mockHomedir.mockReturnValue("/mock/home")
@@ -373,7 +373,7 @@ describe("RooConfigService", () => {
 		it("should exclude root .roo directory", async () => {
 			// This would match the root .roo, which should be excluded
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: ".roo/rules/rule.md", type: "file" }, // This is root - should be excluded
+				{ path: ".agent/rules/rule.md", type: "file" }, // This is root - should be excluded
 				{ path: "subfolder/.agent/rules/rule.md", type: "file" },
 			])
 

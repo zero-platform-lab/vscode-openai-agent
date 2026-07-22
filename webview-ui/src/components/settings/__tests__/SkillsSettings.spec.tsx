@@ -33,7 +33,7 @@ vi.mock("@/utils/docLinks", () => ({
 }))
 
 // Mock modes
-vi.mock("@roo/modes", () => ({
+vi.mock("@agent/modes", () => ({
 	getAllModes: () => [
 		{ slug: "code", name: "Code" },
 		{ slug: "architect", name: "Architect" },

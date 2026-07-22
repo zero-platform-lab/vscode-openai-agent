@@ -5,9 +5,9 @@ import * as vscode from "vscode"
 vi.mock("../../../shared/package", () => ({
 	Package: {
 		name: "openai-agent",
-		publisher: "RooVeterinaryInc",
+		publisher: "internal",
 		version: "1.0.0",
-		outputChannel: "Roo-Code",
+		outputChannel: "OpenAI-Agent",
 	},
 }))
 

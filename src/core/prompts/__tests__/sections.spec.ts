@@ -11,11 +11,11 @@ describe("addCustomInstructions", () => {
 			"global instructions",
 			"/test/path",
 			"test-mode",
-			{ language: "fr" },
+			{ language: "en" },
 		)
 
 		expect(result).toContain("Language Preference:")
-		expect(result).toContain('You should always speak and think in the "Français" (fr) language')
+		expect(result).toContain('You should always speak and think in the "English" (en) language')
 	})
 
 	it("works without vscode language", async () => {

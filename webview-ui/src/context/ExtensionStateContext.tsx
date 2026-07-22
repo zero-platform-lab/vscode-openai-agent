@@ -18,12 +18,12 @@ import {
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 } from "@openai-agent/types"
 
-import { findLastIndex } from "@roo/array"
+import { findLastIndex } from "@agent/array"
 
-import { checkExistKey } from "@roo/checkExistApiConfig"
-import { Mode, defaultModeSlug, defaultPrompts } from "@roo/modes"
-import { CustomSupportPrompts } from "@roo/support-prompt"
-import { experimentDefault } from "@roo/experiments"
+import { checkExistKey } from "@agent/checkExistApiConfig"
+import { Mode, defaultModeSlug, defaultPrompts } from "@agent/modes"
+import { CustomSupportPrompts } from "@agent/support-prompt"
+import { experimentDefault } from "@agent/experiments"
 
 import { vscode } from "@src/utils/vscode"
 import { convertTextMateToHljs } from "@src/utils/textMateToHljs"

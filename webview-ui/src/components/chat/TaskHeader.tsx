@@ -5,7 +5,7 @@ import prettyBytes from "pretty-bytes"
 
 import type { ClineMessage } from "@openai-agent/types"
 
-import { getModelMaxOutputTokens } from "@roo/api"
+import { getModelMaxOutputTokens } from "@agent/api"
 
 import { formatLargeNumber } from "@src/utils/format"
 import { cn } from "@src/lib/utils"

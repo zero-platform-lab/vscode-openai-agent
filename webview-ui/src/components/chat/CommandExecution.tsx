@@ -5,9 +5,9 @@ import { ChevronDown, OctagonX } from "lucide-react"
 
 import { type ExtensionMessage, type CommandExecutionStatus, commandExecutionStatusSchema } from "@openai-agent/types"
 
-import { safeJsonParse } from "@roo/core"
-import { COMMAND_OUTPUT_STRING } from "@roo/combineCommandSequences"
-import { parseCommand } from "@roo/parse-command"
+import { safeJsonParse } from "@agent/core"
+import { COMMAND_OUTPUT_STRING } from "@agent/combineCommandSequences"
+import { parseCommand } from "@agent/parse-command"
 
 import { vscode } from "@src/utils/vscode"
 import { extractPatternsFromCommand } from "@src/utils/command-parser"

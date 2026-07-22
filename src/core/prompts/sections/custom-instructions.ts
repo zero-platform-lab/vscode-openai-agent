@@ -227,8 +227,8 @@ export async function loadRuleFiles(cwd: string, enableSubfolderRules: boolean =
 		return "\n# Rules from .agent directories:\n\n" + rules.join("\n\n")
 	}
 
-	// Fall back to existing behavior for legacy .roorules/.clinerules files
-	const ruleFiles = [".roorules", ".clinerules"]
+	// Fall back to existing behavior for legacy .agentrules/.clinerules files
+	const ruleFiles = [".agentrules", ".clinerules"]
 
 	for (const file of ruleFiles) {
 		const content = await safeReadFile(path.join(cwd, file))
@@ -426,10 +426,10 @@ export async function addCustomInstructions(
 			usedRuleFile = `rules-${mode} directories`
 		} else {
 			// Fall back to existing behavior for legacy files
-			const rooModeRuleFile = `.roorules-${mode}`
-			modeRuleContent = await safeReadFile(path.join(cwd, rooModeRuleFile))
+			const agentModeRuleFile = `.agentrules-${mode}`
+			modeRuleContent = await safeReadFile(path.join(cwd, agentModeRuleFile))
 			if (modeRuleContent) {
-				usedRuleFile = rooModeRuleFile
+				usedRuleFile = agentModeRuleFile
 			} else {
 				const clineModeRuleFile = `.clinerules-${mode}`
 				modeRuleContent = await safeReadFile(path.join(cwd, clineModeRuleFile))

@@ -9,7 +9,7 @@ import { AgentEventName, type ClineMessage } from "@openai-agent/types"
 import { waitFor, sleep } from "../utils"
 import { setDefaultSuiteTimeout } from "../test-utils"
 
-suite.skip("Roo Code read_file Tool", function () {
+suite.skip("OpenAI Compatible Agent read_file Tool", function () {
 	setDefaultSuiteTimeout(this)
 
 	let tempDir: string

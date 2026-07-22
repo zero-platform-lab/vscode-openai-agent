@@ -58,7 +58,7 @@ Please analyze this codebase and create an AGENTS.md file containing:
        - Then add any new non-obvious patterns you discover
        
        Also check for other AI assistant rules:
-       - .cursorrules, CLAUDE.md, .roorules
+       - .cursorrules, CLAUDE.md, .agentrules
        - .cursor/rules/, .github/copilot-instructions.md
     
     2. Identify stack

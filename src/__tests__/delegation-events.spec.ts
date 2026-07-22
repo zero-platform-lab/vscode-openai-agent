@@ -3,7 +3,7 @@
 import { AgentEventName, agentEventsSchema, taskEventSchema } from "@openai-agent/types"
 
 describe("delegation event schemas", () => {
-	test("rooCodeEventsSchema validates tuples", () => {
+	test("agentEventsSchema validates tuples", () => {
 		expect(() => (agentEventsSchema.shape as any)[AgentEventName.TaskDelegated].parse(["p", "c"])).not.toThrow()
 		expect(() =>
 			(agentEventsSchema.shape as any)[AgentEventName.TaskDelegationCompleted].parse(["p", "c", "s"]),

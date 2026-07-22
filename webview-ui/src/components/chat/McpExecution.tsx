@@ -10,7 +10,7 @@ import {
 	mcpExecutionStatusSchema,
 } from "@openai-agent/types"
 
-import { safeJsonParse } from "@roo/core"
+import { safeJsonParse } from "@agent/core"
 
 import { cn } from "@src/lib/utils"
 import { Button } from "@src/components/ui"

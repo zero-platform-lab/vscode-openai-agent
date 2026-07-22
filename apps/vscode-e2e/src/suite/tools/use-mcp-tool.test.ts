@@ -9,7 +9,7 @@ import { AgentEventName, type ClineMessage } from "@openai-agent/types"
 import { waitFor, sleep } from "../utils"
 import { setDefaultSuiteTimeout } from "../test-utils"
 
-suite.skip("Roo Code use_mcp_tool Tool", function () {
+suite.skip("OpenAI Compatible Agent use_mcp_tool Tool", function () {
 	setDefaultSuiteTimeout(this)
 
 	let tempDir: string
@@ -185,7 +185,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 			}
 		}
 		api.on(AgentEventName.TaskCompleted, taskCompletedHandler)
-		await sleep(2000) // Wait for Roo Code to fully initialize
+		await sleep(2000) // Wait for OpenAI Compatible Agent to fully initialize
 
 		// Trigger MCP server detection by opening and modifying the file
 		console.log("Triggering MCP server detection by modifying the config file...")
@@ -194,7 +194,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 			const document = await vscode.workspace.openTextDocument(mcpConfigUri)
 			const editor = await vscode.window.showTextDocument(document)
 
-			// Make a small modification to trigger the save event, without this Roo Code won't load the MCP server
+			// Make a small modification to trigger the save event, without this OpenAI Compatible Agent won't load the MCP server
 			const edit = new vscode.WorkspaceEdit()
 			const currentContent = document.getText()
 			const modifiedContent = currentContent.replace(
@@ -515,11 +515,11 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 				responseText.includes("mcp-test-") || responseText.includes(path.basename(testFiles.simple))
 			const hasDataFile =
 				responseText.includes("mcp-data-") || responseText.includes(path.basename(testFiles.testData))
-			const hasRooDir = responseText.includes(".agent")
+			const hasAgentDir = responseText.includes(".agent")
 
 			// At least one of our test files or the .roo directory should be present
 			assert.ok(
-				hasTestFile || hasDataFile || hasRooDir,
+				hasTestFile || hasDataFile || hasAgentDir,
 				`MCP server response should contain our test files or .roo directory. Expected to find: '${path.basename(testFiles.simple)}', '${path.basename(testFiles.testData)}', or '.agent'. Got: ${responseText.substring(0, 200)}...`,
 			)
 

@@ -8,7 +8,7 @@ import { AgentEventName, type ClineMessage } from "@openai-agent/types"
 import { waitFor, sleep, waitUntilCompleted } from "../utils"
 import { setDefaultSuiteTimeout } from "../test-utils"
 
-suite.skip("Roo Code execute_command Tool", function () {
+suite.skip("OpenAI Compatible Agent execute_command Tool", function () {
 	setDefaultSuiteTimeout(this)
 
 	let workspaceDir: string

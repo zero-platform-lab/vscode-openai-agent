@@ -15,12 +15,12 @@ export class AgentProtectedController {
 	private static readonly PROTECTED_PATTERNS = [
 		".agentignore",
 		".agentmodes",
-		".roorules*",
+		".agentrules*",
 		".clinerules*",
 		".agent/**",
 		".vscode/**",
 		"*.code-workspace",
-		".rooprotected", // For future use
+		".agentprotected", // For future use
 		"AGENTS.md",
 		"AGENT.md",
 	]
@@ -91,7 +91,7 @@ export class AgentProtectedController {
 	 * Get display message for protected file operations
 	 */
 	getProtectionMessage(): string {
-		return "This is a Agent configuration file and requires approval for modifications"
+		return "This is an Agent configuration file and requires approval for modifications"
 	}
 
 	/**

@@ -5,9 +5,9 @@ import { VolumeX, Image, WandSparkles, SendHorizontal, X, ListEnd, Square } from
 
 import type { ExtensionMessage } from "@openai-agent/types"
 
-import { mentionRegex, mentionRegexGlobal, commandRegexGlobal, unescapeSpaces } from "@roo/context-mentions"
-import { WebviewMessage } from "@roo/WebviewMessage"
-import { Mode, getAllModes } from "@roo/modes"
+import { mentionRegex, mentionRegexGlobal, commandRegexGlobal, unescapeSpaces } from "@agent/context-mentions"
+import { WebviewMessage } from "@agent/WebviewMessage"
+import { Mode, getAllModes } from "@agent/modes"
 
 import { vscode } from "@src/utils/vscode"
 import { useExtensionState } from "@src/context/ExtensionStateContext"

@@ -55,8 +55,8 @@ vi.mock("@src/context/ExtensionStateContext", () => ({
 	useExtensionState: () => mockExtensionState,
 }))
 
-// Mock findLastIndex from @roo/array
-vi.mock("@roo/array", () => ({
+// Mock findLastIndex from @agent/array
+vi.mock("@agent/array", () => ({
 	findLastIndex: (array: any[], predicate: (item: any) => boolean) => {
 		for (let i = array.length - 1; i >= 0; i--) {
 			if (predicate(array[i])) {
@@ -81,9 +81,9 @@ vi.mock("@/components/ui/hooks/useSelectedModel", () => ({
 	}),
 }))
 
-// Mock getModelMaxOutputTokens from @roo/api
+// Mock getModelMaxOutputTokens from @agent/api
 let mockMaxOutputTokens = 0
-vi.mock("@roo/api", () => ({
+vi.mock("@agent/api", () => ({
 	getModelMaxOutputTokens: () => mockMaxOutputTokens,
 }))
 

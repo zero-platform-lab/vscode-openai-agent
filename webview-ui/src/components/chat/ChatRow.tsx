@@ -13,10 +13,10 @@ import type {
 	ClineSayTool,
 } from "@openai-agent/types"
 
-import { Mode } from "@roo/modes"
+import { Mode } from "@agent/modes"
 
-import { COMMAND_OUTPUT_STRING } from "@roo/combineCommandSequences"
-import { safeJsonParse } from "@roo/core"
+import { COMMAND_OUTPUT_STRING } from "@agent/combineCommandSequences"
+import { safeJsonParse } from "@agent/core"
 
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { findMatchingResourceOrTemplate } from "@src/utils/mcp"

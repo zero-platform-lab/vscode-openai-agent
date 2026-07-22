@@ -2,7 +2,7 @@ import { Fzf } from "fzf"
 
 import type { ModeConfig, Command } from "@openai-agent/types"
 
-import { mentionRegex } from "@roo/context-mentions"
+import { mentionRegex } from "@agent/context-mentions"
 
 import { escapeSpaces } from "./path-mentions"
 

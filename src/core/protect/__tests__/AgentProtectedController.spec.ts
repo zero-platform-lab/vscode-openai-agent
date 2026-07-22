@@ -14,23 +14,23 @@ describe("AgentProtectedController", () => {
 			expect(controller.isWriteProtected(".agentignore")).toBe(true)
 		})
 
-		it("should protect files in .roo directory", () => {
-			expect(controller.isWriteProtected(".roo/config.json")).toBe(true)
-			expect(controller.isWriteProtected(".roo/settings/user.json")).toBe(true)
-			expect(controller.isWriteProtected(".roo/modes/custom.json")).toBe(true)
+		it("should protect files in .agent directory", () => {
+			expect(controller.isWriteProtected(".agent/config.json")).toBe(true)
+			expect(controller.isWriteProtected(".agent/settings/user.json")).toBe(true)
+			expect(controller.isWriteProtected(".agent/modes/custom.json")).toBe(true)
 		})
 
-		it("should protect .rooprotected file", () => {
-			expect(controller.isWriteProtected(".rooprotected")).toBe(true)
+		it("should protect .agentprotected file", () => {
+			expect(controller.isWriteProtected(".agentprotected")).toBe(true)
 		})
 
 		it("should protect .agentmodes files", () => {
 			expect(controller.isWriteProtected(".agentmodes")).toBe(true)
 		})
 
-		it("should protect .roorules* files", () => {
-			expect(controller.isWriteProtected(".roorules")).toBe(true)
-			expect(controller.isWriteProtected(".roorules.md")).toBe(true)
+		it("should protect .agentrules* files", () => {
+			expect(controller.isWriteProtected(".agentrules")).toBe(true)
+			expect(controller.isWriteProtected(".agentrules.md")).toBe(true)
 		})
 
 		it("should protect .clinerules* files", () => {
@@ -59,9 +59,9 @@ describe("AgentProtectedController", () => {
 			expect(controller.isWriteProtected("AGENT.md")).toBe(true)
 		})
 
-		it("should not protect other files starting with .roo", () => {
-			expect(controller.isWriteProtected(".roosettings")).toBe(false)
-			expect(controller.isWriteProtected(".rooconfig")).toBe(false)
+		it("should not protect other files starting with .agent", () => {
+			expect(controller.isWriteProtected(".agentsettings")).toBe(false)
+			expect(controller.isWriteProtected(".agentconfig")).toBe(false)
 		})
 
 		it("should not protect regular files", () => {
@@ -70,16 +70,16 @@ describe("AgentProtectedController", () => {
 			expect(controller.isWriteProtected("README.md")).toBe(false)
 		})
 
-		it("should not protect files that contain 'roo' but don't start with .roo", () => {
-			expect(controller.isWriteProtected("src/roo-utils.ts")).toBe(false)
-			expect(controller.isWriteProtected("config/roo.config.js")).toBe(false)
+		it("should not protect files that contain 'agent' but don't start with .agent", () => {
+			expect(controller.isWriteProtected("src/agent-utils.ts")).toBe(false)
+			expect(controller.isWriteProtected("config/agent.config.js")).toBe(false)
 		})
 
 		it("should handle nested paths correctly", () => {
-			expect(controller.isWriteProtected(".roo/config.json")).toBe(true) // .roo/** matches at root
+			expect(controller.isWriteProtected(".agent/config.json")).toBe(true) // .agent/** matches at root
 			expect(controller.isWriteProtected("nested/.agentignore")).toBe(true) // .agentignore matches anywhere by default
 			expect(controller.isWriteProtected("nested/.agentmodes")).toBe(true) // .agentmodes matches anywhere by default
-			expect(controller.isWriteProtected("nested/.roorules.md")).toBe(true) // .roorules* matches anywhere by default
+			expect(controller.isWriteProtected("nested/.agentrules.md")).toBe(true) // .agentrules* matches anywhere by default
 		})
 
 		it("should handle absolute paths by converting to relative", () => {
@@ -88,8 +88,8 @@ describe("AgentProtectedController", () => {
 		})
 
 		it("should handle paths with different separators", () => {
-			expect(controller.isWriteProtected(".roo\\config.json")).toBe(true)
-			expect(controller.isWriteProtected(".roo/config.json")).toBe(true)
+			expect(controller.isWriteProtected(".agent\\config.json")).toBe(true)
+			expect(controller.isWriteProtected(".agent/config.json")).toBe(true)
 		})
 
 		it("should not throw for absolute paths outside cwd", () => {
@@ -100,11 +100,11 @@ describe("AgentProtectedController", () => {
 
 	describe("getProtectedFiles", () => {
 		it("should return set of protected files from a list", () => {
-			const files = ["src/index.ts", ".agentignore", "package.json", ".roo/config.json", "README.md"]
+			const files = ["src/index.ts", ".agentignore", "package.json", ".agent/config.json", "README.md"]
 
 			const protectedFiles = controller.getProtectedFiles(files)
 
-			expect(protectedFiles).toEqual(new Set([".agentignore", ".roo/config.json"]))
+			expect(protectedFiles).toEqual(new Set([".agentignore", ".agent/config.json"]))
 		})
 
 		it("should return empty set when no files are protected", () => {
@@ -118,14 +118,14 @@ describe("AgentProtectedController", () => {
 
 	describe("annotatePathsWithProtection", () => {
 		it("should annotate paths with protection status", () => {
-			const files = ["src/index.ts", ".agentignore", ".roo/config.json", "package.json"]
+			const files = ["src/index.ts", ".agentignore", ".agent/config.json", "package.json"]
 
 			const annotated = controller.annotatePathsWithProtection(files)
 
 			expect(annotated).toEqual([
 				{ path: "src/index.ts", isProtected: false },
 				{ path: ".agentignore", isProtected: true },
-				{ path: ".roo/config.json", isProtected: true },
+				{ path: ".agent/config.json", isProtected: true },
 				{ path: "package.json", isProtected: false },
 			])
 		})
@@ -134,7 +134,7 @@ describe("AgentProtectedController", () => {
 	describe("getProtectionMessage", () => {
 		it("should return appropriate protection message", () => {
 			const message = controller.getProtectionMessage()
-			expect(message).toBe("This is a Roo configuration file and requires approval for modifications")
+			expect(message).toBe("This is an Agent configuration file and requires approval for modifications")
 		})
 	})
 
@@ -145,7 +145,7 @@ describe("AgentProtectedController", () => {
 			expect(instructions).toContain("# Protected Files")
 			expect(instructions).toContain("write-protected")
 			expect(instructions).toContain(".agentignore")
-			expect(instructions).toContain(".roo/**")
+			expect(instructions).toContain(".agent/**")
 			expect(instructions).toContain("\u{1F6E1}") // Shield symbol
 		})
 	})
@@ -157,12 +157,12 @@ describe("AgentProtectedController", () => {
 			expect(patterns).toEqual([
 				".agentignore",
 				".agentmodes",
-				".roorules*",
+				".agentrules*",
 				".clinerules*",
-				".roo/**",
+				".agent/**",
 				".vscode/**",
 				"*.code-workspace",
-				".rooprotected",
+				".agentprotected",
 				"AGENTS.md",
 				"AGENT.md",
 			])

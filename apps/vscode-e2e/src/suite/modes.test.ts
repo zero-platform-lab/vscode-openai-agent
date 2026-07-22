@@ -5,7 +5,7 @@ import { AgentEventName } from "@openai-agent/types"
 import { waitUntilCompleted } from "./utils"
 import { setDefaultSuiteTimeout } from "./test-utils"
 
-suite("Roo Code Modes", function () {
+suite("OpenAI Compatible Agent Modes", function () {
 	setDefaultSuiteTimeout(this)
 
 	test("Should handle switching modes correctly", async () => {

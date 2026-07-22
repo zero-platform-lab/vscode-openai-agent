@@ -4,7 +4,7 @@ import { Plus, Globe, Folder, Edit, Trash2, Settings } from "lucide-react"
 
 import type { SkillMetadata } from "@openai-agent/types"
 
-import { getAllModes } from "@roo/modes"
+import { getAllModes } from "@agent/modes"
 
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { useExtensionState } from "@/context/ExtensionStateContext"

@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react"
 
 import { type ModeConfig, type CustomModePrompts } from "@openai-agent/types"
 
-import { type Mode, getAllModes, defaultModeSlug } from "@roo/modes"
+import { type Mode, getAllModes, defaultModeSlug } from "@agent/modes"
 
 import { vscode } from "@/utils/vscode"
 import { cn } from "@/lib/utils"

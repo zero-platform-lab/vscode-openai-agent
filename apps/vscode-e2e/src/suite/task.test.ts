@@ -5,7 +5,7 @@ import { AgentEventName, type ClineMessage } from "@openai-agent/types"
 import { waitUntilCompleted } from "./utils"
 import { setDefaultSuiteTimeout } from "./test-utils"
 
-suite("Roo Code Task", function () {
+suite("OpenAI Compatible Agent Task", function () {
 	setDefaultSuiteTimeout(this)
 
 	test("Should handle prompt and response correctly", async () => {
@@ -28,9 +28,10 @@ suite("Roo Code Task", function () {
 
 		assert.ok(
 			!!messages.find(
-				({ say, text }) => (say === "completion_result" || say === "text") && text?.includes("My name is Roo"),
+				({ say, text }) =>
+					(say === "completion_result" || say === "text") && text?.includes("My name is Agent"),
 			),
-			`Completion should include "My name is Roo"`,
+			`Completion should include "My name is Agent"`,
 		)
 	})
 })

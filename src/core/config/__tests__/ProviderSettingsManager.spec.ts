@@ -338,7 +338,7 @@ describe("ProviderSettingsManager", () => {
 				},
 			}
 
-			expect(mockSecrets.store.mock.calls[0][0]).toEqual("roo_cline_config_api_config")
+			expect(mockSecrets.store.mock.calls[0][0]).toEqual("openai_agent_config_api_config")
 			expect(storedConfig).toEqual(expectedConfig)
 		})
 
@@ -388,7 +388,7 @@ describe("ProviderSettingsManager", () => {
 				},
 			}
 
-			expect(mockSecrets.store.mock.calls[0][0]).toEqual("roo_cline_config_api_config")
+			expect(mockSecrets.store.mock.calls[0][0]).toEqual("openai_agent_config_api_config")
 			expect(storedConfig).toEqual(expectedConfig)
 		})
 
@@ -432,7 +432,7 @@ describe("ProviderSettingsManager", () => {
 
 			const storedConfig = JSON.parse(mockSecrets.store.mock.calls[mockSecrets.store.mock.calls.length - 1][1])
 			expect(mockSecrets.store.mock.calls[mockSecrets.store.mock.calls.length - 1][0]).toEqual(
-				"roo_cline_config_api_config",
+				"openai_agent_config_api_config",
 			)
 			expect(storedConfig).toEqual(expectedConfig)
 		})
@@ -558,34 +558,6 @@ describe("ProviderSettingsManager", () => {
 	})
 
 	describe("LoadConfig", () => {
-		it("preserves Roo Code Router configs as retired providers", async () => {
-			const existingConfig = {
-				currentApiConfigName: "default",
-				apiConfigs: {
-					default: {
-						apiProvider: "roo",
-						apiModelId: "xai/grok-code-fast-1",
-						rooApiKey: "legacy-key",
-						id: "default-id",
-					},
-				},
-				migrations: {
-					rateLimitSecondsMigrated: true,
-					openAiHeadersMigrated: true,
-					consecutiveMistakeLimitMigrated: true,
-					todoListEnabledMigrated: true,
-					claudeCodeLegacySettingsMigrated: true,
-				},
-			}
-
-			mockSecrets.get.mockResolvedValue(JSON.stringify(existingConfig))
-
-			const { name, ...providerSettings } = await providerSettingsManager.getProfile({ name: "default" })
-
-			expect(name).toBe("default")
-			expect(providerSettings).toEqual(existingConfig.apiConfigs.default)
-		})
-
 		it("should load config and update current config name", async () => {
 			const existingConfig: ProviderProfiles = {
 				currentApiConfigName: "default",
@@ -835,7 +807,7 @@ describe("ProviderSettingsManager", () => {
 			await providerSettingsManager.resetAllConfigs()
 
 			// Should have called delete with the correct config key
-			expect(mockSecrets.delete).toHaveBeenCalledWith("roo_cline_config_api_config")
+			expect(mockSecrets.delete).toHaveBeenCalledWith("openai_agent_config_api_config")
 		})
 	})
 

@@ -4,7 +4,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 
 import type { ModelInfo } from "@openai-agent/types"
 
-import { parseApiPrice } from "@roo/cost"
+import { parseApiPrice } from "@agent/cost"
 
 export const OPENROUTER_DEFAULT_PROVIDER_NAME = "[default]"
 
