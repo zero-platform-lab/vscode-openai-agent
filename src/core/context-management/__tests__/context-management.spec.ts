@@ -889,9 +889,9 @@ describe("Context Management", () => {
 
 			const filesReadByRoo = ["src/test.ts", "src/utils.ts"]
 			const cwd = "/test/project"
-			const mockRooIgnoreController = {
+			const mockAgentIgnoreController = {
 				filterPaths: vi.fn(),
-			} as unknown as import("../../ignore/RooIgnoreController").RooIgnoreController
+			} as unknown as import("../../ignore/AgentIgnoreController").AgentIgnoreController
 
 			const result = await manageContext({
 				messages: messagesWithSmallContent,
@@ -907,7 +907,7 @@ describe("Context Management", () => {
 				currentProfileId: "default",
 				filesReadByRoo,
 				cwd,
-				rooIgnoreController: mockRooIgnoreController,
+				rooIgnoreController: mockAgentIgnoreController,
 			})
 
 			// Verify summarizeConversation was called with filesReadByRoo, cwd, and rooIgnoreController
@@ -919,7 +919,7 @@ describe("Context Management", () => {
 				isAutomaticTrigger: true,
 				filesReadByRoo,
 				cwd,
-				rooIgnoreController: mockRooIgnoreController,
+				rooIgnoreController: mockAgentIgnoreController,
 			})
 
 			// Verify the result contains the summary information

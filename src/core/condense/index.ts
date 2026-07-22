@@ -7,7 +7,7 @@ import { ApiMessage } from "../task-persistence/apiMessages"
 import { maybeRemoveImageBlocks } from "../../api/transform/image-cleaning"
 import { findLast } from "../../shared/array"
 import { supportPrompt } from "../../shared/support-prompt"
-import { RooIgnoreController } from "../ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
 import { generateFoldedFileContext } from "./foldedFileContext"
 
 export type { FoldedFileContextResult, FoldedFileContextOptions } from "./foldedFileContext"
@@ -230,7 +230,7 @@ export type SummarizeConversationOptions = {
 	environmentDetails?: string
 	filesReadByRoo?: string[]
 	cwd?: string
-	rooIgnoreController?: RooIgnoreController
+	rooIgnoreController?: AgentIgnoreController
 }
 
 /**

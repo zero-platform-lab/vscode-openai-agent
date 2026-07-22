@@ -2,7 +2,7 @@ import { safeWriteJson } from "../../utils/safeWriteJson"
 import * as path from "path"
 import * as os from "os"
 import * as fs from "fs/promises"
-import { getRooDirectoriesForCwd } from "../../services/roo-config/index.js"
+import { getAgentDirectoriesForCwd } from "../../services/agent-config/index.js"
 import pWaitFor from "p-wait-for"
 import * as vscode from "vscode"
 
@@ -57,7 +57,7 @@ import { getOpenAiModels } from "../../api/providers/openai"
 import { getVsCodeLmModels } from "../../api/providers/vscode-lm"
 import { openMention } from "../mentions"
 import { resolveImageMentions } from "../mentions/resolveImageMentions"
-import { RooIgnoreController } from "../ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
 import { getWorkspacePath } from "../../utils/path"
 import { isPathOutsideWorkspace } from "../../utils/pathUtils"
 import { Mode, defaultModeSlug } from "../../shared/modes"
@@ -1262,11 +1262,11 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			}
 
 			const workspaceFolder = getCurrentCwd()
-			const rooDir = path.join(workspaceFolder, ".roo")
-			const mcpPath = path.join(rooDir, "mcp.json")
+			const agentDir = path.join(workspaceFolder, ".agent")
+			const mcpPath = path.join(agentDir, "mcp.json")
 
 			try {
-				await fs.mkdir(rooDir, { recursive: true })
+				await fs.mkdir(agentDir, { recursive: true })
 				const exists = await fileExistsAtPath(mcpPath)
 
 				if (!exists) {
@@ -1625,25 +1625,25 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 					20, // Use default limit, as filtering is now done in the backend
 				)
 
-				// Get the RooIgnoreController from the current task, or create a new one
+				// Get the AgentIgnoreController from the current task, or create a new one
 				const currentTask = provider.getCurrentTask()
 				let rooIgnoreController = currentTask?.rooIgnoreController
-				let tempController: RooIgnoreController | undefined
+				let tempController: AgentIgnoreController | undefined
 
 				// If no current task or no controller, create a temporary one
 				if (!rooIgnoreController) {
-					tempController = new RooIgnoreController(workspacePath)
+					tempController = new AgentIgnoreController(workspacePath)
 					await tempController.initialize()
 					rooIgnoreController = tempController
 				}
 
 				try {
-					// Get showRooIgnoredFiles setting from state
-					const { showRooIgnoredFiles = false } = (await provider.getState()) ?? {}
+					// Get showAgentIgnoredFiles setting from state
+					const { showAgentIgnoredFiles = false } = (await provider.getState()) ?? {}
 
-					// Filter results using RooIgnoreController if showRooIgnoredFiles is false
+					// Filter results using AgentIgnoreController if showAgentIgnoredFiles is false
 					let filteredResults = results
-					if (!showRooIgnoredFiles && rooIgnoreController) {
+					if (!showAgentIgnoredFiles && rooIgnoreController) {
 						const allowedPaths = rooIgnoreController.filterPaths(results.map((r) => r.path))
 						filteredResults = results.filter((r) => allowedPaths.includes(r.path))
 					}
@@ -1681,7 +1681,7 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 		}
 		case "refreshCustomTools": {
 			try {
-				const toolDirs = getRooDirectoriesForCwd(getCurrentCwd()).map((dir) => path.join(dir, "tools"))
+				const toolDirs = getAgentDirectoriesForCwd(getCurrentCwd()).map((dir) => path.join(dir, "tools"))
 				await customToolRegistry.loadFromDirectories(toolDirs)
 
 				await provider.postMessageToWebview({
@@ -1898,14 +1898,14 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 				if (scope === "project") {
 					const workspacePath = getWorkspacePath()
 					if (workspacePath) {
-						rulesFolderPath = path.join(workspacePath, ".roo", `rules-${message.slug}`)
+						rulesFolderPath = path.join(workspacePath, ".agent", `rules-${message.slug}`)
 					} else {
-						rulesFolderPath = path.join(".roo", `rules-${message.slug}`)
+						rulesFolderPath = path.join(".agent", `rules-${message.slug}`)
 					}
 				} else {
 					// Global scope - use OS home directory
 					const homeDir = os.homedir()
-					rulesFolderPath = path.join(homeDir, ".roo", `rules-${message.slug}`)
+					rulesFolderPath = path.join(homeDir, ".agent", `rules-${message.slug}`)
 				}
 
 				// Check if the rules folder exists
@@ -2655,7 +2655,7 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 				// Determine the commands directory based on source
 				let commandsDir: string
 				if (source === "global") {
-					const globalConfigDir = path.join(os.homedir(), ".roo")
+					const globalConfigDir = path.join(os.homedir(), ".agent")
 					commandsDir = path.join(globalConfigDir, "commands")
 				} else {
 					if (!vscode.workspace.workspaceFolders?.length) {
@@ -2668,7 +2668,7 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 						vscode.window.showErrorMessage(t("common:errors.no_workspace_for_project_command"))
 						break
 					}
-					commandsDir = path.join(workspaceRoot, ".roo", "commands")
+					commandsDir = path.join(workspaceRoot, ".agent", "commands")
 				}
 
 				// Ensure the commands directory exists

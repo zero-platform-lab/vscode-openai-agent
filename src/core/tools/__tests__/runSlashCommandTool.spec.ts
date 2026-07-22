@@ -99,7 +99,7 @@ describe("runSlashCommandTool", () => {
 		const getSkillContent = vi.fn().mockResolvedValue({
 			name: "skill-only",
 			description: "Skill-generated command",
-			path: "/mock/.roo/skills/skill-only/SKILL.md",
+			path: "/mock/.agent/skills/skill-only/SKILL.md",
 			source: "project" as const,
 			instructions: "Use skill workflow",
 		})
@@ -167,7 +167,7 @@ Use skill workflow`,
 		const getSkillContent = vi.fn().mockResolvedValue({
 			name: "setup",
 			description: "Setup skill",
-			path: "/mock/.roo/skills/setup/SKILL.md",
+			path: "/mock/.agent/skills/setup/SKILL.md",
 			source: "project" as const,
 			instructions: "Skill should not run",
 		})
@@ -326,7 +326,7 @@ Run tests with specific focus`,
 			name: "deploy",
 			content: "Deploy application to production",
 			source: "global" as const,
-			filePath: "~/.roo/commands/deploy.md",
+			filePath: "~/.agent/commands/deploy.md",
 		}
 
 		vi.mocked(getCommand).mockResolvedValue(mockCommand)

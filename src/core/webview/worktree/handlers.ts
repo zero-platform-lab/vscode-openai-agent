@@ -226,8 +226,8 @@ export async function handleGetWorktreeDefaults(provider: ClineProvider): Promis
 	const workspaceFolders = vscode.workspace.workspaceFolders
 	const projectName = workspaceFolders?.[0]?.name || "project"
 
-	const dotRooPath = path.join(os.homedir(), ".roo")
-	const suggestedPath = path.join(dotRooPath, "worktrees", `${projectName}-${suffix}`)
+	const dotAgentPath = path.join(os.homedir(), ".agent")
+	const suggestedPath = path.join(dotAgentPath, "worktrees", `${projectName}-${suffix}`)
 
 	return {
 		suggestedBranch: `worktree/roo-${suffix}`,

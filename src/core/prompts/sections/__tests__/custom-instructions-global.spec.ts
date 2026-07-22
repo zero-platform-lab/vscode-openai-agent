@@ -41,10 +41,10 @@ vi.mock("fs/promises", () => ({
 	},
 }))
 
-// Mock the roo-config service
-vi.mock("../../../../services/roo-config", () => ({
-	getRooDirectoriesForCwd: mockGetRooDirectoriesForCwd,
-	getAllRooDirectoriesForCwd: mockGetAllRooDirectoriesForCwd,
+// Mock the agent-config service
+vi.mock("../../../../services/agent-config", () => ({
+	getAgentDirectoriesForCwd: mockGetRooDirectoriesForCwd,
+	getAllAgentDirectoriesForCwd: mockGetAllRooDirectoriesForCwd,
 	getAgentsDirectoriesForCwd: mockGetAgentsDirectoriesForCwd,
 	getGlobalRooDirectory: mockGetGlobalRooDirectory,
 }))
@@ -54,14 +54,14 @@ import { loadRuleFiles, addCustomInstructions } from "../custom-instructions"
 describe("custom-instructions global .roo support", () => {
 	const mockCwd = "/mock/project"
 	const mockHomeDir = "/mock/home"
-	const globalRooDir = path.join(mockHomeDir, ".roo")
-	const projectRooDir = path.join(mockCwd, ".roo")
+	const globalRooDir = path.join(mockHomeDir, ".agent")
+	const projectRooDir = path.join(mockCwd, ".agent")
 
 	beforeEach(() => {
 		vi.clearAllMocks()
 		mockHomedir.mockReturnValue(mockHomeDir)
 		mockGetRooDirectoriesForCwd.mockReturnValue([globalRooDir, projectRooDir])
-		// getAllRooDirectoriesForCwd is now async and returns the same directories by default
+		// getAllAgentDirectoriesForCwd is now async and returns the same directories by default
 		mockGetAllRooDirectoriesForCwd.mockResolvedValue([globalRooDir, projectRooDir])
 		// getAgentsDirectoriesForCwd returns parent directories (without .roo)
 		mockGetAgentsDirectoriesForCwd.mockResolvedValue([mockCwd])

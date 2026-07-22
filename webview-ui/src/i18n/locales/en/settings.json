@@ -294,7 +294,7 @@
 			},
 			"protected": {
 				"label": "Include protected files",
-				"description": "Allow Agent to create and edit protected files (like .rooignore and .roo/ configuration files) without requiring approval."
+				"description": "Allow Agent to create and edit protected files (like .agentignore and .agent/ configuration files) without requiring approval."
 			}
 		},
 		"mcp": {
@@ -662,9 +662,9 @@
 			"label": "Workspace files context limit",
 			"description": "Maximum number of files to include in current working directory details. Higher values provide more context but increase token usage."
 		},
-		"rooignore": {
-			"label": "Show .rooignore'd files in lists and searches",
-			"description": "When enabled, files matching patterns in .rooignore will be shown in lists with a lock symbol. When disabled, these files will be completely hidden from file lists and searches."
+		"agentignore": {
+			"label": "Show .agentignore'd files in lists and searches",
+			"description": "When enabled, files matching patterns in .agentignore will be shown in lists with a lock symbol. When disabled, these files will be completely hidden from file lists and searches."
 		},
 		"maxConcurrentFileReads": {
 			"label": "Concurrent file reads limit",
@@ -725,7 +725,7 @@
 		},
 		"enableSubfolderRules": {
 			"label": "Enable subfolder rules",
-			"description": "Recursively discover and load .roo/rules and AGENTS.md files from subdirectories. Useful for monorepos with per-package rules."
+			"description": "Recursively discover and load .agent/rules and AGENTS.md files from subdirectories. Useful for monorepos with per-package rules."
 		}
 	},
 	"terminal": {
@@ -865,9 +865,9 @@
 		},
 		"CUSTOM_TOOLS": {
 			"name": "Enable custom tools",
-			"description": "When enabled, Agent can load and use custom TypeScript/JavaScript tools from your project's .roo/tools directory or ~/.roo/tools for global tools. Note: these tools will automatically be auto-approved.",
+			"description": "When enabled, Agent can load and use custom TypeScript/JavaScript tools from your project's .agent/tools directory or ~/.agent/tools for global tools. Note: these tools will automatically be auto-approved.",
 			"toolsHeader": "Available Custom Tools",
-			"noTools": "No custom tools loaded. Add .ts or .js files to your project's .roo/tools directory or ~/.roo/tools for global tools.",
+			"noTools": "No custom tools loaded. Add .ts or .js files to your project's .agent/tools directory or ~/.agent/tools for global tools.",
 			"refreshButton": "Refresh",
 			"refreshing": "Refreshing...",
 			"refreshSuccess": "Tools refreshed successfully",

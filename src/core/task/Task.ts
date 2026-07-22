@@ -96,8 +96,8 @@ import { buildNativeToolsArrayWithRestrictions } from "./build-tools"
 import { ToolRepetitionDetector } from "../tools/ToolRepetitionDetector"
 import { restoreTodoListForTask } from "../tools/UpdateTodoListTool"
 import { FileContextTracker } from "../context-tracking/FileContextTracker"
-import { RooIgnoreController } from "../ignore/RooIgnoreController"
-import { RooProtectedController } from "../protect/RooProtectedController"
+import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
+import { AgentProtectedController } from "../protect/AgentProtectedController"
 import { type AssistantMessageContent, presentAssistantMessage } from "../assistant-message"
 import { NativeToolCallParser } from "../assistant-message/NativeToolCallParser"
 import { manageContext, willManageContext } from "../context-management"
@@ -291,8 +291,8 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	}
 
 	toolRepetitionDetector: ToolRepetitionDetector
-	rooIgnoreController?: RooIgnoreController
-	rooProtectedController?: RooProtectedController
+	rooIgnoreController?: AgentIgnoreController
+	rooProtectedController?: AgentProtectedController
 	fileContextTracker: FileContextTracker
 	terminalProcess?: RooTerminalProcess
 
@@ -469,12 +469,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.instanceId = crypto.randomUUID().slice(0, 8)
 		this.taskNumber = -1
 
-		this.rooIgnoreController = new RooIgnoreController(this.cwd)
-		this.rooProtectedController = new RooProtectedController(this.cwd)
+		this.rooIgnoreController = new AgentIgnoreController(this.cwd)
+		this.rooProtectedController = new AgentProtectedController(this.cwd)
 		this.fileContextTracker = new FileContextTracker(provider, this.taskId)
 
 		this.rooIgnoreController.initialize().catch((error) => {
-			console.error("Failed to initialize RooIgnoreController:", error)
+			console.error("Failed to initialize AgentIgnoreController:", error)
 		})
 
 		this.apiConfiguration = apiConfiguration
@@ -2309,7 +2309,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				this.rooIgnoreController = undefined
 			}
 		} catch (error) {
-			console.error("Error disposing RooIgnoreController:", error)
+			console.error("Error disposing AgentIgnoreController:", error)
 			// This is the critical one for the leak fix.
 		}
 
@@ -2534,7 +2534,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			const provider = this.providerRef.deref()
 			const state = provider ? await provider.getState() : undefined
 
-			const showRooIgnoredFiles = state?.showRooIgnoredFiles ?? false
+			const showAgentIgnoredFiles = state?.showAgentIgnoredFiles ?? false
 			const includeDiagnosticMessages = state?.includeDiagnosticMessages ?? true
 			const maxDiagnosticMessages = state?.maxDiagnosticMessages ?? 50
 			const currentMode = state?.mode ?? defaultModeSlug
@@ -2544,7 +2544,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				cwd: this.cwd,
 				fileContextTracker: this.fileContextTracker,
 				rooIgnoreController: this.rooIgnoreController,
-				showRooIgnoredFiles,
+				showAgentIgnoredFiles,
 				includeDiagnosticMessages,
 				maxDiagnosticMessages,
 				skillsManager: provider?.getSkillsManager(),

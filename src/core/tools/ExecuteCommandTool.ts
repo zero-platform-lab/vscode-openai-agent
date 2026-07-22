@@ -61,7 +61,7 @@ export class ExecuteCommandTool extends BaseTool<"execute_command"> {
 			const ignoredFileAttemptedToAccess = task.rooIgnoreController?.validateCommand(canonicalCommand)
 
 			if (ignoredFileAttemptedToAccess) {
-				await task.say("rooignore_error", ignoredFileAttemptedToAccess)
+				await task.say("agentignore_error", ignoredFileAttemptedToAccess)
 				pushToolResult(formatResponse.rooIgnoreError(ignoredFileAttemptedToAccess))
 				return
 			}

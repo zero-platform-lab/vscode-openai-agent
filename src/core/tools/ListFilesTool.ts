@@ -38,14 +38,14 @@ export class ListFilesTool extends BaseTool<"list_files"> {
 			const isOutsideWorkspace = isPathOutsideWorkspace(absolutePath)
 
 			const [files, didHitLimit] = await listFiles(absolutePath, recursive || false, 200)
-			const { showRooIgnoredFiles = false } = (await task.providerRef.deref()?.getState()) ?? {}
+			const { showAgentIgnoredFiles = false } = (await task.providerRef.deref()?.getState()) ?? {}
 
 			const result = formatResponse.formatFilesList(
 				absolutePath,
 				files,
 				didHitLimit,
 				task.rooIgnoreController,
-				showRooIgnoredFiles,
+				showAgentIgnoredFiles,
 				task.rooProtectedController,
 			)
 

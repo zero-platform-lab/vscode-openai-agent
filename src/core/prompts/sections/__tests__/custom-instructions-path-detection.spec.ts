@@ -4,15 +4,15 @@ describe("custom-instructions path detection", () => {
 	it("should use exact path comparison instead of string includes", () => {
 		// Test the logic that our fix implements
 		const fakeHomeDir = "/Users/john.roo.smith"
-		const globalRooDir = path.join(fakeHomeDir, ".roo") // "/Users/john.roo.smith/.roo"
+		const globalRooDir = path.join(fakeHomeDir, ".agent") // "/Users/john.roo.smith/.roo"
 		const projectRooDir = "/projects/my-project/.roo"
 
 		// Old implementation (fragile):
-		// const isGlobal = rooDir.includes(path.join(os.homedir(), ".roo"))
-		// This could fail if the home directory path contains ".roo" elsewhere
+		// const isGlobal = agentDir.includes(path.join(os.homedir(), ".agent"))
+		// This could fail if the home directory path contains ".agent" elsewhere
 
 		// New implementation (robust):
-		// const isGlobal = path.resolve(rooDir) === path.resolve(getGlobalRooDirectory())
+		// const isGlobal = path.resolve(agentDir) === path.resolve(getGlobalRooDirectory())
 
 		// Test the new logic
 		const isGlobalForGlobalDir = path.resolve(globalRooDir) === path.resolve(globalRooDir)
@@ -22,14 +22,14 @@ describe("custom-instructions path detection", () => {
 		expect(isGlobalForProjectDir).toBe(false)
 
 		// Verify that the old implementation would have been problematic
-		// if the home directory contained ".roo" in the path
-		const oldLogicGlobal = globalRooDir.includes(path.join(fakeHomeDir, ".roo"))
-		const oldLogicProject = projectRooDir.includes(path.join(fakeHomeDir, ".roo"))
+		// if the home directory contained ".agent" in the path
+		const oldLogicGlobal = globalRooDir.includes(path.join(fakeHomeDir, ".agent"))
+		const oldLogicProject = projectRooDir.includes(path.join(fakeHomeDir, ".agent"))
 
 		expect(oldLogicGlobal).toBe(true) // This works
 		expect(oldLogicProject).toBe(false) // This also works, but is fragile
 
-		// The issue was that if the home directory path itself contained ".roo",
+		// The issue was that if the home directory path itself contained ".agent",
 		// the includes() check could produce false positives in edge cases
 	})
 

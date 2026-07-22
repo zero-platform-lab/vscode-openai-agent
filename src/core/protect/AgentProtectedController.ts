@@ -7,17 +7,17 @@ export const SHIELD_SYMBOL = "\u{1F6E1}"
  * Controls write access to Agent configuration files by enforcing protection patterns.
  * Prevents auto-approved modifications to sensitive Agent configuration files.
  */
-export class RooProtectedController {
+export class AgentProtectedController {
 	private cwd: string
 	private ignoreInstance: Ignore
 
 	// Predefined list of protected Agent configuration patterns
 	private static readonly PROTECTED_PATTERNS = [
-		".rooignore",
-		".roomodes",
+		".agentignore",
+		".agentmodes",
 		".roorules*",
 		".clinerules*",
-		".roo/**",
+		".agent/**",
 		".vscode/**",
 		"*.code-workspace",
 		".rooprotected", // For future use
@@ -29,7 +29,7 @@ export class RooProtectedController {
 		this.cwd = cwd
 		// Initialize ignore instance with protected patterns
 		this.ignoreInstance = ignore()
-		this.ignoreInstance.add(RooProtectedController.PROTECTED_PATTERNS)
+		this.ignoreInstance.add(AgentProtectedController.PROTECTED_PATTERNS)
 	}
 
 	/**
@@ -99,7 +99,7 @@ export class RooProtectedController {
 	 * @returns Formatted instructions about file protection
 	 */
 	getInstructions(): string {
-		const patterns = RooProtectedController.PROTECTED_PATTERNS.join(", ")
+		const patterns = AgentProtectedController.PROTECTED_PATTERNS.join(", ")
 		return `# Protected Files\n\n(The following Agent configuration file patterns are write-protected and always require approval for modifications, regardless of autoapproval settings. When using list_files, you'll notice a ${SHIELD_SYMBOL} next to files that are write-protected.)\n\nProtected patterns: ${patterns}`
 	}
 
@@ -107,6 +107,6 @@ export class RooProtectedController {
 	 * Get the list of protected patterns (for testing/debugging)
 	 */
 	static getProtectedPatterns(): readonly string[] {
-		return RooProtectedController.PROTECTED_PATTERNS
+		return AgentProtectedController.PROTECTED_PATTERNS
 	}
 }

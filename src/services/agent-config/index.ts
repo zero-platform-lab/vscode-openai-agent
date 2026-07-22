@@ -3,29 +3,29 @@ import * as os from "os"
 import fs from "fs/promises"
 
 /**
- * Gets the global .roo directory path based on the current platform
+ * Gets the global .agent directory path based on the current platform
  *
- * @returns The absolute path to the global .roo directory
+ * @returns The absolute path to the global .agent directory
  *
  * @example Platform-specific paths:
  * ```
- * // macOS/Linux: ~/.roo/
- * // Example: /Users/john/.roo
+ * // macOS/Linux: ~/.agent/
+ * // Example: /Users/john/.agent
  *
- * // Windows: %USERPROFILE%\.roo\
- * // Example: C:\Users\john\.roo
+ * // Windows: %USERPROFILE%\.agent\
+ * // Example: C:\Users\john\.agent
  * ```
  *
  * @example Usage:
  * ```typescript
  * const globalDir = getGlobalRooDirectory()
- * // Returns: "/Users/john/.roo" (on macOS/Linux)
- * // Returns: "C:\\Users\\john\\.roo" (on Windows)
+ * // Returns: "/Users/john/.agent" (on macOS/Linux)
+ * // Returns: "C:\\Users\\john\\.agent" (on Windows)
  * ```
  */
 export function getGlobalRooDirectory(): string {
 	const homeDir = os.homedir()
-	return path.join(homeDir, ".roo")
+	return path.join(homeDir, ".agent")
 }
 
 /**
@@ -73,24 +73,24 @@ export function getProjectAgentsDirectoryForCwd(cwd: string): string {
 }
 
 /**
- * Gets the project-local .roo directory path for a given cwd
+ * Gets the project-local .agent directory path for a given cwd
  *
  * @param cwd - Current working directory (project path)
- * @returns The absolute path to the project-local .roo directory
+ * @returns The absolute path to the project-local .agent directory
  *
  * @example
  * ```typescript
  * const projectDir = getProjectRooDirectoryForCwd('/Users/john/my-project')
- * // Returns: "/Users/john/my-project/.roo"
+ * // Returns: "/Users/john/my-project/.agent"
  *
  * const windowsProjectDir = getProjectRooDirectoryForCwd('C:\\Users\\john\\my-project')
- * // Returns: "C:\\Users\\john\\my-project\\.roo"
+ * // Returns: "C:\\Users\\john\\my-project\\.agent"
  * ```
  *
  * @example Directory structure:
  * ```
  * /Users/john/my-project/
- * ├── .roo/                    # Project-local configuration directory
+ * ├── .agent/                    # Project-local configuration directory
  * │   ├── rules/
  * │   │   └── rules.md
  * │   ├── custom-instructions.md
@@ -102,7 +102,7 @@ export function getProjectAgentsDirectoryForCwd(cwd: string): string {
  * ```
  */
 export function getProjectRooDirectoryForCwd(cwd: string): string {
-	return path.join(cwd, ".roo")
+	return path.join(cwd, ".agent")
 }
 
 /**
@@ -156,36 +156,36 @@ export async function readFileIfExists(filePath: string): Promise<string | null>
 }
 
 /**
- * Discovers all .roo directories in subdirectories of the workspace
+ * Discovers all .agent directories in subdirectories of the workspace
  *
  * @param cwd - Current working directory (workspace root)
- * @returns Array of absolute paths to .roo directories found in subdirectories,
- *          sorted alphabetically. Does not include the root .roo directory.
+ * @returns Array of absolute paths to .agent directories found in subdirectories,
+ *          sorted alphabetically. Does not include the root .agent directory.
  *
  * @example
  * ```typescript
  * const subfolderRoos = await discoverSubfolderRooDirectories('/Users/john/monorepo')
  * // Returns:
  * // [
- * //   '/Users/john/monorepo/package-a/.roo',
- * //   '/Users/john/monorepo/package-b/.roo',
- * //   '/Users/john/monorepo/packages/shared/.roo'
+ * //   '/Users/john/monorepo/package-a/.agent',
+ * //   '/Users/john/monorepo/package-b/.agent',
+ * //   '/Users/john/monorepo/packages/shared/.agent'
  * // ]
  * ```
  *
  * @example Directory structure:
  * ```
  * /Users/john/monorepo/
- * ├── .roo/                    # Root .roo (NOT included - use getProjectRooDirectoryForCwd)
+ * ├── .agent/                    # Root .agent (NOT included - use getProjectRooDirectoryForCwd)
  * ├── package-a/
- * │   └── .roo/                # Included
+ * │   └── .agent/                # Included
  * │       └── rules/
  * ├── package-b/
- * │   └── .roo/                # Included
+ * │   └── .agent/                # Included
  * │       └── rules-code/
  * └── packages/
  *     └── shared/
- *         └── .roo/            # Included (nested)
+ *         └── .agent/            # Included (nested)
  *             └── rules/
  * ```
  */
@@ -196,14 +196,14 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 		// available in the webview context
 		const { executeRipgrep } = await import("../search/file-search")
 
-		// Use ripgrep to find any file inside any .roo directory
-		// This efficiently discovers all .roo folders regardless of their content
+		// Use ripgrep to find any file inside any .agent directory
+		// This efficiently discovers all .agent folders regardless of their content
 		const args = [
 			"--files",
 			"--hidden",
 			"--follow",
 			"-g",
-			"**/.roo/**",
+			"**/.agent/**",
 			"-g",
 			"!node_modules/**",
 			"-g",
@@ -213,25 +213,25 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 
 		const results = await executeRipgrep({ args, workspacePath: cwd })
 
-		// Extract unique .roo directory paths
-		const rooDirs = new Set<string>()
-		const rootRooDir = path.join(cwd, ".roo")
+		// Extract unique .agent directory paths
+		const agentDirs = new Set<string>()
+		const rootRooDir = path.join(cwd, ".agent")
 
 		for (const result of results) {
-			// Match paths like "subfolder/.roo/anything" or "subfolder/nested/.roo/anything"
+			// Match paths like "subfolder/.agent/anything" or "subfolder/nested/.agent/anything"
 			// Handle both forward slashes (Unix) and backslashes (Windows)
-			const match = result.path.match(/^(.+?)[/\\]\.roo[/\\]/)
+			const match = result.path.match(/^(.+?)[/\\]\.agent[/\\]/)
 			if (match) {
-				const rooDir = path.join(cwd, match[1], ".roo")
-				// Exclude the root .roo directory (already handled by getProjectRooDirectoryForCwd)
-				if (rooDir !== rootRooDir) {
-					rooDirs.add(rooDir)
+				const agentDir = path.join(cwd, match[1], ".agent")
+				// Exclude the root .agent directory (already handled by getProjectRooDirectoryForCwd)
+				if (agentDir !== rootRooDir) {
+					agentDirs.add(agentDir)
 				}
 			}
 		}
 
 		// Return sorted alphabetically
-		return Array.from(rooDirs).sort()
+		return Array.from(agentDirs).sort()
 	} catch (error) {
 		// If discovery fails (e.g., ripgrep not available), return empty array
 		return []
@@ -239,7 +239,7 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
 }
 
 /**
- * Gets the ordered list of .roo directories to check (global first, then project-local)
+ * Gets the ordered list of .agent directories to check (global first, then project-local)
  *
  * @param cwd - Current working directory (project path)
  * @returns Array of directory paths to check in order [global, project-local]
@@ -247,23 +247,23 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
  * @example
  * ```typescript
  * // For a project at /Users/john/my-project
- * const directories = getRooDirectoriesForCwd('/Users/john/my-project')
+ * const directories = getAgentDirectoriesForCwd('/Users/john/my-project')
  * // Returns:
  * // [
- * //   '/Users/john/.roo',           // Global directory
- * //   '/Users/john/my-project/.roo' // Project-local directory
+ * //   '/Users/john/.agent',           // Global directory
+ * //   '/Users/john/my-project/.agent' // Project-local directory
  * // ]
  * ```
  *
  * @example Directory structure:
  * ```
  * /Users/john/
- * ├── .roo/                    # Global configuration
+ * ├── .agent/                    # Global configuration
  * │   ├── rules/
  * │   │   └── rules.md
  * │   └── custom-instructions.md
  * └── my-project/
- *     ├── .roo/                # Project-specific configuration
+ *     ├── .agent/                # Project-specific configuration
  *     │   ├── rules/
  *     │   │   └── rules.md     # Overrides global rules
  *     │   └── project-notes.md
@@ -271,7 +271,7 @@ export async function discoverSubfolderRooDirectories(cwd: string): Promise<stri
  *         └── index.ts
  * ```
  */
-export function getRooDirectoriesForCwd(cwd: string): string[] {
+export function getAgentDirectoriesForCwd(cwd: string): string[] {
 	const directories: string[] = []
 
 	// Add global directory first
@@ -284,25 +284,25 @@ export function getRooDirectoriesForCwd(cwd: string): string[] {
 }
 
 /**
- * Gets the ordered list of all .roo directories including subdirectories
+ * Gets the ordered list of all .agent directories including subdirectories
  *
  * @param cwd - Current working directory (project path)
  * @returns Array of directory paths in order: [global, project-local, ...subfolders (alphabetically)]
  *
  * @example
  * ```typescript
- * // For a monorepo at /Users/john/monorepo with .roo in subfolders
- * const directories = await getAllRooDirectoriesForCwd('/Users/john/monorepo')
+ * // For a monorepo at /Users/john/monorepo with .agent in subfolders
+ * const directories = await getAllAgentDirectoriesForCwd('/Users/john/monorepo')
  * // Returns:
  * // [
- * //   '/Users/john/.roo',                    // Global directory
- * //   '/Users/john/monorepo/.roo',           // Project-local directory
- * //   '/Users/john/monorepo/package-a/.roo', // Subfolder (alphabetical)
- * //   '/Users/john/monorepo/package-b/.roo'  // Subfolder (alphabetical)
+ * //   '/Users/john/.agent',                    // Global directory
+ * //   '/Users/john/monorepo/.agent',           // Project-local directory
+ * //   '/Users/john/monorepo/package-a/.agent', // Subfolder (alphabetical)
+ * //   '/Users/john/monorepo/package-b/.agent'  // Subfolder (alphabetical)
  * // ]
  * ```
  */
-export async function getAllRooDirectoriesForCwd(cwd: string): Promise<string[]> {
+export async function getAllAgentDirectoriesForCwd(cwd: string): Promise<string[]> {
 	const directories: string[] = []
 
 	// Add global directory first
@@ -311,7 +311,7 @@ export async function getAllRooDirectoriesForCwd(cwd: string): Promise<string[]>
 	// Add project-local directory second
 	directories.push(getProjectRooDirectoryForCwd(cwd))
 
-	// Discover and add subfolder .roo directories
+	// Discover and add subfolder .agent directories
 	const subfolderDirs = await discoverSubfolderRooDirectories(cwd)
 	directories.push(...subfolderDirs)
 
@@ -319,10 +319,10 @@ export async function getAllRooDirectoriesForCwd(cwd: string): Promise<string[]>
 }
 
 /**
- * Gets parent directories containing .roo folders, in order from root to subfolders
+ * Gets parent directories containing .agent folders, in order from root to subfolders
  *
  * @param cwd - Current working directory (project path)
- * @returns Array of parent directory paths (not .roo paths) containing AGENTS.md or .roo
+ * @returns Array of parent directory paths (not .agent paths) containing AGENTS.md or .agent
  *
  * @example
  * ```typescript
@@ -336,12 +336,12 @@ export async function getAgentsDirectoriesForCwd(cwd: string): Promise<string[]>
 	// Always include the root directory
 	directories.push(cwd)
 
-	// Get all subfolder .roo directories
+	// Get all subfolder .agent directories
 	const subfolderRooDirs = await discoverSubfolderRooDirectories(cwd)
 
-	// Extract parent directories (remove .roo from path)
-	for (const rooDir of subfolderRooDirs) {
-		const parentDir = path.dirname(rooDir)
+	// Extract parent directories (remove .agent from path)
+	for (const agentDir of subfolderRooDirs) {
+		const parentDir = path.dirname(agentDir)
 		directories.push(parentDir)
 	}
 
@@ -349,9 +349,9 @@ export async function getAgentsDirectoriesForCwd(cwd: string): Promise<string[]>
 }
 
 /**
- * Loads configuration from multiple .roo directories with project overriding global
+ * Loads configuration from multiple .agent directories with project overriding global
  *
- * @param relativePath - The relative path within each .roo directory (e.g., 'rules/rules.md')
+ * @param relativePath - The relative path within each .agent directory (e.g., 'rules/rules.md')
  * @param cwd - Current working directory (project path)
  * @returns Object with global and project content, plus merged content
  *
@@ -362,8 +362,8 @@ export async function getAgentsDirectoriesForCwd(cwd: string): Promise<string[]>
  *
  * // Returns:
  * // {
- * //   global: "Global rules content...",     // From ~/.roo/rules/rules.md
- * //   project: "Project rules content...",   // From /Users/john/my-project/.roo/rules/rules.md
+ * //   global: "Global rules content...",     // From ~/.agent/rules/rules.md
+ * //   project: "Project rules content...",   // From /Users/john/my-project/.agent/rules/rules.md
  * //   merged: "Global rules content...\n\n# Project-specific rules (override global):\n\nProject rules content..."
  * // }
  * ```
@@ -374,8 +374,8 @@ export async function getAgentsDirectoriesForCwd(cwd: string): Promise<string[]>
  * cwd: '/Users/john/my-project'
  *
  * Reads from:
- * - Global: /Users/john/.roo/rules/rules.md
- * - Project: /Users/john/my-project/.roo/rules/rules.md
+ * - Global: /Users/john/.agent/rules/rules.md
+ * - Project: /Users/john/my-project/.agent/rules/rules.md
  *
  * Other common relativePath examples:
  * - 'custom-instructions.md'

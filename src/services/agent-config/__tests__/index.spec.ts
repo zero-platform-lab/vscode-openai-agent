@@ -34,8 +34,8 @@ import {
 	directoryExists,
 	fileExists,
 	readFileIfExists,
-	getRooDirectoriesForCwd,
-	getAllRooDirectoriesForCwd,
+	getAgentDirectoriesForCwd,
+	getAllAgentDirectoriesForCwd,
 	getAgentsDirectoriesForCwd,
 	discoverSubfolderRooDirectories,
 	loadConfiguration,
@@ -54,13 +54,13 @@ describe("RooConfigService", () => {
 	describe("getGlobalRooDirectory", () => {
 		it("should return correct path for global .roo directory", () => {
 			const result = getGlobalRooDirectory()
-			expect(result).toBe(path.join("/mock/home", ".roo"))
+			expect(result).toBe(path.join("/mock/home", ".agent"))
 		})
 
 		it("should handle different home directories", () => {
 			mockHomedir.mockReturnValue("/different/home")
 			const result = getGlobalRooDirectory()
-			expect(result).toBe(path.join("/different/home", ".roo"))
+			expect(result).toBe(path.join("/different/home", ".agent"))
 		})
 	})
 
@@ -68,7 +68,7 @@ describe("RooConfigService", () => {
 		it("should return correct path for given cwd", () => {
 			const cwd = "/custom/project/path"
 			const result = getProjectRooDirectoryForCwd(cwd)
-			expect(result).toBe(path.join(cwd, ".roo"))
+			expect(result).toBe(path.join(cwd, ".agent"))
 		})
 	})
 
@@ -236,13 +236,13 @@ describe("RooConfigService", () => {
 		})
 	})
 
-	describe("getRooDirectoriesForCwd", () => {
+	describe("getAgentDirectoriesForCwd", () => {
 		it("should return directories for given cwd", () => {
 			const cwd = "/custom/project/path"
 
-			const result = getRooDirectoriesForCwd(cwd)
+			const result = getAgentDirectoriesForCwd(cwd)
 
-			expect(result).toEqual([path.join("/mock/home", ".roo"), path.join(cwd, ".roo")])
+			expect(result).toEqual([path.join("/mock/home", ".agent"), path.join(cwd, ".agent")])
 		})
 	})
 
@@ -325,8 +325,8 @@ describe("RooConfigService", () => {
 
 			await loadConfiguration("rules/rules.md", "/project/path")
 
-			expect(mockReadFile).toHaveBeenCalledWith(path.join("/mock/home", ".roo", "rules/rules.md"), "utf-8")
-			expect(mockReadFile).toHaveBeenCalledWith(path.join("/project/path", ".roo", "rules/rules.md"), "utf-8")
+			expect(mockReadFile).toHaveBeenCalledWith(path.join("/mock/home", ".agent", "rules/rules.md"), "utf-8")
+			expect(mockReadFile).toHaveBeenCalledWith(path.join("/project/path", ".agent", "rules/rules.md"), "utf-8")
 		})
 	})
 
@@ -342,31 +342,31 @@ describe("RooConfigService", () => {
 		it("should discover .roo directories from subfolders", async () => {
 			// Find any file inside .roo directories
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.roo/rules/rule.md", type: "file" },
-				{ path: "package-b/.roo/rules-code/rule.md", type: "file" },
+				{ path: "package-a/.agent/rules/rule.md", type: "file" },
+				{ path: "package-b/.agent/rules-code/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "package-a", ".roo"),
-				path.join("/project/path", "package-b", ".roo"),
+				path.join("/project/path", "package-a", ".agent"),
+				path.join("/project/path", "package-b", ".agent"),
 			])
 		})
 
 		it("should sort discovered directories alphabetically", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "zebra/.roo/rules/rule.md", type: "file" },
-				{ path: "apple/.roo/rules/rule.md", type: "file" },
-				{ path: "mango/.roo/rules/rule.md", type: "file" },
+				{ path: "zebra/.agent/rules/rule.md", type: "file" },
+				{ path: "apple/.agent/rules/rule.md", type: "file" },
+				{ path: "mango/.agent/rules/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "apple", ".roo"),
-				path.join("/project/path", "mango", ".roo"),
-				path.join("/project/path", "zebra", ".roo"),
+				path.join("/project/path", "apple", ".agent"),
+				path.join("/project/path", "mango", ".agent"),
+				path.join("/project/path", "zebra", ".agent"),
 			])
 		})
 
@@ -374,26 +374,26 @@ describe("RooConfigService", () => {
 			// This would match the root .roo, which should be excluded
 			mockExecuteRipgrep.mockResolvedValueOnce([
 				{ path: ".roo/rules/rule.md", type: "file" }, // This is root - should be excluded
-				{ path: "subfolder/.roo/rules/rule.md", type: "file" },
+				{ path: "subfolder/.agent/rules/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			// Should only include subfolder, not root
-			expect(result).toEqual([path.join("/project/path", "subfolder", ".roo")])
+			expect(result).toEqual([path.join("/project/path", "subfolder", ".agent")])
 		})
 
 		it("should handle nested subdirectories", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "packages/core/.roo/rules/rule.md", type: "file" },
-				{ path: "packages/utils/.roo/rules-code/rule.md", type: "file" },
+				{ path: "packages/core/.agent/rules/rule.md", type: "file" },
+				{ path: "packages/utils/.agent/rules-code/rule.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "packages/core", ".roo"),
-				path.join("/project/path", "packages/utils", ".roo"),
+				path.join("/project/path", "packages/core", ".agent"),
+				path.join("/project/path", "packages/utils", ".agent"),
 			])
 		})
 
@@ -407,78 +407,78 @@ describe("RooConfigService", () => {
 
 		it("should deduplicate .roo directories from multiple files", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.roo/rules/rule1.md", type: "file" },
-				{ path: "package-a/.roo/rules/rule2.md", type: "file" },
-				{ path: "package-a/.roo/rules-code/rule3.md", type: "file" },
+				{ path: "package-a/.agent/rules/rule1.md", type: "file" },
+				{ path: "package-a/.agent/rules/rule2.md", type: "file" },
+				{ path: "package-a/.agent/rules-code/rule3.md", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			// Should only include package-a/.roo once
-			expect(result).toEqual([path.join("/project/path", "package-a", ".roo")])
+			expect(result).toEqual([path.join("/project/path", "package-a", ".agent")])
 		})
 
 		it("should discover .roo directories with any content", async () => {
 			// Should find .roo directories regardless of what's inside them
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.roo/rules/rule.md", type: "file" },
-				{ path: "package-b/.roo/rules-code/code-rule.md", type: "file" },
-				{ path: "package-c/.roo/rules-architect/arch-rule.md", type: "file" },
-				{ path: "package-d/.roo/config/settings.json", type: "file" },
+				{ path: "package-a/.agent/rules/rule.md", type: "file" },
+				{ path: "package-b/.agent/rules-code/code-rule.md", type: "file" },
+				{ path: "package-c/.agent/rules-architect/arch-rule.md", type: "file" },
+				{ path: "package-d/.agent/config/settings.json", type: "file" },
 			])
 
 			const result = await discoverSubfolderRooDirectories("/project/path")
 
 			expect(result).toEqual([
-				path.join("/project/path", "package-a", ".roo"),
-				path.join("/project/path", "package-b", ".roo"),
-				path.join("/project/path", "package-c", ".roo"),
-				path.join("/project/path", "package-d", ".roo"),
+				path.join("/project/path", "package-a", ".agent"),
+				path.join("/project/path", "package-b", ".agent"),
+				path.join("/project/path", "package-c", ".agent"),
+				path.join("/project/path", "package-d", ".agent"),
 			])
 		})
 	})
 
-	describe("getAllRooDirectoriesForCwd", () => {
+	describe("getAllAgentDirectoriesForCwd", () => {
 		it("should return global, project, and subfolder directories", async () => {
-			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "subfolder/.roo/rules/rule.md", type: "file" }])
+			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "subfolder/.agent/rules/rule.md", type: "file" }])
 
-			const result = await getAllRooDirectoriesForCwd("/project/path")
+			const result = await getAllAgentDirectoriesForCwd("/project/path")
 
 			expect(result).toEqual([
-				path.join("/mock/home", ".roo"), // global
-				path.join("/project/path", ".roo"), // project
-				path.join("/project/path", "subfolder", ".roo"), // subfolder
+				path.join("/mock/home", ".agent"), // global
+				path.join("/project/path", ".agent"), // project
+				path.join("/project/path", "subfolder", ".agent"), // subfolder
 			])
 		})
 
 		it("should return only global and project when no subfolders", async () => {
 			mockExecuteRipgrep.mockResolvedValue([])
 
-			const result = await getAllRooDirectoriesForCwd("/project/path")
+			const result = await getAllAgentDirectoriesForCwd("/project/path")
 
-			expect(result).toEqual([path.join("/mock/home", ".roo"), path.join("/project/path", ".roo")])
+			expect(result).toEqual([path.join("/mock/home", ".agent"), path.join("/project/path", ".agent")])
 		})
 
 		it("should maintain order: global, project, subfolders (alphabetically)", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "zebra/.roo/rules/rule.md", type: "file" },
-				{ path: "apple/.roo/rules/rule.md", type: "file" },
+				{ path: "zebra/.agent/rules/rule.md", type: "file" },
+				{ path: "apple/.agent/rules/rule.md", type: "file" },
 			])
 
-			const result = await getAllRooDirectoriesForCwd("/project/path")
+			const result = await getAllAgentDirectoriesForCwd("/project/path")
 
 			expect(result).toEqual([
-				path.join("/mock/home", ".roo"), // global first
-				path.join("/project/path", ".roo"), // project second
-				path.join("/project/path", "apple", ".roo"), // subfolders alphabetically
-				path.join("/project/path", "zebra", ".roo"),
+				path.join("/mock/home", ".agent"), // global first
+				path.join("/project/path", ".agent"), // project second
+				path.join("/project/path", "apple", ".agent"), // subfolders alphabetically
+				path.join("/project/path", "zebra", ".agent"),
 			])
 		})
 	})
 
 	describe("getAgentsDirectoriesForCwd", () => {
 		it("should return root directory and parent directories of subfolder .roo dirs", async () => {
-			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "package-a/.roo/rules/rule.md", type: "file" }])
+			mockExecuteRipgrep.mockResolvedValueOnce([{ path: "package-a/.agent/rules/rule.md", type: "file" }])
 
 			const result = await getAgentsDirectoriesForCwd("/project/path")
 
@@ -498,9 +498,9 @@ describe("RooConfigService", () => {
 
 		it("should include multiple subfolder parent directories", async () => {
 			mockExecuteRipgrep.mockResolvedValueOnce([
-				{ path: "package-a/.roo/rules/rule.md", type: "file" },
-				{ path: "package-b/.roo/rules-code/rule.md", type: "file" },
-				{ path: "packages/core/.roo/rules/rule.md", type: "file" },
+				{ path: "package-a/.agent/rules/rule.md", type: "file" },
+				{ path: "package-b/.agent/rules-code/rule.md", type: "file" },
+				{ path: "packages/core/.agent/rules/rule.md", type: "file" },
 			])
 
 			const result = await getAgentsDirectoriesForCwd("/project/path")

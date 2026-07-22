@@ -3,7 +3,7 @@
  *
  * These tests cover:
  * - Input validation (missing path parameter)
- * - RooIgnore blocking
+ * - AgentIgnore blocking
  * - Directory read error handling
  * - Binary file handling (images, PDF, DOCX, unsupported)
  * - Image memory limits
@@ -85,7 +85,7 @@ vi.mock("../../prompts/responses", () => ({
 		),
 		rooIgnoreError: vi.fn(
 			(filePath: string) =>
-				`Access to ${filePath} is blocked by the .rooignore file settings. You must try to continue in the task without using this file, or ask the user to update the .rooignore file.`,
+				`Access to ${filePath} is blocked by the .agentignore file settings. You must try to continue in the task without using this file, or ask the user to update the .agentignore file.`,
 		),
 		toolResult: vi.fn((text: string, images?: string[]) => {
 			if (images && images.length > 0) {
@@ -279,16 +279,18 @@ describe("ReadFileTool", () => {
 		})
 	})
 
-	describe("RooIgnore handling", () => {
-		it("should block access to rooignore-protected files", async () => {
+	describe("AgentIgnore handling", () => {
+		it("should block access to agentignore-protected files", async () => {
 			const mockTask = createMockTask({ rooIgnoreAllowed: false })
 			const callbacks = createMockCallbacks()
 
 			await readFileTool.execute({ path: "secret.env" }, mockTask as any, callbacks)
 
-			expect(mockTask.say).toHaveBeenCalledWith("rooignore_error", "secret.env")
+			expect(mockTask.say).toHaveBeenCalledWith("agentignore_error", "secret.env")
 			expect(formatResponse.rooIgnoreError).toHaveBeenCalledWith("secret.env")
-			expect(callbacks.pushToolResult).toHaveBeenCalledWith(expect.stringContaining("blocked by the .rooignore"))
+			expect(callbacks.pushToolResult).toHaveBeenCalledWith(
+				expect.stringContaining("blocked by the .agentignore"),
+			)
 		})
 	})
 

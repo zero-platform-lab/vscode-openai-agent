@@ -38,7 +38,7 @@ export async function processUserContentMentions({
 	cwd,
 	fileContextTracker,
 	rooIgnoreController,
-	showRooIgnoredFiles = false,
+	showAgentIgnoredFiles = false,
 	includeDiagnosticMessages = true,
 	maxDiagnosticMessages = 50,
 	skillsManager,
@@ -48,7 +48,7 @@ export async function processUserContentMentions({
 	cwd: string
 	fileContextTracker: FileContextTracker
 	rooIgnoreController?: any
-	showRooIgnoredFiles?: boolean
+	showAgentIgnoredFiles?: boolean
 	includeDiagnosticMessages?: boolean
 	maxDiagnosticMessages?: number
 	skillsManager?: SkillLookup
@@ -71,7 +71,7 @@ export async function processUserContentMentions({
 							cwd,
 							fileContextTracker,
 							rooIgnoreController,
-							showRooIgnoredFiles,
+							showAgentIgnoredFiles,
 							includeDiagnosticMessages,
 							maxDiagnosticMessages,
 							skillsManager,
@@ -116,7 +116,7 @@ export async function processUserContentMentions({
 								cwd,
 								fileContextTracker,
 								rooIgnoreController,
-								showRooIgnoredFiles,
+								showAgentIgnoredFiles,
 								includeDiagnosticMessages,
 								maxDiagnosticMessages,
 								skillsManager,
@@ -167,7 +167,7 @@ export async function processUserContentMentions({
 											cwd,
 											fileContextTracker,
 											rooIgnoreController,
-											showRooIgnoredFiles,
+											showAgentIgnoredFiles,
 											includeDiagnosticMessages,
 											maxDiagnosticMessages,
 											skillsManager,

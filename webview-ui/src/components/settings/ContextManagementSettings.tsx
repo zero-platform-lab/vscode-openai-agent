@@ -31,7 +31,7 @@ type ContextManagementSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	listApiConfigMeta: any[]
 	maxOpenTabsContext: number
 	maxWorkspaceFiles: number
-	showRooIgnoredFiles?: boolean
+	showAgentIgnoredFiles?: boolean
 	enableSubfolderRules?: boolean
 	maxImageFileSize?: number
 	maxTotalImageSize?: number
@@ -49,7 +49,7 @@ type ContextManagementSettingsProps = HTMLAttributes<HTMLDivElement> & {
 		| "autoCondenseContextPercent"
 		| "maxOpenTabsContext"
 		| "maxWorkspaceFiles"
-		| "showRooIgnoredFiles"
+		| "showAgentIgnoredFiles"
 		| "enableSubfolderRules"
 		| "maxImageFileSize"
 		| "maxTotalImageSize"
@@ -69,7 +69,7 @@ export const ContextManagementSettings = ({
 	listApiConfigMeta,
 	maxOpenTabsContext,
 	maxWorkspaceFiles,
-	showRooIgnoredFiles,
+	showAgentIgnoredFiles,
 	enableSubfolderRules,
 	setCachedStateField,
 	maxImageFileSize,
@@ -213,19 +213,19 @@ export const ContextManagementSettings = ({
 				</SearchableSetting>
 
 				<SearchableSetting
-					settingId="context-show-rooignored-files"
+					settingId="context-show-agentignored-files"
 					section="contextManagement"
-					label={t("settings:contextManagement.rooignore.label")}>
+					label={t("settings:contextManagement.agentignore.label")}>
 					<VSCodeCheckbox
-						checked={showRooIgnoredFiles}
-						onChange={(e: any) => setCachedStateField("showRooIgnoredFiles", e.target.checked)}
-						data-testid="show-rooignored-files-checkbox">
+						checked={showAgentIgnoredFiles}
+						onChange={(e: any) => setCachedStateField("showAgentIgnoredFiles", e.target.checked)}
+						data-testid="show-agentignored-files-checkbox">
 						<label className="block font-medium mb-1">
-							{t("settings:contextManagement.rooignore.label")}
+							{t("settings:contextManagement.agentignore.label")}
 						</label>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1 mb-3">
-						{t("settings:contextManagement.rooignore.description")}
+						{t("settings:contextManagement.agentignore.description")}
 					</div>
 				</SearchableSetting>
 

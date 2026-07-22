@@ -234,7 +234,7 @@
 			},
 			"protected": {
 				"label": "保護されたファイルを含める",
-				"description": "Agentが保護されたファイル（.rooignoreや.roo/設定ファイルなど）を承認なしで作成・編集することを許可します。"
+				"description": "Agentが保護されたファイル（.agentignoreや.agent/設定ファイルなど）を承認なしで作成・編集することを許可します。"
 			}
 		},
 		"mcp": {
@@ -600,9 +600,9 @@
 			"label": "ワークスペースファイルコンテキスト制限",
 			"description": "現在の作業ディレクトリの詳細に含めるファイルの最大数。高い値はより多くのコンテキストを提供しますが、token使用量が増加します。"
 		},
-		"rooignore": {
-			"label": "リストと検索で.rooignoreファイルを表示",
-			"description": "有効にすると、.rooignoreのパターンに一致するファイルがロックシンボル付きでリストに表示されます。無効にすると、これらのファイルはファイルリストや検索から完全に非表示になります。"
+		"agentignore": {
+			"label": "リストと検索で.agentignoreファイルを表示",
+			"description": "有効にすると、.agentignoreのパターンに一致するファイルがロックシンボル付きでリストに表示されます。無効にすると、これらのファイルはファイルリストや検索から完全に非表示になります。"
 		},
 		"maxReadFile": {
 			"label": "ファイル読み込み自動切り詰めしきい値",
@@ -663,7 +663,7 @@
 		},
 		"enableSubfolderRules": {
 			"label": "サブフォルダルールを有効化",
-			"description": "サブディレクトリから.roo/rulesとAGENTS.mdファイルを再帰的に検出してロードします。パッケージごとのルールを持つモノレポに便利です。"
+			"description": "サブディレクトリから.agent/rulesとAGENTS.mdファイルを再帰的に検出してロードします。パッケージごとのルールを持つモノレポに便利です。"
 		}
 	},
 	"terminal": {
@@ -803,9 +803,9 @@
 		},
 		"CUSTOM_TOOLS": {
 			"name": "カスタムツールを有効化",
-			"description": "有効にすると、Agentはプロジェクトの.roo/toolsディレクトリまたはグローバルツール用の~/.roo/toolsからカスタムTypeScript/JavaScriptツールを読み込んで使用できます。注意：これらのツールは自動的に承認されます。",
+			"description": "有効にすると、Agentはプロジェクトの.agent/toolsディレクトリまたはグローバルツール用の~/.agent/toolsからカスタムTypeScript/JavaScriptツールを読み込んで使用できます。注意：これらのツールは自動的に承認されます。",
 			"toolsHeader": "利用可能なカスタムツール",
-			"noTools": "カスタムツールが読み込まれていません。プロジェクトの.roo/toolsディレクトリまたはグローバルツール用の~/.roo/toolsに.tsまたは.jsファイルを追加してください。",
+			"noTools": "カスタムツールが読み込まれていません。プロジェクトの.agent/toolsディレクトリまたはグローバルツール用の~/.agent/toolsに.tsまたは.jsファイルを追加してください。",
 			"refreshButton": "更新",
 			"refreshing": "更新中...",
 			"refreshSuccess": "ツールが正常に更新されました",

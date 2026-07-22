@@ -8,7 +8,7 @@ import { CodeIndexServiceFactory } from "./service-factory"
 import { CodeIndexSearchService } from "./search-service"
 import { CodeIndexOrchestrator } from "./orchestrator"
 import { CacheManager } from "./cache-manager"
-import { RooIgnoreController } from "../../core/ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../../core/ignore/AgentIgnoreController"
 import fs from "fs/promises"
 import ignore from "ignore"
 import path from "path"
@@ -379,8 +379,8 @@ export class CodeIndexManager {
 			console.error("Unexpected error loading .gitignore:", error)
 		}
 
-		// Create RooIgnoreController instance
-		const rooIgnoreController = new RooIgnoreController(workspacePath)
+		// Create AgentIgnoreController instance
+		const rooIgnoreController = new AgentIgnoreController(workspacePath)
 		await rooIgnoreController.initialize()
 
 		// (Re)Create shared service instances

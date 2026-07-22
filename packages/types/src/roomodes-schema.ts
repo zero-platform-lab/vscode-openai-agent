@@ -1,7 +1,7 @@
 /**
- * Builds the Zod schema for .roomodes configuration files and converts it
+ * Builds the Zod schema for .agentmodes configuration files and converts it
  * to JSON Schema (draft-07). This module is the single source of truth for
- * both the generator script (scripts/generate-roomodes-schema.ts) and the
+ * both the generator script (scripts/generate-agentmodes-schema.ts) and the
  * drift-detection test.
  */
 
@@ -33,26 +33,26 @@ const exportedModeConfigSchema = modeConfigSchema.omit({ groups: true }).extend(
 	rulesFiles: z.array(ruleFileSchema).optional(),
 })
 
-// Build the top-level .roomodes schema.
-const roomodesZodSchema = z
+// Build the top-level .agentmodes schema.
+const agentmodesZodSchema = z
 	.object({
 		customModes: z.array(exportedModeConfigSchema),
 	})
 	.strict()
 
 /**
- * Generates the JSON Schema object for .roomodes configuration files.
+ * Generates the JSON Schema object for .agentmodes configuration files.
  * Includes metadata fields ($id, title, description).
  */
 export function generateRoomodesJsonSchema(): Record<string, unknown> {
-	const jsonSchema = zodToJsonSchema(roomodesZodSchema, {
+	const jsonSchema = zodToJsonSchema(agentmodesZodSchema, {
 		$refStrategy: "none",
 		target: "jsonSchema7",
 	}) as Record<string, unknown>
 
-	jsonSchema["$id"] = "https://github.com/RooCodeInc/Roo-Code/blob/main/schemas/roomodes.json"
+	jsonSchema["$id"] = "https://github.com/RooCodeInc/Roo-Code/blob/main/schemas/agentmodes.json"
 	jsonSchema["title"] = "Roo Code Custom Modes"
-	jsonSchema["description"] = "Schema for .roomodes configuration files used by Roo Code to define custom modes."
+	jsonSchema["description"] = "Schema for .agentmodes configuration files used by Roo Code to define custom modes."
 
 	return jsonSchema
 }

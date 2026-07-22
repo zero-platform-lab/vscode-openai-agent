@@ -5,7 +5,7 @@ import { getCommand, getCommands } from "../commands"
 
 // Mock fs and path modules
 vi.mock("fs/promises")
-vi.mock("../roo-config", () => ({
+vi.mock("../agent-config", () => ({
 	getGlobalRooDirectory: vi.fn(() => "/mock/global/.roo"),
 	getProjectRooDirectoryForCwd: vi.fn(() => "/mock/project/.roo"),
 }))
@@ -93,13 +93,13 @@ description: Symlinked command
 					name: "regular.md",
 					isFile: () => true,
 					isSymbolicLink: () => false,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 				{
 					name: "symlink.md",
 					isFile: () => false,
 					isSymbolicLink: () => true,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 			])
 
@@ -202,7 +202,7 @@ description: Symlinked command
 							name: "linked-dir",
 							isFile: () => false,
 							isSymbolicLink: () => true,
-							parentPath: "/mock/project/.roo/commands",
+							parentPath: "/mock/project/.agent/commands",
 						},
 					])
 				}
@@ -282,7 +282,7 @@ description: Symlinked command
 					name: "cyclic.md",
 					isFile: () => false,
 					isSymbolicLink: () => true,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 			])
 
@@ -345,13 +345,13 @@ description: Symlinked command
 					name: "regular.md",
 					isFile: () => true,
 					isSymbolicLink: () => false,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 				{
 					name: "broken.md",
 					isFile: () => false,
 					isSymbolicLink: () => true,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 			])
 
@@ -415,7 +415,7 @@ description: Symlinked command
 					name: "my-alias.md", // Symlink name
 					isFile: () => false,
 					isSymbolicLink: () => true,
-					parentPath: "/mock/project/.roo/commands",
+					parentPath: "/mock/project/.agent/commands",
 				},
 			])
 

@@ -226,7 +226,7 @@ describe("executeCommandTool", () => {
 			expect(mockPushToolResult).not.toHaveBeenCalled()
 		})
 
-		it("should handle rooignore validation failures", async () => {
+		it("should handle agentignore validation failures", async () => {
 			// Setup
 			mockToolUse.params.command = "cat .env"
 			mockToolUse.nativeArgs = { command: "cat .env" }
@@ -236,8 +236,8 @@ describe("executeCommandTool", () => {
 				validateCommand: validateCommandMock,
 			}
 
-			const mockRooIgnoreError = "RooIgnore error"
-			;(formatResponse.rooIgnoreError as any).mockReturnValue(mockRooIgnoreError)
+			const mockAgentIgnoreError = "AgentIgnore error"
+			;(formatResponse.rooIgnoreError as any).mockReturnValue(mockAgentIgnoreError)
 
 			// Execute
 			await executeCommandTool.handle(mockCline as unknown as Task, mockToolUse, {
@@ -248,11 +248,11 @@ describe("executeCommandTool", () => {
 
 			// Verify
 			expect(validateCommandMock).toHaveBeenCalledWith("cat .env")
-			expect(mockCline.say).toHaveBeenCalledWith("rooignore_error", ".env")
+			expect(mockCline.say).toHaveBeenCalledWith("agentignore_error", ".env")
 			expect(formatResponse.rooIgnoreError).toHaveBeenCalledWith(".env")
-			expect(mockPushToolResult).toHaveBeenCalledWith(mockRooIgnoreError)
+			expect(mockPushToolResult).toHaveBeenCalledWith(mockAgentIgnoreError)
 			expect(mockAskApproval).not.toHaveBeenCalled()
-			// executeCommandInTerminal should not be called since rooignore blocked it
+			// executeCommandInTerminal should not be called since agentignore blocked it
 		})
 	})
 

@@ -1970,7 +1970,7 @@ export class ClineProvider
 			maxOpenTabsContext,
 			maxWorkspaceFiles,
 			disabledTools,
-			showRooIgnoredFiles,
+			showAgentIgnoredFiles,
 			enableSubfolderRules,
 			language,
 			maxImageFileSize,
@@ -2060,7 +2060,7 @@ export class ClineProvider
 			maxWorkspaceFiles: maxWorkspaceFiles ?? 200,
 			cwd,
 			disabledTools,
-			showRooIgnoredFiles: showRooIgnoredFiles ?? false,
+			showAgentIgnoredFiles: showAgentIgnoredFiles ?? false,
 			enableSubfolderRules: enableSubfolderRules ?? false,
 			language: language ?? formatLanguage(vscode.env.language),
 			renderContext: this.renderContext,
@@ -2205,7 +2205,7 @@ export class ClineProvider
 			maxOpenTabsContext: stateValues.maxOpenTabsContext ?? 20,
 			maxWorkspaceFiles: stateValues.maxWorkspaceFiles ?? 200,
 			disabledTools: stateValues.disabledTools,
-			showRooIgnoredFiles: stateValues.showRooIgnoredFiles ?? false,
+			showAgentIgnoredFiles: stateValues.showAgentIgnoredFiles ?? false,
 			enableSubfolderRules: stateValues.enableSubfolderRules ?? false,
 			maxImageFileSize: stateValues.maxImageFileSize ?? 5,
 			maxTotalImageSize: stateValues.maxTotalImageSize ?? 20,
@@ -2567,7 +2567,7 @@ export class ClineProvider
 
 			// Register custom modes so the CustomModesManager knows about them.
 			// setValues writes to global state, but the manager overwrites that
-			// when it merges .roomodes + global settings on refresh.  Persisting
+			// when it merges .agentmodes + global settings on refresh.  Persisting
 			// via updateCustomMode ensures modes survive the merge cycle.
 			if (configuration.customModes?.length) {
 				for (const mode of configuration.customModes) {

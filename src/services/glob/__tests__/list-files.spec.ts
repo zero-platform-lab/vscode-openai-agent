@@ -397,7 +397,7 @@ describe("hidden directory exclusion", () => {
 		mockReaddir.mockResolvedValueOnce([{ name: "22", isDirectory: () => true, isSymbolicLink: () => false }])
 
 		// Call listFiles targeting .roo/temp (which is both hidden and in DIRS_TO_IGNORE)
-		const [files] = await listFiles("/test/.roo/temp", true, 100)
+		const [files] = await listFiles("/test/.agent/temp", true, 100)
 
 		// Verify ripgrep was called with correct arguments
 		const [rgPath, args] = mockSpawn.mock.calls[0]

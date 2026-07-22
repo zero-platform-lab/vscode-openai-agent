@@ -1,8 +1,8 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import * as path from "path"
 import * as diff from "diff"
-import { RooIgnoreController, LOCK_TEXT_SYMBOL } from "../ignore/RooIgnoreController"
-import { RooProtectedController } from "../protect/RooProtectedController"
+import { AgentIgnoreController, LOCK_TEXT_SYMBOL } from "../ignore/AgentIgnoreController"
+import { AgentProtectedController } from "../protect/AgentProtectedController"
 
 export const formatResponse = {
 	toolDenied: () =>
@@ -34,9 +34,9 @@ export const formatResponse = {
 		JSON.stringify({
 			status: "error",
 			type: "access_denied",
-			message: "Access blocked by .rooignore",
+			message: "Access blocked by .agentignore",
 			path,
-			suggestion: "Try to continue without this file, or ask the user to update the .rooignore file",
+			suggestion: "Try to continue without this file, or ask the user to update the .agentignore file",
 		}),
 
 	noToolsUsed: () => {
@@ -118,9 +118,9 @@ Otherwise, if you have not completed the task and do not need additional informa
 		absolutePath: string,
 		files: string[],
 		didHitLimit: boolean,
-		rooIgnoreController: RooIgnoreController | undefined,
-		showRooIgnoredFiles: boolean,
-		rooProtectedController?: RooProtectedController,
+		rooIgnoreController: AgentIgnoreController | undefined,
+		showAgentIgnoredFiles: boolean,
+		rooProtectedController?: AgentProtectedController,
 	): string => {
 		const sorted = files
 			.map((file) => {
@@ -163,7 +163,7 @@ Otherwise, if you have not completed the task and do not need additional informa
 
 				if (isIgnored) {
 					// If file is ignored and we're not showing ignored files, skip it
-					if (!showRooIgnoredFiles) {
+					if (!showAgentIgnoredFiles) {
 						continue
 					}
 					// Otherwise, mark it with a lock symbol

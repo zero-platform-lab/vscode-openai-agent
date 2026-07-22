@@ -81,11 +81,11 @@ vi.mock("vscode", () => ({
 }))
 
 // Global roo directory - computed once
-const GLOBAL_ROO_DIR = p(HOME_DIR, ".roo")
+const GLOBAL_ROO_DIR = p(HOME_DIR, ".agent")
 const GLOBAL_AGENTS_DIR = p(HOME_DIR, ".agents")
 
-// Mock roo-config
-vi.mock("../../roo-config", () => ({
+// Mock agent-config
+vi.mock("../../agent-config", () => ({
 	getGlobalRooDirectory: () => GLOBAL_ROO_DIR,
 	getGlobalAgentsDirectory: () => GLOBAL_AGENTS_DIR,
 	getProjectAgentsDirectoryForCwd: (cwd: string) => p(cwd, ".agents"),
@@ -120,7 +120,7 @@ describe("SkillsManager", () => {
 	const globalSkillsDir = p(GLOBAL_ROO_DIR, "skills")
 	const globalSkillsCodeDir = p(GLOBAL_ROO_DIR, "skills-code")
 	const globalSkillsArchitectDir = p(GLOBAL_ROO_DIR, "skills-architect")
-	const projectRooDir = p(PROJECT_DIR, ".roo")
+	const projectRooDir = p(PROJECT_DIR, ".agent")
 	const projectSkillsDir = p(projectRooDir, "skills")
 	// .agents directory paths
 	const globalAgentsSkillsDir = p(GLOBAL_AGENTS_DIR, "skills")
@@ -1243,7 +1243,7 @@ Instructions`)
 
 			const createdPath = await skillsManager.createSkill("project-skill", "project", "A project skill")
 
-			expect(createdPath).toBe(p(PROJECT_DIR, ".roo", "skills", "project-skill", "SKILL.md"))
+			expect(createdPath).toBe(p(PROJECT_DIR, ".agent", "skills", "project-skill", "SKILL.md"))
 		})
 
 		it("should throw error for invalid skill name", async () => {

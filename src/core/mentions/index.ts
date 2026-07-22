@@ -15,7 +15,7 @@ import { DEFAULT_LINE_LIMIT } from "../prompts/tools/native-tools/read_file"
 
 import { FileContextTracker } from "../context-tracking/FileContextTracker"
 
-import { RooIgnoreController } from "../ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
 import { getCommand, type Command } from "../../services/command/commands"
 import { buildSkillResult, resolveSkillContentForMode, type SkillLookup } from "../../services/skills/skillInvocation"
 import type { SkillContent } from "../../shared/skills"
@@ -100,8 +100,8 @@ export async function parseMentions(
 	text: string,
 	cwd: string,
 	fileContextTracker?: FileContextTracker,
-	rooIgnoreController?: RooIgnoreController,
-	showRooIgnoredFiles: boolean = false,
+	rooIgnoreController?: AgentIgnoreController,
+	showAgentIgnoredFiles: boolean = false,
 	includeDiagnosticMessages: boolean = true,
 	maxDiagnosticMessages: number = 50,
 	skillsManager?: SkillLookup,
@@ -188,7 +188,7 @@ export async function parseMentions(
 					mentionPath,
 					cwd,
 					rooIgnoreController,
-					showRooIgnoredFiles,
+					showAgentIgnoredFiles,
 					fileContextTracker,
 				)
 				contentBlocks.push(fileResult)
@@ -266,7 +266,7 @@ async function getFileOrFolderContentWithMetadata(
 	mentionPath: string,
 	cwd: string,
 	rooIgnoreController?: any,
-	showRooIgnoredFiles: boolean = false,
+	showAgentIgnoredFiles: boolean = false,
 	fileContextTracker?: FileContextTracker,
 ): Promise<MentionContentBlock> {
 	const unescapedPath = unescapeSpaces(mentionPath)
@@ -291,7 +291,7 @@ async function getFileOrFolderContentWithMetadata(
 				return {
 					type: "file",
 					path: mentionPath,
-					content: `[read_file for '${mentionPath}']\nNote: File is ignored by .rooignore.`,
+					content: `[read_file for '${mentionPath}']\nNote: File is ignored by .agentignore.`,
 				}
 			}
 			try {
@@ -338,7 +338,7 @@ async function getFileOrFolderContentWithMetadata(
 					isIgnored = !rooIgnoreController.validateAccess(entryPath)
 				}
 
-				if (isIgnored && !showRooIgnoredFiles) {
+				if (isIgnored && !showAgentIgnoredFiles) {
 					continue
 				}
 

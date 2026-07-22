@@ -5,7 +5,7 @@ import { ApiHandler, ApiHandlerCreateMessageMetadata } from "../../api"
 import { MAX_CONDENSE_THRESHOLD, MIN_CONDENSE_THRESHOLD, summarizeConversation, SummarizeResponse } from "../condense"
 import { ApiMessage } from "../task-persistence/apiMessages"
 import { ANTHROPIC_DEFAULT_MAX_TOKENS } from "@openai-agent/types"
-import { RooIgnoreController } from "../ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
 
 /**
  * Context Management
@@ -224,7 +224,7 @@ export type ContextManagementOptions = {
 	/** Optional current working directory for resolving file paths (required if filesReadByRoo is provided) */
 	cwd?: string
 	/** Optional controller for file access validation */
-	rooIgnoreController?: RooIgnoreController
+	rooIgnoreController?: AgentIgnoreController
 }
 
 export type ContextManagementResult = SummarizeResponse & {

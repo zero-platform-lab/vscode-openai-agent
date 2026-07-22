@@ -146,10 +146,10 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 			for (const fileResult of fileResults) {
 				const relPath = fileResult.path
 
-				// RooIgnore validation
+				// AgentIgnore validation
 				const accessAllowed = task.rooIgnoreController?.validateAccess(relPath)
 				if (!accessAllowed) {
-					await task.say("rooignore_error", relPath)
+					await task.say("agentignore_error", relPath)
 					const errorMsg = formatResponse.rooIgnoreError(relPath)
 					updateFileResult(relPath, {
 						status: "blocked",
@@ -688,10 +688,10 @@ export class ReadFileTool extends BaseTool<"read_file"> {
 			const relPath = entry.path
 			const fullPath = path.resolve(task.cwd, relPath)
 
-			// RooIgnore validation
+			// AgentIgnore validation
 			const accessAllowed = task.rooIgnoreController?.validateAccess(relPath)
 			if (!accessAllowed) {
-				await task.say("rooignore_error", relPath)
+				await task.say("agentignore_error", relPath)
 				const errorMsg = formatResponse.rooIgnoreError(relPath)
 				results.push(`File: ${relPath}\nError: ${errorMsg}`)
 				continue

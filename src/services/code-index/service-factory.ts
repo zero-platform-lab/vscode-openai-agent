@@ -8,7 +8,7 @@ import { t } from "../../i18n"
 import { getDefaultModelId, getModelDimension } from "../../shared/embeddingModels"
 import { Package } from "../../shared/package"
 
-import { RooIgnoreController } from "../../core/ignore/RooIgnoreController"
+import { AgentIgnoreController } from "../../core/ignore/AgentIgnoreController"
 
 import { OpenAiEmbedder } from "./embedders/openai"
 import { CodeIndexOllamaEmbedder } from "./embedders/ollama"
@@ -195,7 +195,7 @@ export class CodeIndexServiceFactory {
 		vectorStore: IVectorStore,
 		cacheManager: CacheManager,
 		ignoreInstance: Ignore,
-		rooIgnoreController?: RooIgnoreController,
+		rooIgnoreController?: AgentIgnoreController,
 	): IFileWatcher {
 		// Get the configurable batch size from VSCode settings
 		let batchSize: number
@@ -227,7 +227,7 @@ export class CodeIndexServiceFactory {
 		context: vscode.ExtensionContext,
 		cacheManager: CacheManager,
 		ignoreInstance: Ignore,
-		rooIgnoreController?: RooIgnoreController,
+		rooIgnoreController?: AgentIgnoreController,
 	): {
 		embedder: IEmbedder
 		vectorStore: IVectorStore
