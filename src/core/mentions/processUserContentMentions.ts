@@ -215,7 +215,7 @@ export async function processUserContentMentions({
 				}
 
 				// Legacy backward compat: tool_result / tool-result blocks from older formats
-				// are passed through unchanged (tool results are now in separate RooToolMessages).
+				// are passed through unchanged (tool results are now in separate AgentToolMessages).
 				return block
 			}),
 		)

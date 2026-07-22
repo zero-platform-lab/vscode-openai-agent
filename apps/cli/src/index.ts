@@ -8,7 +8,9 @@ const program = new Command()
 
 program
 	.name("roo")
-	.description("Roo Code CLI - starts an interactive session by default, use -p/--print for non-interactive output")
+	.description(
+		"OpenAI Compatible Agent CLI - starts an interactive session by default, use -p/--print for non-interactive output",
+	)
 	.version(VERSION)
 	.enablePositionalOptions()
 	.passThroughOptions()
@@ -121,7 +123,7 @@ applyListOptions(listCommand.command("sessions").description("List task sessions
 
 program
 	.command("upgrade")
-	.description("Upgrade Roo Code CLI to the latest version")
+	.description("Upgrade OpenAI Compatible Agent CLI to the latest version")
 	.action(async () => {
 		await runUpgradeAction(() => upgrade())
 	})

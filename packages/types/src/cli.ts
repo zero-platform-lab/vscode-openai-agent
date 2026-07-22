@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { rooCodeSettingsSchema } from "./global-settings.js"
+import { agentSettingsSchema } from "./global-settings.js"
 
 /**
  * Agent CLI stdin commands
@@ -17,7 +17,7 @@ export const rooCliCommandBaseSchema = z.object({
 	requestId: z.string().min(1),
 })
 
-export type RooCliCommandBase = z.infer<typeof rooCliCommandBaseSchema>
+export type AgentCliCommandBase = z.infer<typeof rooCliCommandBaseSchema>
 
 const rooCliSessionIdSchema = z
 	.string()
@@ -29,7 +29,7 @@ export const rooCliStartCommandSchema = rooCliCommandBaseSchema.extend({
 	prompt: z.string(),
 	taskId: rooCliSessionIdSchema.optional(),
 	images: z.array(z.string()).optional(),
-	configuration: rooCodeSettingsSchema.optional(),
+	configuration: agentSettingsSchema.optional(),
 })
 
 export type AgentCliStartCommand = z.infer<typeof rooCliStartCommandSchema>
@@ -40,25 +40,25 @@ export const rooCliMessageCommandSchema = rooCliCommandBaseSchema.extend({
 	images: z.array(z.string()).optional(),
 })
 
-export type RooCliMessageCommand = z.infer<typeof rooCliMessageCommandSchema>
+export type AgentCliMessageCommand = z.infer<typeof rooCliMessageCommandSchema>
 
 export const rooCliCancelCommandSchema = rooCliCommandBaseSchema.extend({
 	command: z.literal("cancel"),
 })
 
-export type RooCliCancelCommand = z.infer<typeof rooCliCancelCommandSchema>
+export type AgentCliCancelCommand = z.infer<typeof rooCliCancelCommandSchema>
 
 export const rooCliPingCommandSchema = rooCliCommandBaseSchema.extend({
 	command: z.literal("ping"),
 })
 
-export type RooCliPingCommand = z.infer<typeof rooCliPingCommandSchema>
+export type AgentCliPingCommand = z.infer<typeof rooCliPingCommandSchema>
 
 export const rooCliShutdownCommandSchema = rooCliCommandBaseSchema.extend({
 	command: z.literal("shutdown"),
 })
 
-export type RooCliShutdownCommand = z.infer<typeof rooCliShutdownCommandSchema>
+export type AgentCliShutdownCommand = z.infer<typeof rooCliShutdownCommandSchema>
 
 export const rooCliInputCommandSchema = z.discriminatedUnion("command", [
 	rooCliStartCommandSchema,
@@ -101,7 +101,7 @@ export const rooCliControlSubtypes = ["ack", "done", "error"] as const
 
 export const rooCliControlSubtypeSchema = z.enum(rooCliControlSubtypes)
 
-export type RooCliControlSubtype = z.infer<typeof rooCliControlSubtypeSchema>
+export type AgentCliControlSubtype = z.infer<typeof rooCliControlSubtypeSchema>
 
 export const rooCliQueueItemSchema = z.object({
 	id: z.string().min(1),
@@ -169,7 +169,7 @@ export const rooCliControlEventSchema = rooCliStreamEventSchema.extend({
 	requestId: z.string().min(1),
 })
 
-export type RooCliControlEvent = z.infer<typeof rooCliControlEventSchema>
+export type AgentCliControlEvent = z.infer<typeof rooCliControlEventSchema>
 
 export const rooCliFinalOutputSchema = z.object({
 	type: z.literal("result"),

@@ -42,8 +42,9 @@
 		"sonnet",
 		"ai",
 		"llama",
-		"roo code",
-		"roocode"
+		"vllm",
+		"ollama",
+		"azure openai"
 	],
 	"activationEvents": [
 		"onLanguage",

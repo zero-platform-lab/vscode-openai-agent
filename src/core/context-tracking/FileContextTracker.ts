@@ -182,7 +182,7 @@ export class FileContextTracker {
 					newEntry.roo_read_date = now
 					newEntry.roo_edit_date = now
 					this.checkpointPossibleFiles.add(filePath)
-					this.markFileAsEditedByRoo(filePath)
+					this.markFileAsEditedByAgent(filePath)
 					break
 
 				// read_tool/file_mentioned: Agent has read the file via a tool or file mention
@@ -221,8 +221,8 @@ export class FileContextTracker {
 
 			const readEntries = metadata.files_in_context.filter((entry) => {
 				// Only include files that were read by Agent (not user edits)
-				const isReadByRoo = entry.record_source === "read_tool" || entry.record_source === "file_mentioned"
-				if (!isReadByRoo) {
+				const isReadByAgent = entry.record_source === "read_tool" || entry.record_source === "file_mentioned"
+				if (!isReadByAgent) {
 					return false
 				}
 
@@ -266,7 +266,7 @@ export class FileContextTracker {
 	}
 
 	// Marks a file as edited by Agent to prevent false positives in file watchers
-	markFileAsEditedByRoo(filePath: string): void {
+	markFileAsEditedByAgent(filePath: string): void {
 		this.recentlyEditedByAgent.add(filePath)
 	}
 

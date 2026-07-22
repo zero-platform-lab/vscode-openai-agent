@@ -239,7 +239,7 @@ export const GLOBAL_SETTINGS_KEYS = globalSettingsSchema.keyof().options
  * AgentSettings
  */
 
-export const rooCodeSettingsSchema = providerSettingsSchema.merge(globalSettingsSchema)
+export const agentSettingsSchema = providerSettingsSchema.merge(globalSettingsSchema)
 
 export type AgentSettings = GlobalSettings & ProviderSettings
 

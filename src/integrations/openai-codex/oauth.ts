@@ -12,7 +12,7 @@ import { z } from "zod"
  * - Authorization endpoint: https://auth.openai.com/oauth/authorize
  * - Token endpoint: https://auth.openai.com/oauth/token
  * - Fixed callback port: 1455
- * - Codex-specific params: codex_cli_simplified_flow=true, originator=roo-code
+ * - Codex-specific params: codex_cli_simplified_flow=true, originator=openai-agent
  */
 export const OPENAI_CODEX_OAUTH_CONFIG = {
 	authorizationEndpoint: "https://auth.openai.com/oauth/authorize",

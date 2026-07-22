@@ -164,7 +164,7 @@ export async function readFileIfExists(filePath: string): Promise<string | null>
  *
  * @example
  * ```typescript
- * const subfolderRoos = await discoverSubfolderAgentDirectories('/Users/john/monorepo')
+ * const subfolderAgentDirs = await discoverSubfolderAgentDirectories('/Users/john/monorepo')
  * // Returns:
  * // [
  * //   '/Users/john/monorepo/package-a/.agent',
@@ -215,7 +215,7 @@ export async function discoverSubfolderAgentDirectories(cwd: string): Promise<st
 
 		// Extract unique .agent directory paths
 		const agentDirs = new Set<string>()
-		const rootRooDir = path.join(cwd, ".agent")
+		const rootAgentDir = path.join(cwd, ".agent")
 
 		for (const result of results) {
 			// Match paths like "subfolder/.agent/anything" or "subfolder/nested/.agent/anything"
@@ -224,7 +224,7 @@ export async function discoverSubfolderAgentDirectories(cwd: string): Promise<st
 			if (match) {
 				const agentDir = path.join(cwd, match[1], ".agent")
 				// Exclude the root .agent directory (already handled by getProjectAgentDirectoryForCwd)
-				if (agentDir !== rootRooDir) {
+				if (agentDir !== rootAgentDir) {
 					agentDirs.add(agentDir)
 				}
 			}
@@ -441,4 +441,4 @@ export async function loadConfiguration(
 }
 
 // Export with backward compatibility alias
-export const loadRooConfiguration: typeof loadConfiguration = loadConfiguration
+export const loadAgentConfiguration: typeof loadConfiguration = loadConfiguration
