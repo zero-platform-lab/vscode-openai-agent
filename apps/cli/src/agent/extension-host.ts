@@ -22,9 +22,14 @@ import type {
 	ReasoningEffortExtended,
 	RooCodeSettings,
 	WebviewMessage,
-} from "@roo-code/types"
-import { createVSCodeAPI, IExtensionHost, ExtensionHostEventMap, setRuntimeConfigValues } from "@roo-code/vscode-shim"
-import { DebugLogger, setDebugLogEnabled } from "@roo-code/core/cli"
+} from "@openai-agent/types"
+import {
+	createVSCodeAPI,
+	IExtensionHost,
+	ExtensionHostEventMap,
+	setRuntimeConfigValues,
+} from "@openai-agent/vscode-shim"
+import { DebugLogger, setDebugLogEnabled } from "@openai-agent/core/cli"
 
 import { DEFAULT_FLAGS, type SupportedProvider } from "@/types/index.js"
 import type { User } from "@/lib/sdk/index.js"

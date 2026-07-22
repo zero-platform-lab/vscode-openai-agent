@@ -15,8 +15,8 @@ import type {
 	WorktreeIncludeStatus,
 	WorktreeListResponse,
 	WorktreeDefaultsResponse,
-} from "@roo-code/types"
-import { worktreeService, worktreeIncludeService, type CopyProgressCallback } from "@roo-code/core"
+} from "@openai-agent/types"
+import { worktreeService, worktreeIncludeService, type CopyProgressCallback } from "@openai-agent/core"
 
 import type { ClineProvider } from "../ClineProvider"
 

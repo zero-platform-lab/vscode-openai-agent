@@ -1,4 +1,4 @@
-import { parametersSchema, defineCustomTool } from "@roo-code/types"
+import { parametersSchema, defineCustomTool } from "@openai-agent/types"
 
 export default defineCustomTool({
 	name: "simple",

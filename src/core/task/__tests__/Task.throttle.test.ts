@@ -1,4 +1,4 @@
-import { RooCodeEventName, ProviderSettings, TokenUsage, ToolUsage } from "@roo-code/types"
+import { RooCodeEventName, ProviderSettings, TokenUsage, ToolUsage } from "@openai-agent/types"
 
 import { Task } from "../Task"
 import { ClineProvider } from "../../webview/ClineProvider"

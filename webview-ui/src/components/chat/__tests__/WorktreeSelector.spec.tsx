@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from "@/utils/test-utils"
 
-import type { Worktree, WorktreeListResponse } from "@roo-code/types"
+import type { Worktree, WorktreeListResponse } from "@openai-agent/types"
 
 import { WorktreeSelector } from "../WorktreeSelector"
 

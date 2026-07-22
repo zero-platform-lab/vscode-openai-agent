@@ -17,7 +17,7 @@ import {
 	isSecretStateKey,
 	isProviderName,
 	isRetiredProvider,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import { logger } from "../../utils/logging"
 import { supportPrompt } from "../../shared/support-prompt"

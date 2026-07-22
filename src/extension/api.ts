@@ -20,8 +20,8 @@ import {
 	IpcOrigin,
 	IpcMessageType,
 	openRouterDefaultModelId,
-} from "@roo-code/types"
-import { IpcServer } from "@roo-code/ipc"
+} from "@openai-agent/types"
+import { IpcServer } from "@openai-agent/ipc"
 
 import { Package } from "../shared/package"
 import { ClineProvider } from "../core/webview/ClineProvider"

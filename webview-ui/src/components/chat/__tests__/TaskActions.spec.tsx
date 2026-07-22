@@ -1,4 +1,4 @@
-import type { HistoryItem } from "@roo-code/types"
+import type { HistoryItem } from "@openai-agent/types"
 
 import { render, screen, fireEvent } from "@/utils/test-utils"
 import { vscode } from "@/utils/vscode"

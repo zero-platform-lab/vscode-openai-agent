@@ -14,7 +14,7 @@ import {
 	type VerbosityLevel,
 	type ReasoningEffortExtended,
 	type ServiceTier,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import type { ApiHandlerOptions } from "../../shared/api"
 

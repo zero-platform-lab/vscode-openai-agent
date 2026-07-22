@@ -3,7 +3,7 @@
 	"extends": ["//"],
 	"tasks": {
 		"bundle:internal": {
-			"dependsOn": ["^build", "@roo-code/vscode-webview#build:internal"],
+			"dependsOn": ["^build", "@openai-agent/vscode-webview#build:internal"],
 			"outputs": ["build/**"]
 		},
 		"vsix:internal": {

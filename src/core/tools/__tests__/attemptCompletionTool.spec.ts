@@ -1,4 +1,4 @@
-import { RooCodeEventName, TodoItem } from "@roo-code/types"
+import { RooCodeEventName, TodoItem } from "@openai-agent/types"
 
 import { AttemptCompletionToolUse } from "../../../shared/tools"
 

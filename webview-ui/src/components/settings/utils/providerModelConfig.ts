@@ -1,4 +1,4 @@
-import type { ProviderName, ModelInfo, ProviderSettings } from "@roo-code/types"
+import type { ProviderName, ModelInfo, ProviderSettings } from "@openai-agent/types"
 import {
 	anthropicDefaultModelId,
 	bedrockDefaultModelId,
@@ -16,7 +16,7 @@ import {
 	fireworksDefaultModelId,
 	minimaxDefaultModelId,
 	basetenDefaultModelId,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import { MODELS_BY_PROVIDER } from "../constants"
 

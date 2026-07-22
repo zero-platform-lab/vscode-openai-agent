@@ -6,7 +6,7 @@ import {
 	deepSeekDefaultModelId,
 	DEEP_SEEK_DEFAULT_TEMPERATURE,
 	OPENAI_AZURE_AI_INFERENCE_PATH,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import type { ApiHandlerOptions } from "../../shared/api"
 

@@ -1,4 +1,4 @@
-import { ProviderSettings } from "@roo-code/types"
+import { ProviderSettings } from "@openai-agent/types"
 
 import { Task } from "../Task"
 import { ClineProvider } from "../../webview/ClineProvider"

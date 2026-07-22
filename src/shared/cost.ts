@@ -1,5 +1,5 @@
-import type { ModelInfo } from "@roo-code/types"
-import type { ServiceTier } from "@roo-code/types"
+import type { ModelInfo } from "@openai-agent/types"
+import type { ServiceTier } from "@openai-agent/types"
 
 export interface ApiCostResult {
 	totalInputTokens: number

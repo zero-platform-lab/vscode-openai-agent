@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react"
 import { Trans } from "react-i18next"
 import { Plus, Globe, Folder, Edit, Trash2, Settings } from "lucide-react"
 
-import type { SkillMetadata } from "@roo-code/types"
+import type { SkillMetadata } from "@openai-agent/types"
 
 import { getAllModes } from "@roo/modes"
 

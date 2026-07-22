@@ -2,7 +2,7 @@
 
 import * as path from "path"
 import { Anthropic } from "@anthropic-ai/sdk"
-import type { ModelInfo } from "@roo-code/types"
+import type { ModelInfo } from "@openai-agent/types"
 import { BaseProvider } from "../../../api/providers/base-provider"
 
 // Mock the tree-sitter module

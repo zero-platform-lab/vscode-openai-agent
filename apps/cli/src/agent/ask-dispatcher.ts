@@ -23,8 +23,8 @@ import {
 	isInteractiveAsk,
 	isResumableAsk,
 	isNonBlockingAsk,
-} from "@roo-code/types"
-import { debugLog } from "@roo-code/core/cli"
+} from "@openai-agent/types"
+import { debugLog } from "@openai-agent/core/cli"
 
 import { FOLLOWUP_TIMEOUT_SECONDS } from "@/types/index.js"
 

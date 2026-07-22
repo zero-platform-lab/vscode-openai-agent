@@ -12,7 +12,7 @@ import {
 	type ProviderName,
 	isProviderName,
 	isRetiredProvider,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import { Mode, modes } from "../../shared/modes"
 import { buildApiHandler } from "../../api"

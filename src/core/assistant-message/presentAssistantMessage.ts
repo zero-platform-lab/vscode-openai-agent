@@ -1,8 +1,8 @@
 import { serializeError } from "serialize-error"
 import { Anthropic } from "@anthropic-ai/sdk"
 
-import type { ToolName, ClineAsk, ToolProgressStatus } from "@roo-code/types"
-import { customToolRegistry } from "@roo-code/core"
+import type { ToolName, ClineAsk, ToolProgressStatus } from "@openai-agent/types"
+import { customToolRegistry } from "@openai-agent/core"
 
 import { t } from "../../i18n"
 

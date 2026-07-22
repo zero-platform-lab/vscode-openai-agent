@@ -18,8 +18,8 @@ import {
 	ExperimentId,
 	checkoutDiffPayloadSchema,
 	checkoutRestorePayloadSchema,
-} from "@roo-code/types"
-import { customToolRegistry } from "@roo-code/core"
+} from "@openai-agent/types"
+import { customToolRegistry } from "@openai-agent/core"
 
 import { type ApiMessage } from "../task-persistence/apiMessages"
 import { saveTaskMessages } from "../task-persistence"

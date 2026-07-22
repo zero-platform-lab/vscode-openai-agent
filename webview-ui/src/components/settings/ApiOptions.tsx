@@ -7,7 +7,7 @@ import {
 	type ProviderSettings,
 	isRetiredProvider,
 	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import { vscode } from "@src/utils/vscode"
 import { validateApiConfigurationExcludingModelErrors, getModelValidationError } from "@src/utils/validate"

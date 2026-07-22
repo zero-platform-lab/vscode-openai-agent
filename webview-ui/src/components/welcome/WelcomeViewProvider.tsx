@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Brain } from "lucide-react"
 
-import { type ProviderSettings } from "@roo-code/types"
+import { type ProviderSettings } from "@openai-agent/types"
 
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { validateApiConfiguration } from "@src/utils/validate"

@@ -11,7 +11,7 @@ import {
 	IpcMessageType,
 	TaskCommandName,
 	ipcMessageSchema,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 export class IpcClient extends EventEmitter<IpcClientEvents> {
 	private readonly _socketPath: string

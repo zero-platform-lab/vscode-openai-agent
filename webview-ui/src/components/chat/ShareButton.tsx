@@ -1,4 +1,4 @@
-import { type HistoryItem } from "@roo-code/types"
+import { type HistoryItem } from "@openai-agent/types"
 
 interface ShareButtonProps {
 	item?: HistoryItem

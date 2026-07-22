@@ -26,7 +26,7 @@ import type {
 	McpServer,
 	McpTool,
 	McpToolCallResponse,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 import { t } from "../../i18n"
 

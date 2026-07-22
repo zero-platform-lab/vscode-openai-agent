@@ -1,4 +1,4 @@
-import { RooCodeEventName, type RooCodeAPI } from "@roo-code/types"
+import { RooCodeEventName, type RooCodeAPI } from "@openai-agent/types"
 
 type WaitForOptions = {
 	timeout?: number

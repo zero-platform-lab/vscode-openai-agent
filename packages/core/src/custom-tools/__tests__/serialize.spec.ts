@@ -1,6 +1,6 @@
-// pnpm --filter @roo-code/core test src/custom-tools/__tests__/serialize.spec.ts
+// pnpm --filter @openai-agent/core test src/custom-tools/__tests__/serialize.spec.ts
 
-import { parametersSchema as z, defineCustomTool } from "@roo-code/types"
+import { parametersSchema as z, defineCustomTool } from "@openai-agent/types"
 
 import { serializeCustomTool, serializeCustomTools } from "../serialize.js"
 

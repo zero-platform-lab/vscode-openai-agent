@@ -51,7 +51,7 @@ import {
 	MIN_CHECKPOINT_TIMEOUT_SECONDS,
 	MAX_MCP_TOOLS_THRESHOLD,
 	countEnabledMcpTools,
-} from "@roo-code/types"
+} from "@openai-agent/types"
 
 // api
 import { ApiHandler, ApiHandlerCreateMessageMetadata, buildApiHandler } from "../../api"

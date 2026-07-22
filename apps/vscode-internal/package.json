@@ -1,5 +1,5 @@
 {
-	"name": "@roo-code/vscode-internal",
+	"name": "@openai-agent/vscode-internal",
 	"description": "Internal build for OpenAI Compatible Agent VSCode extension.",
 	"private": true,
 	"packageManager": "pnpm@10.8.1",
@@ -9,6 +9,6 @@
 		"clean": "rimraf build .turbo"
 	},
 	"devDependencies": {
-		"@roo-code/build": "workspace:^"
+		"@openai-agent/build": "workspace:^"
 	}
 }

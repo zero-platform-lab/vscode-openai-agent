@@ -26,7 +26,7 @@ importers:
       '@dotenvx/dotenvx':
         specifier: ^1.34.0
         version: 1.44.2
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:packages/config-typescript
       '@types/glob':
@@ -86,13 +86,13 @@ importers:
       '@inkjs/ui':
         specifier: ^2.0.0
         version: 2.0.0(ink@6.6.0(@types/react@18.3.23)(react@19.2.3))
-      '@roo-code/core':
+      '@openai-agent/core':
         specifier: workspace:^
         version: link:../../packages/core
-      '@roo-code/types':
+      '@openai-agent/types':
         specifier: workspace:^
         version: link:../../packages/types
-      '@roo-code/vscode-shim':
+      '@openai-agent/vscode-shim':
         specifier: workspace:^
         version: link:../../packages/vscode-shim
       '@trpc/client':
@@ -129,10 +129,10 @@ importers:
         specifier: ^5.0.0
         version: 5.0.9(@types/react@18.3.23)(react@19.2.3)
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../../packages/config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../../packages/config-typescript
       '@types/node':
@@ -247,13 +247,13 @@ importers:
 
   apps/vscode-e2e:
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../../packages/config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../../packages/config-typescript
-      '@roo-code/types':
+      '@openai-agent/types':
         specifier: workspace:^
         version: link:../../packages/types
       '@types/mocha':
@@ -283,13 +283,13 @@ importers:
 
   apps/vscode-internal:
     devDependencies:
-      '@roo-code/build':
+      '@openai-agent/build':
         specifier: workspace:^
         version: link:../../packages/build
 
   apps/vscode-nightly:
     devDependencies:
-      '@roo-code/build':
+      '@openai-agent/build':
         specifier: workspace:^
         version: link:../../packages/build
 
@@ -299,10 +299,10 @@ importers:
         specifier: 3.25.76
         version: 3.25.76
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../config-typescript
       '@types/node':
@@ -349,7 +349,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@roo-code/types':
+      '@openai-agent/types':
         specifier: workspace:^
         version: link:../types
       esbuild:
@@ -368,10 +368,10 @@ importers:
         specifier: 3.25.76
         version: 3.25.76
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../config-typescript
       '@types/node':
@@ -383,17 +383,17 @@ importers:
 
   packages/ipc:
     dependencies:
-      '@roo-code/types':
+      '@openai-agent/types':
         specifier: workspace:^
         version: link:../types
       node-ipc:
         specifier: ^12.0.0
         version: 12.0.0
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../config-typescript
       '@types/node':
@@ -415,10 +415,10 @@ importers:
         specifier: 3.25.76
         version: 3.25.76
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../config-typescript
       '@types/node':
@@ -442,10 +442,10 @@ importers:
 
   packages/vscode-shim:
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../config-typescript
       '@types/node':
@@ -505,18 +505,18 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: 1.12.0
         version: 1.12.0
+      '@openai-agent/core':
+        specifier: workspace:^
+        version: link:../packages/core
+      '@openai-agent/ipc':
+        specifier: workspace:^
+        version: link:../packages/ipc
+      '@openai-agent/types':
+        specifier: workspace:^
+        version: link:../packages/types
       '@qdrant/js-client-rest':
         specifier: ^1.14.0
         version: 1.14.0(typescript@5.8.3)
-      '@roo-code/core':
-        specifier: workspace:^
-        version: link:../packages/core
-      '@roo-code/ipc':
-        specifier: workspace:^
-        version: link:../packages/ipc
-      '@roo-code/types':
-        specifier: workspace:^
-        version: link:../packages/types
       '@vscode/codicons':
         specifier: ^0.0.36
         version: 0.0.36
@@ -728,18 +728,18 @@ importers:
       '@ai-sdk/openai-compatible':
         specifier: ^2.0.28
         version: 2.0.28(zod@3.25.76)
+      '@openai-agent/build':
+        specifier: workspace:^
+        version: link:../packages/build
+      '@openai-agent/config-eslint':
+        specifier: workspace:^
+        version: link:../packages/config-eslint
+      '@openai-agent/config-typescript':
+        specifier: workspace:^
+        version: link:../packages/config-typescript
       '@openrouter/ai-sdk-provider':
         specifier: ^2.1.1
         version: 2.1.1(ai@6.0.77(zod@3.25.76))(zod@3.25.76)
-      '@roo-code/build':
-        specifier: workspace:^
-        version: link:../packages/build
-      '@roo-code/config-eslint':
-        specifier: workspace:^
-        version: link:../packages/config-eslint
-      '@roo-code/config-typescript':
-        specifier: workspace:^
-        version: link:../packages/config-typescript
       '@types/clone-deep':
         specifier: ^4.0.4
         version: 4.0.4
@@ -845,6 +845,9 @@ importers:
 
   webview-ui:
     dependencies:
+      '@openai-agent/types':
+        specifier: workspace:^
+        version: link:../packages/types
       '@radix-ui/react-alert-dialog':
         specifier: ^1.1.6
         version: 1.1.13(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -890,9 +893,6 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.8
         version: 1.2.6(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@roo-code/types':
-        specifier: workspace:^
-        version: link:../packages/types
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.1.6(vite@6.3.6(@types/node@20.17.57)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.47.1)(tsx@4.19.4)(yaml@2.8.0))
@@ -1047,10 +1047,10 @@ importers:
         specifier: 3.25.76
         version: 3.25.76
     devDependencies:
-      '@roo-code/config-eslint':
+      '@openai-agent/config-eslint':
         specifier: workspace:^
         version: link:../packages/config-eslint
-      '@roo-code/config-typescript':
+      '@openai-agent/config-typescript':
         specifier: workspace:^
         version: link:../packages/config-typescript
       '@testing-library/jest-dom':
