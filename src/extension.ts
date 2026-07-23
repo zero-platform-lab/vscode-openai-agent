@@ -163,6 +163,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		}),
 	)
 
+	// The view lives in the Secondary Side Bar (right), which is collapsed by default.
+	// On first run, reveal it once so the chat appears on the right out of the box.
+	if (!context.globalState.get("hasRevealedSidebar")) {
+		void context.globalState.update("hasRevealedSidebar", true)
+		void vscode.commands
+			.executeCommand(`workbench.view.extension.${Package.name}-ActivityBar`)
+			.then(undefined, () => {
+				/* View container may not be ready yet; ignore. */
+			})
+	}
+
 	// Check for worktree auto-open path (set when switching to a worktree)
 	await checkWorktreeAutoOpen(context, outputChannel)
 
