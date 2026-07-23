@@ -79,6 +79,21 @@ Copilot / Codex.
 - **Completion is external:** do not report work as done on your own sense of "finished." Back it
   with verification output (tests, typecheck, a real run), or it is not done.
 
+## Security scanning (local, dev-only)
+
+These are local dev tools; they do NOT ship in the `.vsix`.
+
+- **eslint-plugin-security**: `pnpm lint:security` (standalone `eslint.security.config.mjs`, kept
+  out of the strict build lint). High recall, low precision — `detect-object-injection` /
+  `detect-non-literal-fs-filename` are mostly noise; focus on `detect-unsafe-regex` /
+  `detect-non-literal-regexp`.
+- **Semgrep** (higher signal): install once in a venv, then
+  `semgrep --config p/security-audit --config p/javascript --config p/typescript --metrics off --oss-only src webview-ui/src`.
+  (`--config auto` needs metrics on; use explicit rulesets for an offline/private run.)
+- **Dependency vulns**: `pnpm audit --prod`. Most of the tree is transitive/build-only and does
+  not ship; the runtime-relevant ones to watch are `shell-quote` (command parsing) and
+  `simple-git` (checkpoints), plus `dompurify` (mermaid rendering in the webview).
+
 ## Nested rules & commands
 
 Concrete, still-current rules live under `.agent/` — consult them:
