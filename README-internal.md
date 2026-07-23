@@ -1,7 +1,14 @@
-# OpenAI Compatible Agent
+# Local Agent
 
-OpenAI 互換エンドポイント・Azure OpenAI に接続する AI コーディングエージェント（機能限定版）。  
-ローカル環境の OpenAI 互換 LLM エンドポイント（vLLM / Ollama / TGI）や Azure OpenAI での利用を前提としています。
+ローカル環境の OpenAI 互換エンドポイント（vLLM / Ollama / TGI）・Azure OpenAI に接続する AI コーディングエージェント。
+
+### コード解析の対応言語
+
+エージェントがコード構造（定義抽出・コードベース索引）を解析できる言語は以下です（tree-sitter）。ここに無い言語は解析されないだけで、通常の編集・実行は可能です。
+
+`bash` `c` `c++` `c#` `css` `go` `html` `java` `javascript` `json` `kotlin` `php` `python` `ruby` `rust` `scala` `swift` `toml` `tsx` `typescript` `vue` `yaml` （＋ EJS 等テンプレート）
+
+対応言語を増やす場合は `packages/build/src/esbuild.ts` の `SUPPORTED_TREE_SITTER_LANGUAGES` に追加してください。
 
 ---
 
