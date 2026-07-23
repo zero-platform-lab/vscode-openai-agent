@@ -6,7 +6,7 @@
 		"plan": "計画",
 		"tooltip": "自律モード: {{mode}}。クリックで {{next}} に切替（Ctrl+Shift+A）"
 	},
-	"greeting": "OpenAI Compatible Agent へようこそ",
+	"greeting": "OpenAI Agent へようこそ",
 	"task": {
 		"title": "タスク",
 		"expand": "タスクを展開",
@@ -97,7 +97,7 @@
 	"enqueueMessage": "メッセージをキューに追加（現在のタスク完了後に送信されます）",
 	"scrollToBottom": "チャットの最下部にスクロール",
 	"scrollToLatestCheckpoint": "前のチェックポイントまでスクロール",
-	"about": "OpenAI Compatible Agentは、エディタに常駐するAI開発チームです。",
+	"about": "OpenAI Agentは、エディタに常駐するAI開発チームです。",
 	"docs": "詳細については、<DocsLink>ドキュメント</DocsLink>をご確認ください。",
 	"onboarding": "このワークスペースのタスクリストは空です。",
 	"rooTips": {
@@ -346,7 +346,7 @@
 	"profileViolationWarning": "現在のプロファイルは組織の設定と互換性がありません",
 	"shellIntegration": {
 		"title": "コマンド実行警告",
-		"description": "コマンドはVSCodeターミナルシェル統合なしで実行されています。この警告を非表示にするには、<settingsLink>OpenAI Compatible Agent設定</settingsLink>の<strong>Terminal</strong>セクションでシェル統合を無効にするか、以下のリンクを使用してVSCodeターミナル統合のトラブルシューティングを行ってください。",
+		"description": "コマンドはVSCodeターミナルシェル統合なしで実行されています。この警告を非表示にするには、<settingsLink>OpenAI Agent設定</settingsLink>の<strong>Terminal</strong>セクションでシェル統合を無効にするか、以下のリンクを使用してVSCodeターミナル統合のトラブルシューティングを行ってください。",
 		"troubleshooting": "シェル統合のドキュメントはこちらをクリック"
 	},
 	"ask": {
