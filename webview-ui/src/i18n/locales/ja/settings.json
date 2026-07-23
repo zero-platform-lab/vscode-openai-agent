@@ -40,7 +40,7 @@
 		"ui": "UI",
 		"experimental": "実験的",
 		"language": "言語",
-		"about": "OpenAI Agentについて",
+		"about": "Local Agentについて",
 		"skills": "Skills"
 	},
 	"about": {
@@ -249,7 +249,7 @@
 		"apiKey": "APIキー",
 		"openAiBaseUrl": "ベースURL",
 		"customModel": {
-			"capabilities": "カスタムOpenAI互換モデルの機能と価格を設定します。モデルの機能はOpenAI Agentのパフォーマンスに影響を与える可能性があるため、慎重に指定してください。",
+			"capabilities": "カスタムOpenAI互換モデルの機能と価格を設定します。モデルの機能はLocal Agentのパフォーマンスに影響を与える可能性があるため、慎重に指定してください。",
 			"maxTokens": {
 				"label": "最大出力トークン",
 				"description": "モデルが生成できる応答の最大トークン数。（サーバーが最大トークンを設定できるようにするには-1を指定します。）"
@@ -580,7 +580,7 @@
 		}
 	},
 	"modelPicker": {
-		"automaticFetch": "拡張機能は<serviceLink>{{serviceName}}</serviceLink>で利用可能な最新のモデルリストを自動的に取得します。どのモデルを選ぶべきか迷っている場合、OpenAI Agentは<defaultModelLink>{{defaultModelId}}</defaultModelLink>で最適に動作します。また、「free」で検索すると、現在利用可能な無料オプションを見つけることができます。",
+		"automaticFetch": "拡張機能は<serviceLink>{{serviceName}}</serviceLink>で利用可能な最新のモデルリストを自動的に取得します。どのモデルを選ぶべきか迷っている場合、Local Agentは<defaultModelLink>{{defaultModelId}}</defaultModelLink>で最適に動作します。また、「free」で検索すると、現在利用可能な無料オプションを見つけることができます。",
 		"label": "モデル",
 		"searchPlaceholder": "検索",
 		"noMatchFound": "一致するものが見つかりません",
