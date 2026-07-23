@@ -19,7 +19,6 @@ import {
 
 import { findLastIndex } from "@agent/array"
 
-import { checkExistKey } from "@agent/checkExistApiConfig"
 import { Mode, defaultModeSlug, defaultPrompts } from "@agent/modes"
 import { CustomSupportPrompts } from "@agent/support-prompt"
 import { experimentDefault } from "@agent/experiments"
@@ -30,7 +29,6 @@ import { convertTextMateToHljs } from "@src/utils/textMateToHljs"
 export interface ExtensionStateContextType extends ExtensionState {
 	historyPreviewCollapsed?: boolean // Add the new state property
 	didHydrateState: boolean
-	showWelcome: boolean
 	theme: any
 	mcpServers: McpServer[]
 	currentCheckpoint?: string
@@ -237,7 +235,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 	})
 
 	const [didHydrateState, setDidHydrateState] = useState(false)
-	const [showWelcome, setShowWelcome] = useState(false)
 	const [theme, setTheme] = useState<any>(undefined)
 	const [filePaths, setFilePaths] = useState<string[]>([])
 	const [openedTabs, setOpenedTabs] = useState<Array<{ label: string; isActive: boolean; path?: string }>>([])
@@ -273,7 +270,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 				case "state": {
 					const newState = message.state ?? {}
 					setState((prevState) => mergeExtensionState(prevState, newState))
-					setShowWelcome(!checkExistKey(newState.apiConfiguration))
 					setDidHydrateState(true)
 					// Update alwaysAllowFollowupQuestions if present in state message
 					if ((newState as any).alwaysAllowFollowupQuestions !== undefined) {
@@ -422,7 +418,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		...state,
 		reasoningBlockCollapsed: state.reasoningBlockCollapsed ?? true,
 		didHydrateState,
-		showWelcome,
 		theme,
 		mcpServers,
 		currentCheckpoint,

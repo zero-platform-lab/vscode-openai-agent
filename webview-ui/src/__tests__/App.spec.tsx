@@ -130,7 +130,6 @@ describe("App", () => {
 		// Set up default mock return value
 		mockUseExtensionState.mockReturnValue({
 			didHydrateState: true,
-			showWelcome: false,
 			experiments: {},
 			language: "en",
 		})
