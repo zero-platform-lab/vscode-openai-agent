@@ -13,9 +13,9 @@ function patchBranding(text) {
 		.replaceAll("https://github.com/RooCodeInc/Roo-Code", "https://github.com/zero-platform-lab/vscode-openai-agent")
 		.replaceAll("RooCodeStorage", "AgentStorage")
 		.replaceAll("roo-code-settings", "agent-settings")
-		.replaceAll("Roo Code", "OpenAI Compatible Agent")
-		.replaceAll("RooCode", "OpenAI-Compatible-Agent")
-		.replaceAll("Roo Cline", "OpenAI Compatible Agent")
+		.replaceAll("Roo Code", "Local Agent")
+		.replaceAll("RooCode", "Local-Agent")
+		.replaceAll("Roo Cline", "Local Agent")
 		.replace(/\bRoo\b/g, "Agent")
 }
 
@@ -47,7 +47,7 @@ async function main() {
 			"process.env.PKG_PUBLISHER": '"internal"',
 			"process.env.PKG_NAME": '"openai-compatible-agent"',
 			"process.env.PKG_VERSION": `"${overrideJson.version}"`,
-			"process.env.PKG_OUTPUT_CHANNEL": '"OpenAI-Compatible-Agent"',
+			"process.env.PKG_OUTPUT_CHANNEL": '"Local-Agent"',
 			...(gitSha ? { "process.env.PKG_SHA": `"${gitSha}"` } : {}),
 		},
 	}

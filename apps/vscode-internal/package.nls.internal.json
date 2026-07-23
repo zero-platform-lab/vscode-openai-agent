@@ -1,9 +1,9 @@
 {
-	"extension.displayName": "OpenAI Compatible Agent",
+	"extension.displayName": "Local Agent",
 	"extension.description": "OpenAI 互換エンドポイント・Azure OpenAI に接続する AI コーディングエージェント（機能限定版）",
-	"views.contextMenu.label": "OpenAI Compatible Agent",
-	"views.terminalMenu.label": "OpenAI Compatible Agent",
-	"views.activitybar.title": "OpenAI Compatible Agent",
-	"views.sidebar.name": "OpenAI Compatible Agent",
-	"configuration.title": "OpenAI Compatible Agent"
+	"views.contextMenu.label": "Local Agent",
+	"views.terminalMenu.label": "Local Agent",
+	"views.activitybar.title": "Local Agent",
+	"views.sidebar.name": "Local Agent",
+	"configuration.title": "Local Agent"
 }
