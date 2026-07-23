@@ -10,6 +10,12 @@
 		"clean": {
 			"cache": false
 		},
+		"bundle:internal": {
+			"cache": false
+		},
+		"vsix:internal": {
+			"cache": false
+		},
 		"build": {
 			"outputs": ["dist/**"],
 			"inputs": ["src/**", "package.json", "tsconfig.json", "tsup.config.ts", "vite.config.ts"]

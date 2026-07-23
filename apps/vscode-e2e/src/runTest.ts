@@ -43,7 +43,8 @@ async function main() {
 			extensionTestsPath,
 			launchArgs: [testWorkspace],
 			extensionTestsEnv,
-			version: process.env.VSCODE_VERSION || "1.101.2",
+			// Must be >= 1.106 to match engines.vscode (secondarySideBar view container support).
+			version: process.env.VSCODE_VERSION || "1.106.0",
 		})
 
 		// Clean up the temporary workspace
