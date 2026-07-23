@@ -27,6 +27,7 @@
 	"command.setAutonomyModeManual.title": "Autonomy: Manual (ask for everything)",
 	"command.setAutonomyModeAutoEdit.title": "Autonomy: Auto-Edit (auto edits, ask for commands)",
 	"command.setAutonomyModeAuto.title": "Autonomy: Auto (autonomous, destructive commands blocked)",
+	"command.setAutonomyModePlan.title": "Autonomy: Plan (read-only; edits and commands blocked)",
 	"configuration.title": "OpenAI Compatible Agent",
 	"commands.allowedCommands.description": "Commands that can be auto-executed when 'Always approve execute operations' is enabled",
 	"commands.deniedCommands.description": "Command prefixes that will be automatically denied without asking for approval. In case of conflicts with allowed commands, the longest prefix match takes precedence. Add * to deny all commands.",

@@ -3,6 +3,7 @@
 		"manual": "手動",
 		"autoEdit": "自動編集",
 		"auto": "自動",
+		"plan": "計画",
 		"tooltip": "自律モード: {{mode}}。クリックで {{next}} に切替（Ctrl+Shift+A）"
 	},
 	"greeting": "OpenAI Compatible Agent へようこそ",

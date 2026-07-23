@@ -1,5 +1,5 @@
-import type { ToolName, ModeConfig, ExperimentId, GroupOptions, GroupEntry } from "@openai-agent/types"
-import { toolNames as validToolNames } from "@openai-agent/types"
+import type { ToolName, ModeConfig, ExperimentId, GroupOptions, GroupEntry, AutonomyMode } from "@openai-agent/types"
+import { toolNames as validToolNames, isReadOnlyAutonomyMode } from "@openai-agent/types"
 import { customToolRegistry } from "@openai-agent/core"
 
 import { type Mode, FileRestrictionError, getModeBySlug, getGroupName } from "../../shared/modes"
@@ -29,6 +29,26 @@ export function isValidToolName(toolName: string, experiments?: Record<string, b
 	return false
 }
 
+// Tool groups that mutate state (file edits / terminal commands). Blocked in read-only
+// autonomy modes (Plan) regardless of the role mode. `mcp` stays allowed (reads);
+// subtasks are separately gated (alwaysAllowSubtasks) and inherit the read-only mode.
+const READ_ONLY_BLOCKED_GROUPS = ["edit", "command"] as const
+
+/**
+ * Whether a tool is permitted while a read-only autonomy mode (Plan) is active.
+ * Reads, MCP, and always-available tools (ask/complete/todo) are allowed; anything in
+ * an editing / command / browser group is not.
+ */
+export function isToolAllowedInReadOnlyMode(tool: string): boolean {
+	const resolvedTool = TOOL_ALIASES[tool] ?? tool
+
+	if (ALWAYS_AVAILABLE_TOOLS.includes(resolvedTool as (typeof ALWAYS_AVAILABLE_TOOLS)[number])) {
+		return true
+	}
+
+	return !READ_ONLY_BLOCKED_GROUPS.some((group) => TOOL_GROUPS[group].tools.includes(resolvedTool))
+}
+
 export function validateToolUse(
 	toolName: ToolName,
 	mode: Mode,
@@ -37,12 +57,21 @@ export function validateToolUse(
 	toolParams?: Record<string, unknown>,
 	experiments?: Record<string, boolean>,
 	includedTools?: string[],
+	autonomyMode?: AutonomyMode,
 ): void {
 	// First, check if the tool name is actually a valid/known tool
 	// This catches completely invalid tool names like "edit_file" that don't exist
 	if (!isValidToolName(toolName, experiments)) {
 		throw new Error(
 			`Unknown tool "${toolName}". This tool does not exist. Please use one of the available tools: ${validToolNames.join(", ")}.`,
+		)
+	}
+
+	// Read-only autonomy (Plan) gate: block mutating tools regardless of the role mode.
+	// User-controlled only — the model can never change its own autonomy mode.
+	if (isReadOnlyAutonomyMode(autonomyMode) && !isToolAllowedInReadOnlyMode(toolName)) {
+		throw new Error(
+			`Tool "${toolName}" is not allowed in Plan (read-only) mode. Switch out of Plan mode to make changes.`,
 		)
 	}
 

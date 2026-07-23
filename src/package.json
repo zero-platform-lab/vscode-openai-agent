@@ -180,6 +180,11 @@
 				"command": "openai-agent.setAutonomyModeAuto",
 				"title": "%command.setAutonomyModeAuto.title%",
 				"category": "%configuration.title%"
+			},
+			{
+				"command": "openai-agent.setAutonomyModePlan",
+				"title": "%command.setAutonomyModePlan.title%",
+				"category": "%configuration.title%"
 			}
 		],
 		"menus": {

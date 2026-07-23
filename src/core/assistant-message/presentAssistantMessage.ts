@@ -318,7 +318,7 @@ export async function presentAssistantMessage(cline: Task) {
 
 			// Fetch state early so it's available for toolDescription and validation
 			const state = await cline.providerRef.deref()?.getState()
-			const { mode, customModes, experiments: stateExperiments, disabledTools } = state ?? {}
+			const { mode, customModes, experiments: stateExperiments, disabledTools, autonomyMode } = state ?? {}
 
 			const toolDescription = (): string => {
 				switch (block.name) {
@@ -586,6 +586,7 @@ export async function presentAssistantMessage(cline: Task) {
 						block.params,
 						stateExperiments,
 						includedTools,
+						autonomyMode,
 					)
 				} catch (error) {
 					cline.consecutiveMistakeCount++

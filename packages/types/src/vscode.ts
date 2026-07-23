@@ -49,6 +49,7 @@ export const commandIds = [
 	"setAutonomyModeManual",
 	"setAutonomyModeAutoEdit",
 	"setAutonomyModeAuto",
+	"setAutonomyModePlan",
 ] as const
 
 export type CommandId = (typeof commandIds)[number]

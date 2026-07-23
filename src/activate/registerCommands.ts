@@ -182,6 +182,7 @@ const getCommandsMap = ({ context, outputChannel, provider }: RegisterCommandOpt
 	setAutonomyModeManual: () => setAutonomyModeCommand(outputChannel, "manual"),
 	setAutonomyModeAutoEdit: () => setAutonomyModeCommand(outputChannel, "autoEdit"),
 	setAutonomyModeAuto: () => setAutonomyModeCommand(outputChannel, "auto"),
+	setAutonomyModePlan: () => setAutonomyModeCommand(outputChannel, "plan"),
 })
 
 const setAutonomyModeCommand = async (outputChannel: vscode.OutputChannel, mode: AutonomyMode) => {

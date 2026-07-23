@@ -8,6 +8,7 @@ import {
 	DEFAULT_AUTONOMY_MODE,
 	DEFAULT_DENIED_COMMANDS,
 	nextAutonomyMode,
+	isReadOnlyAutonomyMode,
 	type AutonomyMode,
 } from "../autonomy.js"
 
@@ -34,6 +35,22 @@ describe("autonomy presets", () => {
 		const p = AUTONOMY_PRESETS.auto
 		expect(p.autoApprovalEnabled).toBe(true)
 		expect(p.alwaysAllowExecute).toBe(true)
+	})
+
+	it("plan is read-only: reads auto-approved, writes/commands off", () => {
+		const p = AUTONOMY_PRESETS.plan
+		expect(p.autoApprovalEnabled).toBe(true)
+		expect(p.alwaysAllowReadOnly).toBe(true)
+		expect(p.alwaysAllowWrite).toBe(false)
+		expect(p.alwaysAllowExecute).toBe(false)
+	})
+
+	it("isReadOnlyAutonomyMode flags only plan", () => {
+		expect(isReadOnlyAutonomyMode("plan")).toBe(true)
+		expect(isReadOnlyAutonomyMode("manual")).toBe(false)
+		expect(isReadOnlyAutonomyMode("autoEdit")).toBe(false)
+		expect(isReadOnlyAutonomyMode("auto")).toBe(false)
+		expect(isReadOnlyAutonomyMode(undefined)).toBe(false)
 	})
 
 	it("escalation is monotonic: manual ⊆ autoEdit ⊆ auto", () => {
