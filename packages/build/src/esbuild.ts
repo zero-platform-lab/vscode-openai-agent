@@ -150,14 +150,49 @@ export function copyWasms(srcDir: string, distDir: string): void {
 		throw new Error(`Directory does not exist: ${languageWasmDir}`)
 	}
 
-	// Dynamically read all WASM files from the directory instead of using a hardcoded list.
-	const wasmFiles = fs.readdirSync(languageWasmDir).filter((file) => file.endsWith(".wasm"))
+	// tree-sitter grammars power code-structure parsing (definition extraction / codebase
+	// indexing) for the *target project* the agent is opened in. We ship a trimmed set of
+	// mainstream languages to keep the bundle small; add an entry here to support more.
+	// (A missing language degrades gracefully — that language just isn't parsed.)
+	const SUPPORTED_TREE_SITTER_LANGUAGES = new Set([
+		"bash",
+		"c",
+		"c_sharp",
+		"cpp",
+		"css",
+		"embedded_template",
+		"go",
+		"html",
+		"java",
+		"javascript",
+		"json",
+		"kotlin",
+		"php",
+		"python",
+		"ruby",
+		"rust",
+		"scala",
+		"swift",
+		"toml",
+		"tsx",
+		"typescript",
+		"vue",
+		"yaml",
+	])
+
+	const allWasmFiles = fs.readdirSync(languageWasmDir).filter((file) => file.endsWith(".wasm"))
+	const wasmFiles = allWasmFiles.filter((file) =>
+		SUPPORTED_TREE_SITTER_LANGUAGES.has(file.replace(/^tree-sitter-/, "").replace(/\.wasm$/, "")),
+	)
 
 	wasmFiles.forEach((filename) => {
 		fs.copyFileSync(path.join(languageWasmDir, filename), path.join(distDir, filename))
 	})
 
-	console.log(`[copyWasms] Copied ${wasmFiles.length} tree-sitter language wasms to ${distDir}`)
+	console.log(
+		`[copyWasms] Copied ${wasmFiles.length} tree-sitter language wasms to ${distDir} ` +
+			`(skipped ${allWasmFiles.length - wasmFiles.length} unsupported)`,
+	)
 
 	// Copy esbuild-wasm files for custom tool transpilation (cross-platform).
 	copyEsbuildWasmFiles(nodeModulesDir, distDir)
