@@ -31,7 +31,6 @@ export interface ApiOptionsProps {
 		value: ProviderSettings[K],
 		isUserAction?: boolean,
 	) => void
-	fromWelcomeView?: boolean
 	errorMessage: string | undefined
 	setErrorMessage: React.Dispatch<React.SetStateAction<string | undefined>>
 }
@@ -39,7 +38,6 @@ export interface ApiOptionsProps {
 const ApiOptions = ({
 	apiConfiguration,
 	setApiConfigurationField,
-	fromWelcomeView,
 	errorMessage,
 	setErrorMessage,
 }: ApiOptionsProps) => {
@@ -180,11 +178,10 @@ const ApiOptions = ({
 						setApiConfigurationField={setApiConfigurationField}
 						organizationAllowList={organizationAllowList}
 						modelValidationError={modelValidationError}
-						simplifySettings={fromWelcomeView}
 					/>
 				)}
 
-				{!fromWelcomeView && (
+				{(
 					<ThinkingBudget
 						key={`${selectedProvider}-${selectedModelId}`}
 						apiConfiguration={apiConfiguration}
@@ -193,7 +190,7 @@ const ApiOptions = ({
 					/>
 				)}
 
-				{!fromWelcomeView && selectedModelInfo?.supportsVerbosity && (
+				{selectedModelInfo?.supportsVerbosity && (
 					<Verbosity
 						apiConfiguration={apiConfiguration}
 						setApiConfigurationField={setApiConfigurationField}
@@ -201,7 +198,7 @@ const ApiOptions = ({
 					/>
 				)}
 
-				{!fromWelcomeView && (
+				{(
 					<Collapsible open={isAdvancedSettingsOpen} onOpenChange={setIsAdvancedSettingsOpen}>
 						<CollapsibleTrigger className="flex items-center gap-1 w-full cursor-pointer hover:opacity-80 mb-2">
 							<span
