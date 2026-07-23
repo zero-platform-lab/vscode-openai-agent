@@ -15,6 +15,7 @@ import {
 	type EditQueuedMessagePayload,
 	AgentSettings,
 	ExperimentId,
+	DEFAULT_AUTONOMY_MODE,
 	checkoutDiffPayloadSchema,
 	checkoutRestorePayloadSchema,
 } from "@openai-agent/types"
@@ -1324,6 +1325,9 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 		case "autoApprovalEnabled":
 			await updateGlobalState("autoApprovalEnabled", message.bool ?? false)
 			await provider.postStateToWebview()
+			break
+		case "setAutonomyMode":
+			await provider.setAutonomyMode(message.autonomyMode ?? DEFAULT_AUTONOMY_MODE)
 			break
 		case "enhancePrompt":
 			if (message.text) {

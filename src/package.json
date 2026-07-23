@@ -160,6 +160,26 @@
 				"command": "openai-agent.toggleAutoApprove",
 				"title": "%command.toggleAutoApprove.title%",
 				"category": "%configuration.title%"
+			},
+			{
+				"command": "openai-agent.cycleAutonomyMode",
+				"title": "%command.cycleAutonomyMode.title%",
+				"category": "%configuration.title%"
+			},
+			{
+				"command": "openai-agent.setAutonomyModeManual",
+				"title": "%command.setAutonomyModeManual.title%",
+				"category": "%configuration.title%"
+			},
+			{
+				"command": "openai-agent.setAutonomyModeAutoEdit",
+				"title": "%command.setAutonomyModeAutoEdit.title%",
+				"category": "%configuration.title%"
+			},
+			{
+				"command": "openai-agent.setAutonomyModeAuto",
+				"title": "%command.setAutonomyModeAuto.title%",
+				"category": "%configuration.title%"
 			}
 		],
 		"menus": {
@@ -263,6 +283,13 @@
 				"mac": "cmd+alt+a",
 				"win": "ctrl+alt+a",
 				"linux": "ctrl+alt+a"
+			},
+			{
+				"command": "openai-agent.cycleAutonomyMode",
+				"key": "ctrl+shift+a",
+				"mac": "cmd+shift+a",
+				"win": "ctrl+shift+a",
+				"linux": "ctrl+shift+a"
 			}
 		],
 		"submenus": [
@@ -295,7 +322,26 @@
 					"items": {
 						"type": "string"
 					},
-					"default": [],
+					"default": [
+						"rm -rf",
+						"rm -fr",
+						"sudo",
+						"dd",
+						"mkfs",
+						"shred",
+						":(){",
+						"chmod -R 777",
+						"chown -R",
+						"git push --force",
+						"git push -f",
+						"git reset --hard",
+						"git clean -fd",
+						"curl",
+						"wget",
+						"npm publish",
+						"pnpm publish",
+						"yarn publish"
+					],
 					"description": "%commands.deniedCommands.description%"
 				},
 				"openai-agent.commandExecutionTimeout": {
