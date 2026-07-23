@@ -133,7 +133,7 @@ const PromptsSettings = ({
 
 				<div key={activeSupportOption} className="mt-4">
 					<div className="flex justify-between items-center mb-1">
-						<label className="block font-medium">{t("prompts:supportPrompts.prompt")}</label>
+						<label className="block">{t("prompts:supportPrompts.prompt")}</label>
 						<StandardTooltip
 							content={t("prompts:supportPrompts.resetPrompt", {
 								promptType: activeSupportOption,
@@ -160,7 +160,7 @@ const PromptsSettings = ({
 					{activeSupportOption === "ENHANCE" && (
 						<div className="mt-4 flex flex-col gap-3 pl-3 border-l-2 border-vscode-button-background">
 							<div>
-								<label className="block font-medium mb-1">
+								<label className="block mb-1">
 									{t("prompts:supportPrompts.enhance.apiConfiguration")}
 								</label>
 								<Select
@@ -224,7 +224,7 @@ const PromptsSettings = ({
 							</div>
 
 							<div>
-								<label className="block font-medium mb-1">
+								<label className="block mb-1">
 									{t("prompts:supportPrompts.enhance.testEnhancement")}
 								</label>
 								<VSCodeTextArea

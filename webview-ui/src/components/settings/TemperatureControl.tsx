@@ -42,7 +42,7 @@ export const TemperatureControl = ({ value, onChange, maxValue = 1, defaultValue
 							setInputValue(value ?? defaultValue ?? 0)
 						}
 					}}>
-					<label className="block font-medium mb-1">{t("settings:temperature.useCustom")}</label>
+					<label className="block mb-1">{t("settings:temperature.useCustom")}</label>
 				</VSCodeCheckbox>
 				<div className="text-sm text-vscode-descriptionForeground mt-1">
 					{t("settings:temperature.description")}

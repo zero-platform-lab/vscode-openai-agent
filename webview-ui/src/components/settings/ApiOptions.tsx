@@ -35,12 +35,7 @@ export interface ApiOptionsProps {
 	setErrorMessage: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const ApiOptions = ({
-	apiConfiguration,
-	setApiConfigurationField,
-	errorMessage,
-	setErrorMessage,
-}: ApiOptionsProps) => {
+const ApiOptions = ({ apiConfiguration, setApiConfigurationField, errorMessage, setErrorMessage }: ApiOptionsProps) => {
 	const { t } = useAppTranslation()
 	const { organizationAllowList } = useExtensionState()
 
@@ -155,7 +150,7 @@ const ApiOptions = ({
 		<div className="flex flex-col gap-3">
 			<div className="flex flex-col gap-1 relative">
 				<div className="flex justify-between items-center">
-					<label className="block font-medium">{t("settings:providers.apiProvider")}</label>
+					<label className="block">{t("settings:providers.apiProvider")}</label>
 				</div>
 				<SearchableSelect
 					value={selectedProvider}
@@ -181,14 +176,14 @@ const ApiOptions = ({
 					/>
 				)}
 
-				{(
+				{
 					<ThinkingBudget
 						key={`${selectedProvider}-${selectedModelId}`}
 						apiConfiguration={apiConfiguration}
 						setApiConfigurationField={setApiConfigurationField}
 						modelInfo={selectedModelInfo}
 					/>
-				)}
+				}
 
 				{selectedModelInfo?.supportsVerbosity && (
 					<Verbosity
@@ -198,7 +193,7 @@ const ApiOptions = ({
 					/>
 				)}
 
-				{(
+				{
 					<Collapsible open={isAdvancedSettingsOpen} onOpenChange={setIsAdvancedSettingsOpen}>
 						<CollapsibleTrigger className="flex items-center gap-1 w-full cursor-pointer hover:opacity-80 mb-2">
 							<span
@@ -232,7 +227,7 @@ const ApiOptions = ({
 							/>
 						</CollapsibleContent>
 					</Collapsible>
-				)}
+				}
 			</>
 		</div>
 	)

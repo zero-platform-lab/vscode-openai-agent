@@ -51,9 +51,7 @@ export const NotificationSettings = ({
 							settingId="notifications-tts-speed"
 							section="notifications"
 							label={t("settings:notifications.tts.speedLabel")}>
-							<label className="block font-medium mb-1">
-								{t("settings:notifications.tts.speedLabel")}
-							</label>
+							<label className="block mb-1">{t("settings:notifications.tts.speedLabel")}</label>
 							<div className="flex items-center gap-2">
 								<Slider
 									min={0.1}
@@ -90,9 +88,7 @@ export const NotificationSettings = ({
 							settingId="notifications-sound-volume"
 							section="notifications"
 							label={t("settings:notifications.sound.volumeLabel")}>
-							<label className="block font-medium mb-1">
-								{t("settings:notifications.sound.volumeLabel")}
-							</label>
+							<label className="block mb-1">{t("settings:notifications.sound.volumeLabel")}</label>
 							<div className="flex items-center gap-2">
 								<Slider
 									min={0}

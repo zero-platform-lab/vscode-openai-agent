@@ -281,7 +281,7 @@ export const AutoApproveSettings = ({
 							settingId="auto-approve-allowed-commands"
 							section="autoApprove"
 							label={t("settings:autoApprove.execute.allowedCommands")}>
-							<label className="block font-medium mb-1" data-testid="allowed-commands-heading">
+							<label className="block mb-1" data-testid="allowed-commands-heading">
 								{t("settings:autoApprove.execute.allowedCommands")}
 							</label>
 							<div className="text-vscode-descriptionForeground text-sm mt-1">
@@ -337,7 +337,7 @@ export const AutoApproveSettings = ({
 							section="autoApprove"
 							label={t("settings:autoApprove.execute.deniedCommands")}
 							className="mt-6">
-							<label className="block font-medium mb-1" data-testid="denied-commands-heading">
+							<label className="block mb-1" data-testid="denied-commands-heading">
 								{t("settings:autoApprove.execute.deniedCommands")}
 							</label>
 							<div className="text-vscode-descriptionForeground text-sm mt-1">

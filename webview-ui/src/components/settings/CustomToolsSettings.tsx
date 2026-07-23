@@ -98,9 +98,7 @@ export const CustomToolsSettings = ({ enabled, onChange }: CustomToolsSettingsPr
 			{enabled && (
 				<div className="ml-2 space-y-3">
 					<div className="flex items-center justify-between gap-4">
-						<label className="block font-medium">
-							{t("settings:experimental.CUSTOM_TOOLS.toolsHeader")}
-						</label>
+						<label className="block">{t("settings:experimental.CUSTOM_TOOLS.toolsHeader")}</label>
 						<Button variant="outline" onClick={onRefresh} disabled={isRefreshing}>
 							<div className="flex items-center gap-2">
 								{isRefreshing ? (
