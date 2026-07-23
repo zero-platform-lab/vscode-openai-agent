@@ -8,10 +8,8 @@ import {
 	ProviderSettingsEntry,
 	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
 	getModelId,
-	openRouterDefaultModelId,
 	type ProviderName,
 	isProviderName,
-	isRetiredProvider,
 } from "@openai-agent/types"
 
 import { Mode, modes } from "../../shared/modes"
@@ -54,8 +52,7 @@ export class ProviderSettingsManager {
 		apiConfigs: {
 			default: {
 				id: this.defaultConfigId,
-				apiProvider: "openrouter",
-				openRouterModelId: openRouterDefaultModelId,
+				apiProvider: "openai",
 			},
 		},
 		modeApiConfigs: this.defaultModeApiConfigs,
@@ -353,14 +350,8 @@ export class ProviderSettingsManager {
 				const existingId = providerProfiles.apiConfigs[name]?.id
 				const id = config.id || existingId || this.generateId()
 
-				// For active providers, filter out settings from other providers.
-				// For retired providers, preserve full profile fields (including legacy
-				// provider-specific keys) to avoid data loss — passthrough() keeps
-				// unknown keys that strict parse() would strip.
-				const filteredConfig =
-					typeof config.apiProvider === "string" && isRetiredProvider(config.apiProvider)
-						? providerSettingsWithIdSchema.passthrough().parse(config)
-						: discriminatedProviderSettingsWithIdSchema.parse(config)
+				// Filter out settings that don't belong to the active provider.
+				const filteredConfig = discriminatedProviderSettingsWithIdSchema.parse(config)
 				providerProfiles.apiConfigs[name] = { ...filteredConfig, id }
 				await this.store(providerProfiles)
 				return id
@@ -507,13 +498,6 @@ export class ProviderSettingsManager {
 				const profiles = providerProfilesSchema.parse(await this.load())
 				const configs = profiles.apiConfigs
 				for (const name in configs) {
-					const apiProvider = configs[name].apiProvider
-
-					if (typeof apiProvider === "string" && isRetiredProvider(apiProvider)) {
-						// Preserve retired-provider profiles as-is to prevent dropping legacy fields.
-						continue
-					}
-
 					// Avoid leaking properties from other active providers.
 					configs[name] = discriminatedProviderSettingsWithIdSchema.parse(configs[name])
 
@@ -590,20 +574,7 @@ export class ProviderSettingsManager {
 					// This handles removed providers (like "glama") gracefully
 					const sanitizedConfig = this.sanitizeProviderConfig(apiConfig)
 
-					// For retired providers, use passthrough() to preserve legacy
-					// provider-specific fields (e.g. groqApiKey, deepInfraModelId)
-					// that strict parse() would strip.
-					const providerValue =
-						typeof sanitizedConfig === "object" &&
-						sanitizedConfig !== null &&
-						"apiProvider" in sanitizedConfig
-							? (sanitizedConfig as Record<string, unknown>).apiProvider
-							: undefined
-					const schema =
-						typeof providerValue === "string" && isRetiredProvider(providerValue)
-							? providerSettingsWithIdSchema.passthrough()
-							: providerSettingsWithIdSchema
-					const result = schema.safeParse(sanitizedConfig)
+					const result = providerSettingsWithIdSchema.safeParse(sanitizedConfig)
 					return result.success ? { ...acc, [key]: result.data } : acc
 				},
 				{} as Record<string, ProviderSettingsWithId>,
@@ -622,9 +593,8 @@ export class ProviderSettingsManager {
 
 	/**
 	 * Sanitizes a provider config by resetting unknown apiProvider values.
-	 * Retired providers are preserved.
-	 * This handles cases where a user had a provider selected that was later removed
-	 * from the extension (e.g., "glama").
+	 * This handles cases where a user had a provider selected that is not
+	 * supported by this build (only the OpenAI Compatible provider is).
 	 */
 	private sanitizeProviderConfig(apiConfig: unknown): unknown {
 		if (typeof apiConfig !== "object" || apiConfig === null) {
@@ -635,11 +605,8 @@ export class ProviderSettingsManager {
 
 		const apiProvider = config.apiProvider
 
-		// Check if apiProvider is set and if it's still recognized (active or retired)
-		if (
-			apiProvider !== undefined &&
-			(typeof apiProvider !== "string" || (!isProviderName(apiProvider) && !isRetiredProvider(apiProvider)))
-		) {
+		// Check if apiProvider is set and if it's still recognized
+		if (apiProvider !== undefined && (typeof apiProvider !== "string" || !isProviderName(apiProvider))) {
 			console.log(
 				`[ProviderSettingsManager] Sanitizing unknown provider "${config.apiProvider}" - resetting to undefined`,
 			)

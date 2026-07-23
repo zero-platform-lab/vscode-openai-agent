@@ -85,7 +85,7 @@ describe("Task - sticky provider profile init race", () => {
 		const apiConfig: ProviderSettings = {
 			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
-			apiKey: "test-api-key",
+			openAiApiKey: "test-api-key",
 		} as any
 
 		let resolveGetState: ((v: any) => void) | undefined

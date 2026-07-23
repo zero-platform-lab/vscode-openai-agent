@@ -94,7 +94,7 @@ pnpm workspaces + turbo によるモノレポです。
 - 探索: `SearchFilesTool`, `CodebaseSearchTool`（コードインデックス利用）
 - 実行: `ExecuteCommandTool`, `ReadCommandOutputTool`
 - 制御: `AttemptCompletionTool`（完了）, `SwitchModeTool`, `NewTaskTool`（サブタスク）, `AskFollowupQuestionTool`, `UpdateTodoListTool`
-- 拡張: `UseMcpToolTool` / `accessMcpResourceTool`（MCP）, `SkillTool`（スキル）, `RunSlashCommandTool`, `GenerateImageTool`
+- 拡張: `UseMcpToolTool` / `accessMcpResourceTool`（MCP）, `SkillTool`（スキル）, `RunSlashCommandTool`
 
 ファイル編集は `DiffViewProvider`（`src/core/diff`）を通じ、適用前に差分をレビュー表示します。
 

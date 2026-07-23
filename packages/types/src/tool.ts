@@ -44,7 +44,6 @@ export const toolNames = [
 	"update_todo_list",
 	"run_slash_command",
 	"skill",
-	"generate_image",
 	"custom_tool",
 ] as const
 

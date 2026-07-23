@@ -3,12 +3,7 @@ import { VSCodeLink } from "@vscode/webview-ui-toolkit/react"
 import { Trans } from "react-i18next"
 import { ChevronsUpDown, Check, X, Info } from "lucide-react"
 
-import {
-	type ProviderSettings,
-	type ModelInfo,
-	type OrganizationAllowList,
-	isRetiredProvider,
-} from "@openai-agent/types"
+import { type ProviderSettings, type ModelInfo, type OrganizationAllowList } from "@openai-agent/types"
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useSelectedModel } from "@/components/ui/hooks/useSelectedModel"
@@ -31,20 +26,7 @@ import { useEscapeKey } from "@src/hooks/useEscapeKey"
 import { ModelInfoView } from "./ModelInfoView"
 import { ApiErrorMessage } from "./ApiErrorMessage"
 
-type ModelIdKey = keyof Pick<
-	ProviderSettings,
-	| "openRouterModelId"
-	| "requestyModelId"
-	| "unboundModelId"
-	| "openAiModelId"
-	| "litellmModelId"
-	| "vercelAiGatewayModelId"
-	| "apiModelId"
-	| "ollamaModelId"
-	| "lmStudioModelId"
-	| "lmStudioDraftModelId"
-	| "vsCodeLmModelSelector"
->
+type ModelIdKey = keyof Pick<ProviderSettings, "openAiModelId" | "apiModelId">
 
 interface ModelPickerProps {
 	defaultModelId: string
@@ -110,10 +92,7 @@ export const ModelPicker = ({
 		return selectedModelId
 	}, [displayTransform, apiConfiguration, modelIdKey, selectedModelId])
 
-	const activeProvider =
-		apiConfiguration.apiProvider && isRetiredProvider(apiConfiguration.apiProvider)
-			? undefined
-			: apiConfiguration.apiProvider
+	const activeProvider = apiConfiguration.apiProvider
 
 	const modelIds = useMemo(() => {
 		const filteredModels = filterModels(models, activeProvider, organizationAllowList)

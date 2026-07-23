@@ -7,7 +7,6 @@ import attemptCompletion from "./attempt_completion"
 import codebaseSearch from "./codebase_search"
 import editTool from "./edit"
 import executeCommand from "./execute_command"
-import generateImage from "./generate_image"
 import listFiles from "./list_files"
 import newTask from "./new_task"
 import readCommandOutput from "./read_command_output"
@@ -54,7 +53,6 @@ export function getNativeTools(options: NativeToolsOptions = {}): OpenAI.Chat.Ch
 		attemptCompletion,
 		codebaseSearch,
 		executeCommand,
-		generateImage,
 		listFiles,
 		newTask,
 		readCommandOutput,

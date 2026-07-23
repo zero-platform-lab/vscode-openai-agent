@@ -101,9 +101,3 @@ export interface Size {
 	width: number
 	height: number
 }
-
-export interface GenerateImageParams {
-	prompt: string
-	path: string
-	image?: string
-}

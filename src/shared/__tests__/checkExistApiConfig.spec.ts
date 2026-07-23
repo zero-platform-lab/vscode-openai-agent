@@ -16,24 +16,22 @@ describe("checkExistKey", () => {
 
 	it("should return true when one key is defined", () => {
 		const config: ProviderSettings = {
-			apiKey: "test-key",
+			openAiApiKey: "test-key",
 		}
 		expect(checkExistKey(config)).toBe(true)
 	})
 
 	it("should return true when multiple keys are defined", () => {
 		const config: ProviderSettings = {
-			apiKey: "test-key",
-			openRouterApiKey: "openrouter-key",
+			openAiApiKey: "test-key",
 		}
 		expect(checkExistKey(config)).toBe(true)
 	})
 
 	it("should return true when only non-key fields are undefined", () => {
 		const config: ProviderSettings = {
-			apiKey: "test-key",
+			openAiApiKey: "test-key",
 			apiProvider: undefined,
-			anthropicBaseUrl: undefined,
 			modelMaxThinkingTokens: undefined,
 		}
 		expect(checkExistKey(config)).toBe(true)
@@ -41,20 +39,7 @@ describe("checkExistKey", () => {
 
 	it("should return false when all key fields are undefined", () => {
 		const config: ProviderSettings = {
-			apiKey: undefined,
-			openRouterApiKey: undefined,
-			awsRegion: undefined,
-			vertexProjectId: undefined,
 			openAiApiKey: undefined,
-			ollamaModelId: undefined,
-			lmStudioModelId: undefined,
-			geminiApiKey: undefined,
-			openAiNativeApiKey: undefined,
-			deepSeekApiKey: undefined,
-			moonshotApiKey: undefined,
-			mistralApiKey: undefined,
-			vsCodeLmModelSelector: undefined,
-			requestyApiKey: undefined,
 		}
 		expect(checkExistKey(config)).toBe(false)
 	})
@@ -66,16 +51,17 @@ describe("checkExistKey", () => {
 		expect(checkExistKey(config)).toBe(true)
 	})
 
-	it("should return true for openai-codex provider without API key", () => {
+	it("should return false for openai provider without base URL, model id, or API key", () => {
 		const config: ProviderSettings = {
-			apiProvider: "openai-codex",
+			apiProvider: "openai",
 		}
-		expect(checkExistKey(config)).toBe(true)
+		expect(checkExistKey(config)).toBe(false)
 	})
 
-	it("should return true for qwen-code provider without API key", () => {
+	it("should return true for openai provider with a base URL configured", () => {
 		const config: ProviderSettings = {
-			apiProvider: "qwen-code",
+			apiProvider: "openai",
+			openAiBaseUrl: "https://vllm.internal/v1",
 		}
 		expect(checkExistKey(config)).toBe(true)
 	})

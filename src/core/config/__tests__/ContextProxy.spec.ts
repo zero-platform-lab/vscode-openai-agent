@@ -70,16 +70,14 @@ describe("ContextProxy", () => {
 
 	describe("constructor", () => {
 		it("should initialize state cache with all global state keys", () => {
-			// +3 for the migration checks:
-			// 1. openRouterImageGenerationSettings
-			// 2. customCondensingPrompt
-			// 3. customSupportPrompts (for migrateOldDefaultCondensingPrompt)
-			expect(mockGlobalState.get).toHaveBeenCalledTimes(GLOBAL_STATE_KEYS.length + 3)
+			// +2 for the migration checks:
+			// 1. customCondensingPrompt
+			// 2. customSupportPrompts (for migrateOldDefaultCondensingPrompt)
+			expect(mockGlobalState.get).toHaveBeenCalledTimes(GLOBAL_STATE_KEYS.length + 2)
 			for (const key of GLOBAL_STATE_KEYS) {
 				expect(mockGlobalState.get).toHaveBeenCalledWith(key)
 			}
 			// Also check for migration calls
-			expect(mockGlobalState.get).toHaveBeenCalledWith("openRouterImageGenerationSettings")
 			expect(mockGlobalState.get).toHaveBeenCalledWith("customCondensingPrompt")
 			expect(mockGlobalState.get).toHaveBeenCalledWith("customSupportPrompts")
 		})
@@ -98,20 +96,20 @@ describe("ContextProxy", () => {
 	describe("getGlobalState", () => {
 		it("should return value from cache when it exists", async () => {
 			// Manually set a value in the cache
-			await proxy.updateGlobalState("apiProvider", "deepseek")
+			await proxy.updateGlobalState("apiProvider", "openai")
 
 			// Should return the cached value
 			const result = proxy.getGlobalState("apiProvider")
-			expect(result).toBe("deepseek")
+			expect(result).toBe("openai")
 
-			// Original context should be called once during updateGlobalState (+3 for migration checks)
-			expect(mockGlobalState.get).toHaveBeenCalledTimes(GLOBAL_STATE_KEYS.length + 3) // From initialization + migration checks
+			// Original context should be called once during updateGlobalState (+2 for migration checks)
+			expect(mockGlobalState.get).toHaveBeenCalledTimes(GLOBAL_STATE_KEYS.length + 2) // From initialization + migration checks
 		})
 
 		it("should handle default values correctly", async () => {
 			// No value in cache
-			const result = proxy.getGlobalState("apiProvider", "deepseek")
-			expect(result).toBe("deepseek")
+			const result = proxy.getGlobalState("apiProvider", "openai")
+			expect(result).toBe("openai")
 		})
 
 		it("should bypass cache for pass-through state keys", async () => {
@@ -152,14 +150,14 @@ describe("ContextProxy", () => {
 
 	describe("updateGlobalState", () => {
 		it("should update state directly in original context", async () => {
-			await proxy.updateGlobalState("apiProvider", "deepseek")
+			await proxy.updateGlobalState("apiProvider", "openai")
 
 			// Should have called original context
-			expect(mockGlobalState.update).toHaveBeenCalledWith("apiProvider", "deepseek")
+			expect(mockGlobalState.update).toHaveBeenCalledWith("apiProvider", "openai")
 
 			// Should have stored the value in cache
 			const storedValue = await proxy.getGlobalState("apiProvider")
-			expect(storedValue).toBe("deepseek")
+			expect(storedValue).toBe("openai")
 		})
 
 		it("should bypass cache for pass-through state keys", async () => {
@@ -193,34 +191,34 @@ describe("ContextProxy", () => {
 	describe("getSecret", () => {
 		it("should return value from cache when it exists", async () => {
 			// Manually set a value in the cache
-			await proxy.storeSecret("apiKey", "cached-secret")
+			await proxy.storeSecret("openAiApiKey", "cached-secret")
 
 			// Should return the cached value
-			const result = proxy.getSecret("apiKey")
+			const result = proxy.getSecret("openAiApiKey")
 			expect(result).toBe("cached-secret")
 		})
 	})
 
 	describe("storeSecret", () => {
 		it("should store secret directly in original context", async () => {
-			await proxy.storeSecret("apiKey", "new-secret")
+			await proxy.storeSecret("openAiApiKey", "new-secret")
 
 			// Should have called original context
-			expect(mockSecrets.store).toHaveBeenCalledWith("apiKey", "new-secret")
+			expect(mockSecrets.store).toHaveBeenCalledWith("openAiApiKey", "new-secret")
 
 			// Should have stored the value in cache
-			const storedValue = await proxy.getSecret("apiKey")
+			const storedValue = await proxy.getSecret("openAiApiKey")
 			expect(storedValue).toBe("new-secret")
 		})
 
 		it("should handle undefined value for secret deletion", async () => {
-			await proxy.storeSecret("apiKey", undefined)
+			await proxy.storeSecret("openAiApiKey", undefined)
 
 			// Should have called delete on original context
-			expect(mockSecrets.delete).toHaveBeenCalledWith("apiKey")
+			expect(mockSecrets.delete).toHaveBeenCalledWith("openAiApiKey")
 
 			// Should have stored undefined in cache
-			const storedValue = await proxy.getSecret("apiKey")
+			const storedValue = await proxy.getSecret("openAiApiKey")
 			expect(storedValue).toBeUndefined()
 		})
 	})
@@ -315,7 +313,7 @@ describe("ContextProxy", () => {
 			// Call setProviderSettings with new configuration
 			await proxy.setProviderSettings({
 				apiModelId: "new-model",
-				apiProvider: "anthropic",
+				apiProvider: "openai",
 				// Note: openAiBaseUrl is not included in the new config
 			})
 
@@ -325,7 +323,7 @@ describe("ContextProxy", () => {
 			expect(setValuesSpy).toHaveBeenCalledWith(
 				expect.objectContaining({
 					apiModelId: "new-model",
-					apiProvider: "anthropic",
+					apiProvider: "openai",
 					openAiBaseUrl: undefined,
 					modelTemperature: undefined,
 				}),
@@ -333,7 +331,7 @@ describe("ContextProxy", () => {
 
 			// Verify the state cache has been updated correctly
 			expect(proxy.getGlobalState("apiModelId")).toBe("new-model")
-			expect(proxy.getGlobalState("apiProvider")).toBe("anthropic")
+			expect(proxy.getGlobalState("apiProvider")).toBe("openai")
 			expect(proxy.getGlobalState("openAiBaseUrl")).toBeUndefined()
 			expect(proxy.getGlobalState("modelTemperature")).toBeUndefined()
 		})
@@ -404,7 +402,7 @@ describe("ContextProxy", () => {
 
 		it("should delete all secrets", async () => {
 			// Setup initial secrets
-			await proxy.storeSecret("apiKey", "test-api-key")
+			await proxy.storeSecret("openAiApiKey", "test-api-key")
 			await proxy.storeSecret("openAiApiKey", "test-openai-key")
 
 			// Reset all state
@@ -452,31 +450,12 @@ describe("ContextProxy", () => {
 			expect(mockGlobalState.update).toHaveBeenCalledWith("apiProvider", undefined)
 		})
 
-		it("should not clear retired apiProvider from storage during initialization", async () => {
-			// Reset and create a new proxy with retired provider in state
-			vi.clearAllMocks()
-			mockGlobalState.get.mockImplementation((key: string) => {
-				if (key === "apiProvider") {
-					return "groq" // Retired provider
-				}
-				return undefined
-			})
-
-			const proxyWithRetiredProvider = new ContextProxy(mockContext)
-			await proxyWithRetiredProvider.initialize()
-
-			// Should NOT have called update for apiProvider (retired should be preserved)
-			const updateCalls = mockGlobalState.update.mock.calls
-			const apiProviderUpdateCalls = updateCalls.filter((call: unknown[]) => call[0] === "apiProvider")
-			expect(apiProviderUpdateCalls).toHaveLength(0)
-		})
-
 		it("should not modify valid apiProvider during initialization", async () => {
 			// Reset and create a new proxy with valid provider in state
 			vi.clearAllMocks()
 			mockGlobalState.get.mockImplementation((key: string) => {
 				if (key === "apiProvider") {
-					return "anthropic" // Valid provider
+					return "openai" // Valid provider
 				}
 				return undefined
 			})
@@ -516,31 +495,15 @@ describe("ContextProxy", () => {
 			expect(settings.apiModelId).toBe("some-model")
 		})
 
-		it("should preserve retired apiProvider and provider fields", async () => {
-			await proxy.setValues({
-				apiProvider: "groq",
-				apiModelId: "llama3-70b",
-				openAiBaseUrl: "https://api.retired-provider.example/v1",
-				apiKey: "retired-provider-key",
-			})
-
-			const settings = proxy.getProviderSettings()
-
-			expect(settings.apiProvider).toBe("groq")
-			expect(settings.apiModelId).toBe("llama3-70b")
-			expect(settings.openAiBaseUrl).toBe("https://api.retired-provider.example/v1")
-			expect(settings.apiKey).toBe("retired-provider-key")
-		})
-
 		it("should pass through valid apiProvider", async () => {
 			// Set a valid provider in state
-			await proxy.updateGlobalState("apiProvider", "anthropic")
+			await proxy.updateGlobalState("apiProvider", "openai")
 			await proxy.updateGlobalState("apiModelId", "claude-3-opus-20240229")
 
 			const settings = proxy.getProviderSettings()
 
 			// Valid provider should be returned
-			expect(settings.apiProvider).toBe("anthropic")
+			expect(settings.apiProvider).toBe("openai")
 			expect(settings.apiModelId).toBe("claude-3-opus-20240229")
 		})
 

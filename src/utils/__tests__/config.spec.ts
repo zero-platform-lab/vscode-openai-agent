@@ -229,7 +229,7 @@ describe("injectVariables", () => {
 
 	it("should handle various non-path variables correctly", async () => {
 		const config = {
-			apiKey: "${key}",
+			openAiApiKey: "${key}",
 			url: "${endpoint}",
 			port: "${port}",
 			enabled: "${enabled}",
@@ -243,7 +243,7 @@ describe("injectVariables", () => {
 			desc: "This is a description with special chars: @#$%^&*()",
 		})
 		expect(result).toEqual({
-			apiKey: "sk-1234567890abcdef",
+			openAiApiKey: "sk-1234567890abcdef",
 			url: "https://api.example.com",
 			port: "8080",
 			enabled: "true",

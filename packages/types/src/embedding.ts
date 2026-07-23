@@ -1,12 +1,4 @@
-export type EmbedderProvider =
-	| "openai"
-	| "ollama"
-	| "openai-compatible"
-	| "gemini"
-	| "mistral"
-	| "vercel-ai-gateway"
-	| "bedrock"
-	| "openrouter" // Add other providers as needed.
+export type EmbedderProvider = "openai-compatible" | "openrouter" // Add other providers as needed.
 
 export interface EmbeddingModelProfile {
 	dimension: number

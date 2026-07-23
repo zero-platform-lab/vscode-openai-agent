@@ -296,9 +296,7 @@ describe("ClineProvider - Lock API Config Across Modes", () => {
 				.mockResolvedValue("architect-profile-id")
 			const listConfigSpy = vi
 				.spyOn(provider.providerSettingsManager, "listConfig")
-				.mockResolvedValue([
-					{ name: "architect-profile", id: "architect-profile-id", apiProvider: "anthropic" },
-				])
+				.mockResolvedValue([{ name: "architect-profile", id: "architect-profile-id", apiProvider: "openai" }])
 			const activateProviderProfileSpy = vi
 				.spyOn(provider, "activateProviderProfile")
 				.mockResolvedValue(undefined)
@@ -317,11 +315,11 @@ describe("ClineProvider - Lock API Config Across Modes", () => {
 				.spyOn(provider.providerSettingsManager, "getModeConfigId")
 				.mockResolvedValue("architect-profile-id")
 			vi.spyOn(provider.providerSettingsManager, "listConfig").mockResolvedValue([
-				{ name: "architect-profile", id: "architect-profile-id", apiProvider: "anthropic" },
+				{ name: "architect-profile", id: "architect-profile-id", apiProvider: "openai" },
 			])
 			vi.spyOn(provider.providerSettingsManager, "getProfile").mockResolvedValue({
 				name: "architect-profile",
-				apiProvider: "anthropic",
+				apiProvider: "openai",
 			})
 
 			const activateProviderProfileSpy = vi

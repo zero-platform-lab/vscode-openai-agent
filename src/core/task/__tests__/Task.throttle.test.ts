@@ -73,8 +73,8 @@ describe("Task token usage throttling", () => {
 
 		// Mock API configuration
 		mockApiConfiguration = {
-			apiProvider: "anthropic",
-			apiKey: "test-key",
+			apiProvider: "openai",
+			openAiApiKey: "test-key",
 		} as ProviderSettings
 
 		// Create task instance without starting it

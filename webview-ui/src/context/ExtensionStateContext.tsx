@@ -13,7 +13,6 @@ import {
 	type SkillMetadata,
 	type Command,
 	type McpServer,
-	RouterModels,
 	ORGANIZATION_ALLOW_ALL,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
 } from "@openai-agent/types"
@@ -60,7 +59,6 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setAlwaysAllowSubtasks: (value: boolean) => void
 	setShowAgentIgnoredFiles: (value: boolean) => void
 	setEnableSubfolderRules: (value: boolean) => void
-	setShowAnnouncement: (value: boolean) => void
 	setAllowedCommands: (value: string[]) => void
 	setDeniedCommands: (value: string[]) => void
 	setAllowedMaxRequests: (value: number | undefined) => void
@@ -115,7 +113,6 @@ export interface ExtensionStateContextType extends ExtensionState {
 	setAutoCondenseContext: (value: boolean) => void
 	autoCondenseContextPercent: number
 	setAutoCondenseContextPercent: (value: number) => void
-	routerModels?: RouterModels
 	includeDiagnosticMessages?: boolean
 	setIncludeDiagnosticMessages: (value: boolean) => void
 	maxDiagnosticMessages?: number
@@ -180,7 +177,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		version: "",
 		clineMessages: [],
 		taskHistory: [],
-		shouldShowAnnouncement: false,
 		allowedCommands: [],
 		deniedCommands: [],
 		soundEnabled: false,
@@ -226,17 +222,15 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		codebaseIndexConfig: {
 			codebaseIndexEnabled: true,
 			codebaseIndexQdrantUrl: "http://localhost:6333",
-			codebaseIndexEmbedderProvider: "openai",
+			codebaseIndexEmbedderProvider: "openai-compatible",
 			codebaseIndexEmbedderBaseUrl: "",
 			codebaseIndexEmbedderModelId: "",
 			codebaseIndexSearchMaxResults: undefined,
 			codebaseIndexSearchMinScore: undefined,
 		},
-		codebaseIndexModels: { ollama: {}, openai: {} },
+		codebaseIndexModels: { "openai-compatible": {} },
 		includeDiagnosticMessages: true,
 		maxDiagnosticMessages: 50,
-		openRouterImageApiKey: "",
-		openRouterImageGenerationSelectedModel: "",
 		includeCurrentTime: true,
 		includeCurrentCost: true,
 		lockApiConfigAcrossModes: false,
@@ -250,7 +244,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 	const [commands, setCommands] = useState<Command[]>([])
 	const [mcpServers, setMcpServers] = useState<McpServer[]>([])
 	const [currentCheckpoint, setCurrentCheckpoint] = useState<string>()
-	const [extensionRouterModels, setExtensionRouterModels] = useState<RouterModels | undefined>(undefined)
 	const [alwaysAllowFollowupQuestions, setAlwaysAllowFollowupQuestions] = useState(false) // Add state for follow-up questions auto-approve
 	const [followupAutoApproveTimeoutMs, setFollowupAutoApproveTimeoutMs] = useState<number | undefined>(undefined) // Will be set from global settings
 	const [skills, setSkills] = useState<SkillMetadata[]>([])
@@ -374,10 +367,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 					setListApiConfigMeta(message.listApiConfig ?? [])
 					break
 				}
-				case "routerModels": {
-					setExtensionRouterModels(message.routerModels)
-					break
-				}
 				case "taskHistoryUpdated": {
 					// Efficiently update just the task history without replacing entire state
 					if (message.taskHistory !== undefined) {
@@ -443,7 +432,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		soundVolume: state.soundVolume,
 		ttsSpeed: state.ttsSpeed,
 		writeDelayMs: state.writeDelayMs,
-		routerModels: extensionRouterModels,
 		profileThresholds: state.profileThresholds ?? {},
 		alwaysAllowFollowupQuestions,
 		followupAutoApproveTimeoutMs,
@@ -464,7 +452,6 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		setAlwaysAllowFollowupQuestions,
 		setFollowupAutoApproveTimeoutMs: (value) =>
 			setState((prevState) => ({ ...prevState, followupAutoApproveTimeoutMs: value })),
-		setShowAnnouncement: (value) => setState((prevState) => ({ ...prevState, shouldShowAnnouncement: value })),
 		setAllowedCommands: (value) => setState((prevState) => ({ ...prevState, allowedCommands: value })),
 		setDeniedCommands: (value) => setState((prevState) => ({ ...prevState, deniedCommands: value })),
 		setAllowedMaxRequests: (value) => setState((prevState) => ({ ...prevState, allowedMaxRequests: value })),

@@ -10,8 +10,6 @@ import { Package } from "../../shared/package"
 
 import { AgentIgnoreController } from "../../core/ignore/AgentIgnoreController"
 
-import { OpenAiEmbedder } from "./embedders/openai"
-import { CodeIndexOllamaEmbedder } from "./embedders/ollama"
 import { OpenAICompatibleEmbedder } from "./embedders/openai-compatible"
 import { QdrantVectorStore } from "./vector-store/qdrant-client"
 import { codeParser, DirectoryScanner, FileWatcher } from "./processors"
@@ -36,39 +34,14 @@ export class CodeIndexServiceFactory {
 	public createEmbedder(): IEmbedder {
 		const config = this.configManager.getConfig()
 
-		const provider = config.embedderProvider as EmbedderProvider
-
-		if (provider === "openai") {
-			const apiKey = config.openAiOptions?.openAiNativeApiKey
-
-			if (!apiKey) {
-				throw new Error(t("embeddings:serviceFactory.openAiConfigMissing"))
-			}
-			return new OpenAiEmbedder({
-				...config.openAiOptions,
-				openAiEmbeddingModelId: config.modelId,
-			})
-		} else if (provider === "ollama") {
-			if (!config.ollamaOptions?.ollamaBaseUrl) {
-				throw new Error(t("embeddings:serviceFactory.ollamaConfigMissing"))
-			}
-			return new CodeIndexOllamaEmbedder({
-				...config.ollamaOptions,
-				ollamaModelId: config.modelId,
-			})
-		} else if (provider === "openai-compatible") {
-			if (!config.openAiCompatibleOptions?.baseUrl || !config.openAiCompatibleOptions?.apiKey) {
-				throw new Error(t("embeddings:serviceFactory.openAiCompatibleConfigMissing"))
-			}
-			return new OpenAICompatibleEmbedder(
-				config.openAiCompatibleOptions.baseUrl,
-				config.openAiCompatibleOptions.apiKey,
-				config.modelId,
-			)
+		// [INTERNAL] Only the OpenAI Compatible embedder is supported in this build.
+		if (!config.openAiCompatibleOptions?.baseUrl || !config.openAiCompatibleOptions?.apiKey) {
+			throw new Error(t("embeddings:serviceFactory.openAiCompatibleConfigMissing"))
 		}
-
-		throw new Error(
-			t("embeddings:serviceFactory.invalidEmbedderType", { embedderProvider: config.embedderProvider }),
+		return new OpenAICompatibleEmbedder(
+			config.openAiCompatibleOptions.baseUrl,
+			config.openAiCompatibleOptions.apiKey,
+			config.modelId,
 		)
 	}
 

@@ -53,7 +53,7 @@ describe("Settings Storage", () => {
 			const settingsData = {
 				onboardingProviderChoice: OnboardingProviderChoice.Byok,
 				mode: "architect",
-				provider: "anthropic" as const,
+				provider: "openai" as const,
 				model: "claude-sonnet-4-20250514",
 				reasoningEffort: "high" as const,
 			}
@@ -90,19 +90,19 @@ describe("Settings Storage", () => {
 
 		it("should merge settings with existing ones", async () => {
 			await saveSettings({ mode: "code" })
-			await saveSettings({ provider: "openrouter" as const })
+			await saveSettings({ provider: "openai" as const })
 
 			const savedData = await fs.readFile(expectedSettingsFile, "utf-8")
 			const settings = JSON.parse(savedData)
 
 			expect(settings.mode).toBe("code")
-			expect(settings.provider).toBe("openrouter")
+			expect(settings.provider).toBe("openai")
 		})
 
 		it("should save all default settings fields", async () => {
 			await saveSettings({
 				mode: "architect",
-				provider: "anthropic" as const,
+				provider: "openai" as const,
 				model: "claude-opus-4.6",
 				reasoningEffort: "medium" as const,
 				consecutiveMistakeLimit: 5,
@@ -112,7 +112,7 @@ describe("Settings Storage", () => {
 			const settings = JSON.parse(savedData)
 
 			expect(settings.mode).toBe("architect")
-			expect(settings.provider).toBe("anthropic")
+			expect(settings.provider).toBe("openai")
 			expect(settings.model).toBe("claude-opus-4.6")
 			expect(settings.reasoningEffort).toBe("medium")
 			expect(settings.consecutiveMistakeLimit).toBe(5)
@@ -150,7 +150,7 @@ describe("Settings Storage", () => {
 			await saveSettings({
 				onboardingProviderChoice: OnboardingProviderChoice.Byok,
 				mode: "architect",
-				provider: "gemini" as const,
+				provider: "openai" as const,
 			})
 
 			await resetOnboarding()
@@ -158,7 +158,7 @@ describe("Settings Storage", () => {
 			const settings = await loadSettings()
 			expect(settings.onboardingProviderChoice).toBeUndefined()
 			expect(settings.mode).toBe("architect")
-			expect(settings.provider).toBe("gemini")
+			expect(settings.provider).toBe("openai")
 		})
 	})
 
@@ -167,7 +167,7 @@ describe("Settings Storage", () => {
 			// Test that all the settings that can be used as defaults are properly saved and loaded
 			const defaultSettings = {
 				mode: "debug",
-				provider: "openai-native" as const,
+				provider: "openai" as const,
 				model: "gpt-4o",
 				reasoningEffort: "low" as const,
 				consecutiveMistakeLimit: 7,
@@ -177,7 +177,7 @@ describe("Settings Storage", () => {
 			const loaded = await loadSettings()
 
 			expect(loaded.mode).toBe("debug")
-			expect(loaded.provider).toBe("openai-native")
+			expect(loaded.provider).toBe("openai")
 			expect(loaded.model).toBe("gpt-4o")
 			expect(loaded.reasoningEffort).toBe("low")
 			expect(loaded.consecutiveMistakeLimit).toBe(7)
@@ -200,7 +200,7 @@ describe("Settings Storage", () => {
 		it("should support all settings together including requireApproval", async () => {
 			const allSettings = {
 				mode: "architect",
-				provider: "anthropic" as const,
+				provider: "openai" as const,
 				model: "claude-sonnet-4-20250514",
 				reasoningEffort: "high" as const,
 				requireApproval: true,
@@ -210,7 +210,7 @@ describe("Settings Storage", () => {
 			const loaded = await loadSettings()
 
 			expect(loaded.mode).toBe("architect")
-			expect(loaded.provider).toBe("anthropic")
+			expect(loaded.provider).toBe("openai")
 			expect(loaded.model).toBe("claude-sonnet-4-20250514")
 			expect(loaded.reasoningEffort).toBe("high")
 			expect(loaded.requireApproval).toBe(true)
@@ -226,7 +226,7 @@ describe("Settings Storage", () => {
 		it("should support all settings together including oneshot", async () => {
 			const allSettings = {
 				mode: "architect",
-				provider: "anthropic" as const,
+				provider: "openai" as const,
 				model: "claude-sonnet-4-20250514",
 				reasoningEffort: "high" as const,
 				consecutiveMistakeLimit: 9,
@@ -238,7 +238,7 @@ describe("Settings Storage", () => {
 			const loaded = await loadSettings()
 
 			expect(loaded.mode).toBe("architect")
-			expect(loaded.provider).toBe("anthropic")
+			expect(loaded.provider).toBe("openai")
 			expect(loaded.model).toBe("claude-sonnet-4-20250514")
 			expect(loaded.reasoningEffort).toBe("high")
 			expect(loaded.consecutiveMistakeLimit).toBe(9)

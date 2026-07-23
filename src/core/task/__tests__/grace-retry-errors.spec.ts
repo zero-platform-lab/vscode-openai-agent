@@ -196,7 +196,7 @@ describe("Grace Retry Error Handling", () => {
 		mockApiConfig = {
 			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
-			apiKey: "test-api-key",
+			openAiApiKey: "test-api-key",
 		}
 
 		mockProvider.postMessageToWebview = vi.fn().mockResolvedValue(undefined)

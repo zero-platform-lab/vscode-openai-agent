@@ -42,9 +42,9 @@ const mockExtensionState: {
 	clineMessages: any[]
 } = {
 	apiConfiguration: {
-		apiProvider: "anthropic",
-		apiKey: "test-api-key",
-		apiModelId: "claude-3-opus-20240229",
+		apiProvider: "openai",
+		openAiApiKey: "test-api-key",
+		openAiModelId: "gpt-4",
 	} as ProviderSettings,
 	currentTaskItem: { id: "test-task-id" },
 	clineMessages: [],

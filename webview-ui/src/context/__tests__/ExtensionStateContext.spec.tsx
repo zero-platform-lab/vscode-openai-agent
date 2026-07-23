@@ -39,7 +39,7 @@ const ApiConfigTestComponent = () => {
 			<div data-testid="api-configuration">{JSON.stringify(apiConfiguration)}</div>
 			<button
 				data-testid="update-api-config-button"
-				onClick={() => setApiConfiguration({ apiModelId: "new-model", apiProvider: "anthropic" })}>
+				onClick={() => setApiConfiguration({ apiModelId: "new-model", apiProvider: "openai" })}>
 				Update API Config
 			</button>
 			<button data-testid="partial-update-button" onClick={() => setApiConfiguration({ modelTemperature: 0.7 })}>
@@ -140,7 +140,7 @@ describe("ExtensionStateContext", () => {
 		expect(updatedConfig).toEqual(
 			expect.objectContaining({
 				apiModelId: "new-model",
-				apiProvider: "anthropic",
+				apiProvider: "openai",
 			}),
 		)
 	})
@@ -163,7 +163,7 @@ describe("ExtensionStateContext", () => {
 		expect(initialConfig).toEqual(
 			expect.objectContaining({
 				apiModelId: "new-model",
-				apiProvider: "anthropic",
+				apiProvider: "openai",
 			}),
 		)
 
@@ -178,7 +178,7 @@ describe("ExtensionStateContext", () => {
 		expect(updatedConfig).toEqual(
 			expect.objectContaining({
 				apiModelId: "new-model", // Should retain this from previous update
-				apiProvider: "anthropic", // Should retain this from previous update
+				apiProvider: "openai", // Should retain this from previous update
 				modelTemperature: 0.7, // Should add this from partial update
 			}),
 		)
@@ -192,7 +192,6 @@ describe("mergeExtensionState", () => {
 			mcpEnabled: false,
 			clineMessages: [],
 			taskHistory: [],
-			shouldShowAnnouncement: false,
 			enableCheckpoints: true,
 			writeDelayMs: 1000,
 			mode: "default",
@@ -227,7 +226,6 @@ describe("mergeExtensionState", () => {
 			apiConfiguration: { modelMaxThinkingTokens: 456, modelTemperature: 0.3 },
 			experiments: {
 				preventFocusDisruption: false,
-				imageGeneration: false,
 				runSlashCommand: false,
 				customTools: false,
 			} as Record<ExperimentId, boolean>,
@@ -243,7 +241,6 @@ describe("mergeExtensionState", () => {
 
 		expect(result.experiments).toEqual({
 			preventFocusDisruption: false,
-			imageGeneration: false,
 			runSlashCommand: false,
 			customTools: false,
 		})
@@ -255,7 +252,6 @@ describe("mergeExtensionState", () => {
 			mcpEnabled: false,
 			clineMessages: [],
 			taskHistory: [],
-			shouldShowAnnouncement: false,
 			enableCheckpoints: true,
 			writeDelayMs: 1000,
 			mode: "default",

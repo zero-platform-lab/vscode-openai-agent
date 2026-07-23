@@ -228,10 +228,6 @@
 		"wantsToEditOutsideWorkspace": "Agent wants to edit this file outside of the workspace",
 		"wantsToEditProtected": "Agent wants to edit a protected configuration file",
 		"wantsToApplyBatchChanges": "Agent wants to apply changes to multiple files",
-		"wantsToGenerateImage": "Agent wants to generate an image",
-		"wantsToGenerateImageOutsideWorkspace": "Agent wants to generate an image outside of the workspace",
-		"wantsToGenerateImageProtected": "Agent wants to generate an image in a protected location",
-		"didGenerateImage": "Agent generated an image",
 		"wantsToCreate": "Agent wants to create a new file",
 		"wantsToInsert": "Agent wants to insert content into this file",
 		"wantsToInsertWithLineNumber": "Agent wants to insert content into this file at line {{lineNumber}}",
@@ -347,29 +343,6 @@
 		"triggerLabel_other": "{{count}} auto-approved",
 		"triggerLabelAll": "BRRR"
 	},
-	"announcement": {
-		"title": "OpenAI Compatible Agent {{version}} Released",
-		"support": "Please support OpenAI Compatible Agent by starring us on <githubLink>GitHub</githubLink>.",
-		"finalRelease": {
-			"title": "The last OpenAI Compatible Agent release",
-			"intro": "This is the last OpenAI Compatible Agent release. <announcementLink>As we announced a few weeks ago</announcementLink>, we've decided to shift our focus to <roomoteLink>the project</roomoteLink>, our cloud agent platform, which we believe to be the future of software development. Thank you so much for your support throughout the past year or so.",
-			"continuity": "This extension should continue to work indefinitely, but it won't receive bug fixes, new features, or model updates.",
-			"alternatives": "If you want to use an extension, we recommend checking out <zooCodeLink>ZooCode</zooCodeLink> (a OpenAI Compatible Agent fork by the community) and <clineLink>Cline</clineLink> (where OpenAI Compatible Agent originally started).",
-			"signoff": "Happy coding!"
-		},
-		"release": {
-			"heading": "What's New:",
-			"gpt55": "GPT-5.5 via OpenAI Codex: Added GPT-5.5 support in the OpenAI Codex provider so you can use the latest model straight from OpenAI Compatible Agent.",
-			"claudeOpus47": "Claude Opus 4.7 on Vertex AI: Added Claude Opus 4.7 to the Vertex AI provider for Anthropic's newest flagship reasoning model.",
-			"checkpointNav": "Previous Checkpoint Navigation: Added controls in chat to jump back through prior checkpoints, with full i18n support."
-		},
-		"cloudAgents": {
-			"heading": "New in the Cloud:",
-			"specialized": "Introducing <bold>Explainer</bold>, <bold>Planner</bold>, and <bold>Coder</bold> - three specialized cloud agents to enhance your workflows.",
-			"description": "The agents work together in the cloud and can be triggered from the web or through Slack.",
-			"tryButton": "Try Cloud Agents"
-		}
-	},
 	"reasoning": {
 		"thinking": "Thinking",
 		"seconds": "{{count}}s"
@@ -474,10 +447,5 @@
 	},
 	"readCommandOutput": {
 		"title": "Agent read command output"
-	},
-	"retiredProvider": {
-		"title": "Provider no longer supported",
-		"message": "This provider is no longer supported. Please select a different provider in your API profile settings.",
-		"openSettings": "Open Settings"
 	}
 }

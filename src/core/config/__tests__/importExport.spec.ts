@@ -159,7 +159,9 @@ describe("importExport", () => {
 			const mockFileContent = JSON.stringify({
 				providerProfiles: {
 					currentApiConfigName: "test",
-					apiConfigs: { test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" } },
+					apiConfigs: {
+						test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
+					},
 				},
 				globalSettings: { mode: "code", autoApprovalEnabled: true },
 			})
@@ -168,14 +170,14 @@ describe("importExport", () => {
 
 			const previousProviderProfiles = {
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			}
 
 			mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
 
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 
 			mockContextProxy.export.mockResolvedValue({ mode: "code" })
@@ -193,8 +195,8 @@ describe("importExport", () => {
 			expect(mockProviderSettingsManager.import).toHaveBeenCalledWith({
 				currentApiConfigName: "test",
 				apiConfigs: {
-					default: { apiProvider: "anthropic" as ProviderName, id: "default-id" },
-					test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" },
+					default: { apiProvider: "openai" as ProviderName, id: "default-id" },
+					test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
 				},
 				modeApiConfigs: {},
 			})
@@ -204,7 +206,7 @@ describe("importExport", () => {
 
 			expect(mockContextProxy.setValue).toHaveBeenCalledWith("listApiConfigMeta", [
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 		})
 
@@ -237,7 +239,9 @@ describe("importExport", () => {
 			const mockFileContent = JSON.stringify({
 				providerProfiles: {
 					currentApiConfigName: "test",
-					apiConfigs: { test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" } },
+					apiConfigs: {
+						test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
+					},
 				},
 			})
 
@@ -245,14 +249,14 @@ describe("importExport", () => {
 
 			const previousProviderProfiles = {
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			}
 
 			mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
 
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 
 			mockContextProxy.export.mockResolvedValue({ mode: "code" })
@@ -269,8 +273,8 @@ describe("importExport", () => {
 			expect(mockProviderSettingsManager.import).toHaveBeenCalledWith({
 				currentApiConfigName: "test",
 				apiConfigs: {
-					default: { apiProvider: "anthropic" as ProviderName, id: "default-id" },
-					test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" },
+					default: { apiProvider: "openai" as ProviderName, id: "default-id" },
+					test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
 				},
 				modeApiConfigs: {},
 			})
@@ -280,7 +284,7 @@ describe("importExport", () => {
 			expect(mockContextProxy.setValue).toHaveBeenCalledWith("currentApiConfigName", "test")
 			expect(mockContextProxy.setValue).toHaveBeenCalledWith("listApiConfigMeta", [
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 		})
 
@@ -331,7 +335,7 @@ describe("importExport", () => {
 				globalSettings: { mode: "code" },
 				providerProfiles: {
 					currentApiConfigName: "anthropic",
-					apiConfigs: { default: { apiProvider: "anthropic" as const, id: "anthropic" } },
+					apiConfigs: { default: { apiProvider: "openai" as const, id: "anthropic" } },
 				},
 			})
 
@@ -349,7 +353,7 @@ describe("importExport", () => {
 			if (result.success && "providerProfiles" in result) {
 				expect(result.providerProfiles?.apiConfigs["openai"]).toBeDefined()
 				expect(result.providerProfiles?.apiConfigs["default"]).toBeDefined()
-				expect(result.providerProfiles?.apiConfigs["default"].apiProvider).toBe("anthropic")
+				expect(result.providerProfiles?.apiConfigs["default"].apiProvider).toBe("openai")
 			}
 		})
 
@@ -394,7 +398,9 @@ describe("importExport", () => {
 			const mockFileContent = JSON.stringify({
 				providerProfiles: {
 					currentApiConfigName: "test",
-					apiConfigs: { test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" } },
+					apiConfigs: {
+						test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
+					},
 				},
 				globalSettings: { mode: "code", autoApprovalEnabled: true },
 			})
@@ -404,13 +410,13 @@ describe("importExport", () => {
 
 			const previousProviderProfiles = {
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			}
 
 			mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "test", id: "test-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 			mockContextProxy.export.mockResolvedValue({ mode: "code" })
 
@@ -429,8 +435,8 @@ describe("importExport", () => {
 			expect(mockProviderSettingsManager.import).toHaveBeenCalledWith({
 				currentApiConfigName: "test",
 				apiConfigs: {
-					default: { apiProvider: "anthropic" as ProviderName, id: "default-id" },
-					test: { apiProvider: "openai" as ProviderName, apiKey: "test-key", id: "test-id" },
+					default: { apiProvider: "openai" as ProviderName, id: "default-id" },
+					test: { apiProvider: "openai" as ProviderName, openAiApiKey: "test-key", id: "test-id" },
 				},
 				modeApiConfigs: {},
 			})
@@ -484,7 +490,7 @@ describe("importExport", () => {
 							apiProvider: "openai" as ProviderName,
 							apiModelId: "gpt-4",
 							id: "openai-id",
-							apiKey: "test-key",
+							openAiApiKey: "test-key",
 							// No modelMaxTokens or modelMaxThinkingTokens fields
 						},
 					},
@@ -496,13 +502,13 @@ describe("importExport", () => {
 
 			const previousProviderProfiles = {
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			}
 
 			mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "openai-provider", id: "openai-id", apiProvider: "openai" as ProviderName },
-				{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 			])
 
 			mockContextProxy.export.mockResolvedValue({ mode: "code" })
@@ -520,11 +526,11 @@ describe("importExport", () => {
 			expect(mockProviderSettingsManager.import).toHaveBeenCalledWith({
 				currentApiConfigName: "openai-provider",
 				apiConfigs: {
-					default: { apiProvider: "anthropic" as ProviderName, id: "default-id" },
+					default: { apiProvider: "openai" as ProviderName, id: "default-id" },
 					"openai-provider": {
 						apiProvider: "openai" as ProviderName,
 						apiModelId: "gpt-4",
-						apiKey: "test-key",
+						openAiApiKey: "test-key",
 						id: "openai-id",
 					},
 				},
@@ -546,12 +552,12 @@ describe("importExport", () => {
 						apiConfigs: {
 							"valid-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "test-key",
+								openAiApiKey: "test-key",
 								id: "valid-id",
 							},
 							"invalid-profile": {
 								apiProvider: "claude-code", // Invalid/removed provider
-								apiKey: "some-key",
+								openAiApiKey: "some-key",
 								id: "invalid-id",
 							},
 						},
@@ -563,11 +569,11 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
 					{ name: "valid-profile", id: "valid-id", apiProvider: "openai" as ProviderName },
-					{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+					{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 				])
 
 				const result = await importSettings({
@@ -606,7 +612,7 @@ describe("importExport", () => {
 						apiConfigs: {
 							"valid-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "test-key",
+								openAiApiKey: "test-key",
 								id: "valid-id",
 							},
 							"type-invalid": {
@@ -623,7 +629,7 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
 					{ name: "valid-profile", id: "valid-id", apiProvider: "openai" as ProviderName },
@@ -677,7 +683,7 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 
 				const result = await importSettings({
@@ -702,12 +708,12 @@ describe("importExport", () => {
 						apiConfigs: {
 							"valid-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "test-key",
+								openAiApiKey: "test-key",
 								id: "valid-id",
 							},
 							"problematic-profile": {
 								apiProvider: "removed-provider", // Invalid provider
-								apiKey: "some-key",
+								openAiApiKey: "some-key",
 								id: "problematic-id",
 							},
 						},
@@ -720,7 +726,7 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
 					{ name: "valid-profile", id: "valid-id", apiProvider: "openai" as ProviderName },
@@ -778,23 +784,23 @@ describe("importExport", () => {
 						currentApiConfigName: "anthropic-profile",
 						apiConfigs: {
 							"anthropic-profile": {
-								apiProvider: "anthropic" as ProviderName,
+								apiProvider: "openai" as ProviderName,
 								anthropicApiKey: "key-1",
 								id: "anthropic-id",
 							},
 							"openai-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "key-2",
+								openAiApiKey: "key-2",
 								id: "openai-id",
 							},
 							"old-claude-profile": {
 								apiProvider: "claude-code", // Removed provider
-								apiKey: "key-3",
+								openAiApiKey: "key-3",
 								id: "claude-id",
 							},
 							"another-invalid": {
 								apiProvider: "some-old-provider", // Another removed provider
-								apiKey: "key-4",
+								openAiApiKey: "key-4",
 								id: "another-id",
 							},
 						},
@@ -806,10 +812,10 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
-					{ name: "anthropic-profile", id: "anthropic-id", apiProvider: "anthropic" as ProviderName },
+					{ name: "anthropic-profile", id: "anthropic-id", apiProvider: "openai" as ProviderName },
 					{ name: "openai-profile", id: "openai-id", apiProvider: "openai" as ProviderName },
 				])
 
@@ -830,7 +836,7 @@ describe("importExport", () => {
 
 				// Valid profiles should be imported correctly
 				const importedProfiles = mockProviderSettingsManager.import.mock.calls[0][0]
-				expect(importedProfiles.apiConfigs["anthropic-profile"].apiProvider).toBe("anthropic")
+				expect(importedProfiles.apiConfigs["anthropic-profile"].apiProvider).toBe("openai")
 				expect(importedProfiles.apiConfigs["openai-profile"].apiProvider).toBe("openai")
 
 				// Invalid provider profiles should have apiProvider removed
@@ -853,7 +859,7 @@ describe("importExport", () => {
 							},
 							"valid-fallback-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "test-key",
+								openAiApiKey: "test-key",
 								id: "fallback-id",
 							},
 						},
@@ -865,7 +871,7 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
 					{ name: "valid-fallback-profile", id: "fallback-id", apiProvider: "openai" as ProviderName },
@@ -928,7 +934,7 @@ describe("importExport", () => {
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "existing-profile",
 					apiConfigs: {
-						"existing-profile": { apiProvider: "anthropic" as ProviderName, id: "existing-id" },
+						"existing-profile": { apiProvider: "openai" as ProviderName, id: "existing-id" },
 					},
 				})
 
@@ -951,17 +957,17 @@ describe("importExport", () => {
 						apiConfigs: {
 							"valid-profile": {
 								apiProvider: "openai" as ProviderName,
-								apiKey: "test-key",
+								openAiApiKey: "test-key",
 								id: "valid-id",
 							},
 							"problematic-profile-1": {
 								apiProvider: "removed-provider-1",
-								apiKey: "key-1",
+								openAiApiKey: "key-1",
 								id: "problematic-id-1",
 							},
 							"problematic-profile-2": {
 								apiProvider: "removed-provider-2",
-								apiKey: "key-2",
+								openAiApiKey: "key-2",
 								id: "problematic-id-2",
 							},
 						},
@@ -974,7 +980,7 @@ describe("importExport", () => {
 
 				mockProviderSettingsManager.export.mockResolvedValue({
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				})
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
 					{ name: "valid-profile", id: "valid-id", apiProvider: "openai" as ProviderName },
@@ -1190,7 +1196,7 @@ describe("importExport", () => {
 							// Remove OpenAI Compatible settings from provider profile
 						},
 						"ollama-provider": {
-							apiProvider: "ollama" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "ollama-id",
 							codebaseIndexOllamaBaseUrl: "http://localhost:11434",
 						},
@@ -1287,12 +1293,12 @@ describe("importExport", () => {
 							// Remove OpenAI Compatible settings from provider profile
 						},
 						"ollama-provider": {
-							apiProvider: "ollama" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "ollama-id",
 							codebaseIndexOllamaBaseUrl: "http://localhost:11434",
 						},
 						"anthropic-provider": {
-							apiProvider: "anthropic" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "anthropic-id",
 						},
 					},
@@ -1400,7 +1406,7 @@ describe("importExport", () => {
 					mode: "code",
 					codebaseIndexConfig: {
 						codebaseIndexEnabled: true,
-						codebaseIndexEmbedderProvider: "openai" as const, // Not openai-compatible
+						codebaseIndexEmbedderProvider: "openai-compatible" as const, // Not openai-compatible
 						codebaseIndexEmbedderModelId: "text-embedding-ada-002",
 						codebaseIndexEmbedderBaseUrl: "https://api.openai.com/v1",
 					},
@@ -1504,7 +1510,7 @@ describe("importExport", () => {
 
 				const previousProviderProfiles = {
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				}
 
 				mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
@@ -1514,7 +1520,7 @@ describe("importExport", () => {
 						id: "openai-compatible-id",
 						apiProvider: "openai" as ProviderName,
 					},
-					{ name: "default", id: "default-id", apiProvider: "anthropic" as ProviderName },
+					{ name: "default", id: "default-id", apiProvider: "openai" as ProviderName },
 				])
 
 				const result = await importSettings({
@@ -1573,7 +1579,7 @@ describe("importExport", () => {
 
 				const previousProviderProfiles = {
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				}
 
 				mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
@@ -1603,7 +1609,7 @@ describe("importExport", () => {
 						currentApiConfigName: "anthropic-provider",
 						apiConfigs: {
 							"anthropic-provider": {
-								apiProvider: "anthropic" as ProviderName,
+								apiProvider: "openai" as ProviderName,
 								id: "anthropic-id",
 							},
 						},
@@ -1613,7 +1619,7 @@ describe("importExport", () => {
 						mode: "code",
 						codebaseIndexConfig: {
 							codebaseIndexEnabled: true,
-							codebaseIndexEmbedderProvider: "openai" as const, // Not openai-compatible
+							codebaseIndexEmbedderProvider: "openai-compatible" as const, // Not openai-compatible
 							codebaseIndexEmbedderModelId: "text-embedding-ada-002",
 							codebaseIndexEmbedderBaseUrl: "https://api.openai.com/v1",
 							codebaseIndexEmbedderModelDimension: 1536,
@@ -1625,12 +1631,12 @@ describe("importExport", () => {
 
 				const previousProviderProfiles = {
 					currentApiConfigName: "default",
-					apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+					apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 				}
 
 				mockProviderSettingsManager.export.mockResolvedValue(previousProviderProfiles)
 				mockProviderSettingsManager.listConfig.mockResolvedValue([
-					{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "anthropic" as ProviderName },
+					{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "openai" as ProviderName },
 				])
 
 				const result = await importSettings({
@@ -1715,7 +1721,7 @@ describe("importExport", () => {
 			vi.clearAllMocks()
 			mockProviderSettingsManager.export.mockResolvedValue({
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			})
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "test-openai-compatible", id: "test-id", apiProvider: "openai" as ProviderName },
@@ -1803,7 +1809,7 @@ describe("importExport", () => {
 			vi.clearAllMocks()
 			mockProviderSettingsManager.export.mockResolvedValue({
 				currentApiConfigName: "default",
-				apiConfigs: { default: { apiProvider: "anthropic" as ProviderName, id: "default-id" } },
+				apiConfigs: { default: { apiProvider: "openai" as ProviderName, id: "default-id" } },
 			})
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "test-openai-compatible", id: "test-id", apiProvider: "openai" as ProviderName },
@@ -1894,7 +1900,7 @@ describe("importExport", () => {
 							codebaseIndexOpenAiCompatibleModelDimension: 1536,
 						},
 						"provider-b": {
-							apiProvider: "anthropic" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "provider-b-id",
 						},
 					},
@@ -1917,7 +1923,7 @@ describe("importExport", () => {
 				currentApiConfigName: "provider-b", // Different from exported settings!
 				apiConfigs: {
 					"provider-b": {
-						apiProvider: "anthropic" as ProviderName,
+						apiProvider: "openai" as ProviderName,
 						id: "provider-b-id",
 					},
 				},
@@ -1930,7 +1936,7 @@ describe("importExport", () => {
 			mockProviderSettingsManager.export.mockResolvedValue(currentProviderProfiles)
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
 				{ name: "provider-a", id: "provider-a-id", apiProvider: "openai" as ProviderName },
-				{ name: "provider-b", id: "provider-b-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "provider-b", id: "provider-b-id", apiProvider: "openai" as ProviderName },
 			])
 
 			// Step 4: Import the settings
@@ -1972,7 +1978,7 @@ describe("importExport", () => {
 							// NO OpenAI Compatible settings here in the fixed version
 						},
 						"anthropic-provider": {
-							apiProvider: "anthropic" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "anthropic-id",
 						},
 					},
@@ -1997,7 +2003,7 @@ describe("importExport", () => {
 				currentApiConfigName: "anthropic-provider",
 				apiConfigs: {
 					"anthropic-provider": {
-						apiProvider: "anthropic" as ProviderName,
+						apiProvider: "openai" as ProviderName,
 						id: "anthropic-id",
 					},
 				},
@@ -2013,7 +2019,7 @@ describe("importExport", () => {
 					id: "openai-compatible-id",
 					apiProvider: "openai" as ProviderName,
 				},
-				{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "openai" as ProviderName },
 			])
 
 			const importResult = await importSettings({
@@ -2052,7 +2058,7 @@ describe("importExport", () => {
 					currentApiConfigName: "anthropic-provider",
 					apiConfigs: {
 						"anthropic-provider": {
-							apiProvider: "anthropic" as ProviderName,
+							apiProvider: "openai" as ProviderName,
 							id: "anthropic-id",
 						},
 						"openai-compatible-provider": {
@@ -2093,7 +2099,7 @@ describe("importExport", () => {
 
 			mockProviderSettingsManager.export.mockResolvedValue(currentProviderProfiles)
 			mockProviderSettingsManager.listConfig.mockResolvedValue([
-				{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "anthropic" as ProviderName },
+				{ name: "anthropic-provider", id: "anthropic-id", apiProvider: "openai" as ProviderName },
 				{
 					name: "openai-compatible-provider",
 					id: "openai-compatible-id",
@@ -2144,7 +2150,7 @@ describe("importExport", () => {
 				currentApiConfigName: "openrouter-provider", // Current provider is OpenRouter
 				apiConfigs: {
 					"openrouter-provider": {
-						apiProvider: "openrouter" as ProviderName,
+						apiProvider: "openai" as ProviderName,
 						id: "openrouter-id",
 						// OpenRouter doesn't have OpenAI Compatible fields
 					},
@@ -2225,10 +2231,9 @@ describe("importExport", () => {
 
 				// Save a deepseek provider config with token fields
 				await realProviderSettingsManager.saveConfig(providerName, {
-					apiProvider: "deepseek" as ProviderName,
+					apiProvider: "openai" as ProviderName,
 					apiModelId: modelId,
 					id: providerId,
-					deepSeekApiKey: "test-key",
 					modelMaxTokens: 4096, // This should be removed during export
 					modelMaxThinkingTokens: 2048, // This should be removed during export
 				})

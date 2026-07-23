@@ -168,7 +168,7 @@ describe("CodeIndexManager - handleSettingsChange regression", () => {
 				isFeatureEnabled: true,
 				getConfig: vi.fn().mockReturnValue({
 					isConfigured: true,
-					embedderProvider: "openai",
+					embedderProvider: "openai-compatible",
 					modelId: "text-embedding-3-small",
 					openAiOptions: { openAiNativeApiKey: "test-key" },
 					qdrantUrl: "http://localhost:6333",
@@ -235,7 +235,7 @@ describe("CodeIndexManager - handleSettingsChange regression", () => {
 				isFeatureEnabled: true,
 				getConfig: vi.fn().mockReturnValue({
 					isConfigured: true,
-					embedderProvider: "openai",
+					embedderProvider: "openai-compatible",
 					modelId: "text-embedding-3-small",
 					openAiOptions: { openAiNativeApiKey: "test-key" },
 					qdrantUrl: "http://localhost:6333",
@@ -361,7 +361,7 @@ describe("CodeIndexManager - handleSettingsChange regression", () => {
 				isFeatureEnabled: true,
 				getConfig: vitest.fn().mockReturnValue({
 					isConfigured: true,
-					embedderProvider: "openai",
+					embedderProvider: "openai-compatible",
 					modelId: "text-embedding-3-small",
 					openAiOptions: { openAiNativeApiKey: "test-key" },
 					qdrantUrl: "http://localhost:6333",
@@ -458,7 +458,7 @@ describe("CodeIndexManager - handleSettingsChange regression", () => {
 				isFeatureEnabled: true,
 				getConfig: vi.fn().mockReturnValue({
 					isConfigured: true,
-					embedderProvider: "openai",
+					embedderProvider: "openai-compatible",
 					modelId: "text-embedding-3-small",
 					openAiOptions: { openAiNativeApiKey: "test-key" },
 					qdrantUrl: "http://localhost:6333",
@@ -563,7 +563,7 @@ describe("CodeIndexManager - handleSettingsChange regression", () => {
 				getGlobalState: vi.fn().mockReturnValue({
 					codebaseIndexEnabled: true,
 					codebaseIndexQdrantUrl: "http://localhost:6333",
-					codebaseIndexEmbedderProvider: "openai",
+					codebaseIndexEmbedderProvider: "openai-compatible",
 					codebaseIndexEmbedderModelId: "text-embedding-3-small",
 					codebaseIndexEmbedderModelDimension: 1536,
 					codebaseIndexSearchMaxResults: 10,

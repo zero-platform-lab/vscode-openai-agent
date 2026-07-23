@@ -258,12 +258,6 @@ export function sanitizeGeminiMessages(
  */
 export interface ConvertToOpenAiMessagesOptions {
 	/**
-	 * Optional function to normalize tool call IDs for providers with strict ID requirements.
-	 * When provided, this function will be applied to all tool_use IDs and tool_result tool_use_ids.
-	 * This allows callers to declare provider-specific ID format requirements.
-	 */
-	normalizeToolCallId?: (id: string) => string
-	/**
 	 * If true, merge text content after tool_results into the last tool message
 	 * instead of creating a separate user message. This is critical for providers
 	 * with reasoning/thinking models (like DeepSeek-reasoner, GLM-4.7, etc.) where
@@ -296,9 +290,6 @@ export function convertToOpenAiMessages(
 			return detail
 		})
 	}
-
-	// Use provided normalization function or identity function
-	const normalizeId = options?.normalizeToolCallId ?? ((id: string) => id)
 
 	for (const anthropicMessage of anthropicMessages) {
 		if (typeof anthropicMessage.content === "string") {
@@ -367,7 +358,7 @@ export function convertToOpenAiMessages(
 					}
 					openAiMessages.push({
 						role: "tool",
-						tool_call_id: normalizeId(toolMessage.tool_use_id),
+						tool_call_id: toolMessage.tool_use_id,
 						// Use "(empty)" placeholder for empty content to satisfy providers like Gemini (via OpenRouter)
 						content: content || "(empty)",
 					})
@@ -463,7 +454,7 @@ export function convertToOpenAiMessages(
 
 				// Process tool use messages
 				let tool_calls: OpenAI.Chat.ChatCompletionMessageToolCall[] = toolMessages.map((toolMessage) => ({
-					id: normalizeId(toolMessage.id),
+					id: toolMessage.id,
 					type: "function",
 					function: {
 						name: toolMessage.name,

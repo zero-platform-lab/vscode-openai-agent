@@ -1,13 +1,7 @@
 import type { ProviderName, ReasoningEffortExtended } from "@openai-agent/types"
 import type { OutputFormat } from "./json-events.js"
 
-export const supportedProviders = [
-	"anthropic",
-	"openai-native",
-	"gemini",
-	"openrouter",
-	"vercel-ai-gateway",
-] as const satisfies ProviderName[]
+export const supportedProviders = ["openai"] as const satisfies ProviderName[]
 
 export type SupportedProvider = (typeof supportedProviders)[number]
 

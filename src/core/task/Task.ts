@@ -38,9 +38,7 @@ import {
 	AgentEventName,
 	TaskStatus,
 	TodoItem,
-	getApiProtocol,
 	getModelId,
-	isRetiredProvider,
 	isIdleAsk,
 	isInteractiveAsk,
 	isResumableAsk,
@@ -82,7 +80,7 @@ import { TerminalRegistry } from "../../integrations/terminal/TerminalRegistry"
 import { OutputInterceptor } from "../../integrations/terminal/OutputInterceptor"
 
 // utils
-import { calculateApiCostAnthropic, calculateApiCostOpenAI } from "../../shared/cost"
+import { calculateApiCostOpenAI } from "../../shared/cost"
 import { getWorkspacePath } from "../../utils/path"
 import { sanitizeToolUseId } from "../../utils/tool-id"
 import { getTaskDirectoryPath } from "../../utils/storage"
@@ -869,14 +867,6 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			// Only Anthropic's API expects/validates the special `thinking` content block signature.
 			// Other providers (notably Gemini 3) use different signature semantics (e.g. `thoughtSignature`)
 			// and require round-tripping the signature in their own format.
-			const modelId = getModelId(this.apiConfiguration)
-			const apiProvider = this.apiConfiguration.apiProvider
-			const apiProtocol = getApiProtocol(
-				apiProvider && !isRetiredProvider(apiProvider) ? apiProvider : undefined,
-				modelId,
-			)
-			const isAnthropicProtocol = apiProtocol === "anthropic"
-
 			// Start from the original assistant message
 			const messageWithTs: any = {
 				...message,
@@ -889,29 +879,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				messageWithTs.reasoning_details = reasoningDetails
 			}
 
-			// Store reasoning: Anthropic thinking (with signature), plain text (most providers), or encrypted (OpenAI Native)
+			// Store reasoning: plain text (most providers) or encrypted (OpenAI Native).
 			// Skip if reasoning_details already contains the reasoning (to avoid duplication)
-			if (isAnthropicProtocol && reasoning && thoughtSignature && !reasoningDetails) {
-				// Anthropic provider with extended thinking: Store as proper `thinking` block
-				// This format passes through anthropic-filter.ts and is properly round-tripped
-				// for interleaved thinking with tool use (required by Anthropic API)
-				const thinkingBlock = {
-					type: "thinking",
-					thinking: reasoning,
-					signature: thoughtSignature,
-				}
-
-				if (typeof messageWithTs.content === "string") {
-					messageWithTs.content = [
-						thinkingBlock,
-						{ type: "text", text: messageWithTs.content } satisfies Anthropic.Messages.TextBlockParam,
-					]
-				} else if (Array.isArray(messageWithTs.content)) {
-					messageWithTs.content = [thinkingBlock, ...messageWithTs.content]
-				} else if (!messageWithTs.content) {
-					messageWithTs.content = [thinkingBlock]
-				}
-			} else if (reasoning && !reasoningDetails) {
+			if (reasoning && !reasoningDetails) {
 				// Other providers (non-Anthropic): Store as generic reasoning block
 				const reasoningBlock = {
 					type: "reasoning",
@@ -950,10 +920,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				}
 			}
 
-			// For non-Anthropic providers (e.g., Gemini 3), persist the thought signature as its own
-			// content block so converters can attach it back to the correct provider-specific fields.
-			// Note: For Anthropic extended thinking, the signature is already included in the thinking block above.
-			if (thoughtSignature && !isAnthropicProtocol) {
+			// Persist the thought signature as its own content block so converters can
+			// attach it back to the correct provider-specific fields.
+			if (thoughtSignature) {
 				const thoughtSignatureBlock = {
 					type: "thoughtSignature",
 					thoughtSignature,
@@ -2505,13 +2474,8 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			// take a few seconds. For the best UX we show a placeholder api_req_started
 			// message with a loading spinner as this happens.
 
-			// Determine API protocol based on provider and model
-			const modelId = getModelId(this.apiConfiguration)
-			const apiProvider = this.apiConfiguration.apiProvider
-			const apiProtocol = getApiProtocol(
-				apiProvider && !isRetiredProvider(apiProvider) ? apiProvider : undefined,
-				modelId,
-			)
+			// This build only ships the OpenAI Compatible provider, which uses the OpenAI protocol.
+			const apiProtocol = "openai" as const
 
 			// Respect user-configured provider rate limiting BEFORE we emit api_req_started.
 			// This prevents the UI from showing an "API Request..." spinner while we are
@@ -2632,30 +2596,14 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 					const existingData = JSON.parse(this.clineMessages[lastApiReqIndex].text || "{}")
 
-					// Calculate total tokens and cost using provider-aware function
-					const modelId = getModelId(this.apiConfiguration)
-					const apiProvider = this.apiConfiguration.apiProvider
-					const apiProtocol = getApiProtocol(
-						apiProvider && !isRetiredProvider(apiProvider) ? apiProvider : undefined,
-						modelId,
+					// This build only ships the OpenAI Compatible provider (OpenAI protocol).
+					const costResult = calculateApiCostOpenAI(
+						streamModelInfo,
+						inputTokens,
+						outputTokens,
+						cacheWriteTokens,
+						cacheReadTokens,
 					)
-
-					const costResult =
-						apiProtocol === "anthropic"
-							? calculateApiCostAnthropic(
-									streamModelInfo,
-									inputTokens,
-									outputTokens,
-									cacheWriteTokens,
-									cacheReadTokens,
-								)
-							: calculateApiCostOpenAI(
-									streamModelInfo,
-									inputTokens,
-									outputTokens,
-									cacheWriteTokens,
-									cacheReadTokens,
-								)
 
 					this.clineMessages[lastApiReqIndex].text = JSON.stringify({
 						...existingData,
@@ -4115,7 +4063,8 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		// but uses allowedFunctionNames to restrict which tools can be called.
 		// Other providers (Anthropic, OpenAI, etc.) don't support this feature yet,
 		// so they continue to receive only the filtered tools for the current mode.
-		const supportsAllowedFunctionNames = apiConfiguration?.apiProvider === "gemini"
+		// The former Gemini-only allowedFunctionNames restriction no longer applies (Gemini provider removed).
+		const supportsAllowedFunctionNames = false
 
 		{
 			const provider = this.providerRef.deref()

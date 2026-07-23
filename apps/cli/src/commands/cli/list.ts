@@ -6,7 +6,6 @@ import pWaitFor from "p-wait-for"
 
 import type { TaskSessionEntry } from "@openai-agent/core/cli"
 import type { Command, ModelRecord, WebviewMessage } from "@openai-agent/types"
-import { openRouterDefaultModelId } from "@openai-agent/types"
 
 import { ExtensionHost, type ExtensionHostOptions } from "@/agent/index.js"
 import { readWorkspaceTaskSessions } from "@/lib/task-history/index.js"
@@ -105,14 +104,14 @@ function outputSessionsText(sessions: SessionLike[]): void {
 async function createListHost(options: BaseListOptions, hostOptions: ListHostOptions): Promise<ExtensionHost> {
 	const workspacePath = resolveWorkspacePath(options.workspace)
 	const extensionPath = resolveExtensionPath(options.extension)
-	const apiKey = options.apiKey || getApiKeyFromEnv("openrouter")
+	const apiKey = options.apiKey || getApiKeyFromEnv("openai")
 
 	const extensionHostOptions: ExtensionHostOptions = {
 		mode: "code",
 		reasoningEffort: undefined,
 		user: null,
-		provider: "openrouter",
-		model: openRouterDefaultModelId,
+		provider: "openai",
+		model: "",
 		apiKey,
 		workspacePath,
 		extensionPath,

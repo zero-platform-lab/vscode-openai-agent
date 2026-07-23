@@ -1,6 +1,6 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 
-import type { ClineAsk, ToolProgressStatus, ToolGroup, ToolName, GenerateImageParams } from "@openai-agent/types"
+import type { ClineAsk, ToolProgressStatus, ToolGroup, ToolName } from "@openai-agent/types"
 
 export type ToolResponse = string | Array<Anthropic.TextBlockParam | Anthropic.ImageBlockParam>
 
@@ -108,7 +108,6 @@ export type NativeToolArgs = {
 		follow_up: Array<{ text: string; mode?: string }>
 	}
 	codebase_search: { query: string; path?: string }
-	generate_image: GenerateImageParams
 	run_slash_command: { command: string; args?: string }
 	skill: { skill: string; args?: string }
 	search_files: { path: string; regex: string; file_pattern?: string | null }
@@ -253,11 +252,6 @@ export interface SkillToolUse extends ToolUse<"skill"> {
 	params: Partial<Pick<Record<ToolParamName, string>, "skill" | "args">>
 }
 
-export interface GenerateImageToolUse extends ToolUse<"generate_image"> {
-	name: "generate_image"
-	params: Partial<Pick<Record<ToolParamName, string>, "prompt" | "path" | "image">>
-}
-
 // Define tool group configuration
 export type ToolGroupConfig = {
 	tools: readonly string[]
@@ -288,7 +282,6 @@ export const TOOL_DISPLAY_NAMES: Record<ToolName, string> = {
 	update_todo_list: "update todo list",
 	run_slash_command: "run slash command",
 	skill: "load skill",
-	generate_image: "generate images",
 	custom_tool: "use custom tools",
 } as const
 
@@ -298,7 +291,7 @@ export const TOOL_GROUPS: Record<ToolGroup, ToolGroupConfig> = {
 		tools: ["read_file", "search_files", "list_files", "codebase_search"],
 	},
 	edit: {
-		tools: ["apply_diff", "write_to_file", "generate_image"],
+		tools: ["apply_diff", "write_to_file"],
 		customTools: ["edit", "search_replace", "edit_file", "apply_patch"],
 	},
 	command: {

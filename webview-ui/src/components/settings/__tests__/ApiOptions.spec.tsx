@@ -253,7 +253,7 @@ describe("ApiOptions", () => {
 		it("should show ThinkingBudget for Anthropic models that support thinking", () => {
 			renderApiOptions({
 				apiConfiguration: {
-					apiProvider: "anthropic",
+					apiProvider: "openai",
 					apiModelId: "claude-3-7-sonnet-20250219:thinking",
 				},
 			})
@@ -264,7 +264,7 @@ describe("ApiOptions", () => {
 		it("should show ThinkingBudget for Vertex models that support thinking", () => {
 			renderApiOptions({
 				apiConfiguration: {
-					apiProvider: "vertex",
+					apiProvider: "openai",
 					apiModelId: "claude-3-7-sonnet@20250219:thinking",
 				},
 			})
@@ -275,7 +275,7 @@ describe("ApiOptions", () => {
 		it("should not show ThinkingBudget for models that don't support thinking", () => {
 			renderApiOptions({
 				apiConfiguration: {
-					apiProvider: "anthropic",
+					apiProvider: "openai",
 					apiModelId: "claude-3-opus-20240229",
 				},
 			})
@@ -423,44 +423,5 @@ describe("ApiOptions", () => {
 				}),
 			)
 		})
-	})
-
-	it("renders retired provider message and hides provider-specific forms", () => {
-		renderApiOptions({
-			apiConfiguration: {
-				apiProvider: "groq",
-			},
-		})
-
-		expect(screen.getByTestId("retired-provider-message")).toHaveTextContent(
-			"settings:providers.retiredProviderMessage",
-		)
-		expect(screen.queryByTestId("litellm-provider")).not.toBeInTheDocument()
-	})
-
-	it("renders retired provider message for a retired provider", () => {
-		renderApiOptions({
-			apiConfiguration: {
-				apiProvider: "groq" as any,
-			},
-		})
-
-		expect(screen.getByTestId("retired-provider-message")).toHaveTextContent(
-			"settings:providers.retiredProviderMessage",
-		)
-	})
-
-	it("does not reintroduce retired providers into active provider options", () => {
-		renderApiOptions({
-			apiConfiguration: {
-				apiProvider: "groq",
-			},
-		})
-
-		const providerSelectContainer = screen.getByTestId("provider-select")
-		const providerSelect = providerSelectContainer.querySelector("select") as HTMLSelectElement
-		const providerOptions = Array.from(providerSelect.querySelectorAll("option")).map((option) => option.value)
-
-		expect(providerOptions).not.toContain("groq")
 	})
 })

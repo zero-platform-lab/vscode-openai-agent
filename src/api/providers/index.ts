@@ -2,7 +2,4 @@
 // Other upstream provider handlers were removed to shrink the network-egress
 // attack surface; buildApiHandler only ever instantiates these.
 export { FakeAIHandler } from "./fake-ai"
-export { OpenAiNativeHandler } from "./openai-native"
 export { OpenAiHandler } from "./openai"
-export { OpenAICompatibleHandler } from "./openai-compatible"
-export type { OpenAICompatibleConfig } from "./openai-compatible"

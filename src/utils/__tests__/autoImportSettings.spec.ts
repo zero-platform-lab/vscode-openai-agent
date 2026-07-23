@@ -191,7 +191,7 @@ describe("autoImportSettings", () => {
 				currentApiConfigName: "test-config",
 				apiConfigs: {
 					"test-config": {
-						apiProvider: "anthropic",
+						apiProvider: "openai",
 						anthropicApiKey: "test-key",
 					},
 				},

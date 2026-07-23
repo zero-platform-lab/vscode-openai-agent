@@ -195,11 +195,7 @@
 		"wantsToInsertAtEnd": "Agentはこのファイルの末尾にコンテンツを追加したい",
 		"wantsToReadAndXMore": "Agent はこのファイルと他に {{count}} 個のファイルを読み込もうとしています",
 		"wantsToReadMultiple": "Agentは複数のファイルを読み取ろうとしています",
-		"wantsToApplyBatchChanges": "Agentは複数のファイルに変更を適用したい",
-		"wantsToGenerateImage": "Agentは画像を生成したい",
-		"wantsToGenerateImageOutsideWorkspace": "Agentはワークスペース外で画像を生成したい",
-		"wantsToGenerateImageProtected": "Agentは保護された場所で画像を生成したい",
-		"didGenerateImage": "Agentは画像を生成しました"
+		"wantsToApplyBatchChanges": "Agentは複数のファイルに変更を適用したい"
 	},
 	"directoryOperations": {
 		"wantsToViewTopLevel": "Agentはこのディレクトリのトップレベルファイルを表示したい",
@@ -327,29 +323,6 @@
 	"followUpSuggest": {
 		"copyToInput": "入力欄にコピー（またはShift + クリック）",
 		"timerPrefix": "自動承認が有効です。{{seconds}}秒後に選択中…"
-	},
-	"announcement": {
-		"title": "OpenAI Compatible Agent {{version}} リリース",
-		"support": "<githubLink>GitHub</githubLink>でスターを付けてOpenAI Compatible Agentを応援してください。",
-		"finalRelease": {
-			"title": "OpenAI Compatible Agent 最後のリリース",
-			"intro": "これは OpenAI Compatible Agent の最後のリリースです。<announcementLink>数週間前にお知らせしたとおり</announcementLink>、私たちは今後、ソフトウェア開発の未来だと考えているクラウドエージェントプラットフォーム <roomoteLink>プロジェクト</roomoteLink> に注力することにしました。この約1年間のご支援、本当にありがとうございました。",
-			"continuity": "この拡張機能は今後も無期限に動作し続けるはずですが、バグ修正、新機能、モデル更新は提供されません。",
-			"alternatives": "拡張機能を使いたい場合は、コミュニティによる OpenAI Compatible Agent のフォークである <zooCodeLink>ZooCode</zooCodeLink> と、OpenAI Compatible Agent の出発点である <clineLink>Cline</clineLink> をぜひ確認してみてください。",
-			"signoff": "Happy coding!"
-		},
-		"release": {
-			"heading": "新機能:",
-			"gpt55": "OpenAI Codex 経由の GPT-5.5: OpenAI Codex プロバイダーで GPT-5.5 のサポートを追加しました。OpenAI Compatible Agent から最新モデルを直接利用できます。",
-			"claudeOpus47": "Vertex AI 上の Claude Opus 4.7: Anthropic の最新フラッグシップ推論モデルとして、Vertex AI プロバイダーに Claude Opus 4.7 を追加しました。",
-			"checkpointNav": "以前のチェックポイントへのナビゲーション: チャットから以前のチェックポイントへ戻るためのコントロールを追加しました。i18n にも完全対応しています。"
-		},
-		"cloudAgents": {
-			"heading": "クラウドの新機能:",
-			"specialized": "<bold>Explainer</bold>、<bold>Planner</bold>、<bold>Coder</bold> の 3 つの専門クラウドエージェントを紹介します。ワークフローを強化します。",
-			"description": "エージェントはクラウドで連携して動作し、Web または Slack からトリガーできます。",
-			"tryButton": "クラウドエージェントを試す"
-		}
 	},
 	"costs": {
 		"totalWithSubtasks": "合計コスト（サブタスク含む）: ${{cost}}",
@@ -481,10 +454,5 @@
 	},
 	"readCommandOutput": {
 		"title": "Agentがコマンド出力を読み込みました"
-	},
-	"retiredProvider": {
-		"title": "プロバイダーのサポート終了",
-		"message": "This provider is no longer supported. Please select a different provider in your API profile settings.",
-		"openSettings": "設定を開く"
 	}
 }

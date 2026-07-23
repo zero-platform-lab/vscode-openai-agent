@@ -37,16 +37,16 @@ vi.mock("@/components/ui/hooks/useSelectedModel", () => ({
 	useSelectedModel: (apiConfiguration: any) => {
 		// Return the model ID based on apiConfiguration for testing
 		// For Gemini tests, check if apiProvider is gemini and use apiModelId
-		if (apiConfiguration?.apiProvider === "gemini") {
+		if (apiConfiguration?.apiProvider === "openai") {
 			return {
 				id: apiConfiguration?.apiModelId || "gemini-2.0-flash-exp",
-				provider: "gemini",
+				provider: "openai",
 				info: undefined,
 			}
 		}
 		return {
 			id: apiConfiguration?.apiModelId || "claude-3-5-sonnet-20241022",
-			provider: apiConfiguration?.apiProvider || "anthropic",
+			provider: apiConfiguration?.apiProvider || "openai",
 			info: undefined,
 		}
 	},
@@ -170,7 +170,7 @@ describe("ThinkingBudget", () => {
 				{...defaultProps}
 				apiConfiguration={{
 					modelMaxTokens: 10000,
-					apiProvider: "gemini",
+					apiProvider: "openai",
 					apiModelId: "gemini-2.5-pro-002",
 				}}
 			/>,
@@ -186,7 +186,7 @@ describe("ThinkingBudget", () => {
 				{...defaultProps}
 				apiConfiguration={{
 					modelMaxTokens: 10000,
-					apiProvider: "gemini",
+					apiProvider: "openai",
 					apiModelId: "gemini-2.5-pro-002",
 				}}
 			/>,
@@ -202,7 +202,7 @@ describe("ThinkingBudget", () => {
 				{...defaultProps}
 				apiConfiguration={{
 					modelMaxTokens: 10000,
-					apiProvider: "anthropic",
+					apiProvider: "openai",
 					apiModelId: "claude-3-5-sonnet-20241022",
 				}}
 			/>,

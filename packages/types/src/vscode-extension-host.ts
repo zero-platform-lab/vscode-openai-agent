@@ -11,8 +11,7 @@ import type { OrganizationAllowList } from "./organization.js"
 import type { SerializedCustomToolDefinition } from "./custom-tool.js"
 import type { GitCommit } from "./git.js"
 import type { McpServer } from "./mcp.js"
-import type { ModelRecord, RouterModels } from "./model.js"
-import type { OpenAiCodexRateLimitInfo } from "./providers/openai-codex-rate-limits.js"
+import type { RouterModels } from "./model.js"
 import type { SkillMetadata } from "./skills.js"
 import type { WorktreeIncludeStatus } from "./worktree.js"
 
@@ -37,10 +36,6 @@ export interface ExtensionMessage {
 		| "listApiConfig"
 		| "routerModels"
 		| "openAiModels"
-		| "ollamaModels"
-		| "lmStudioModels"
-		| "vsCodeLmModels"
-		| "vsCodeLmApiAvailable"
 		| "updatePrompt"
 		| "systemPrompt"
 		| "autoApprovalEnabled"
@@ -64,8 +59,6 @@ export interface ExtensionMessage {
 		| "authenticatedUser"
 		| "condenseTaskContextStarted"
 		| "condenseTaskContextResponse"
-		| "singleRouterModelFetchResponse"
-		| "rooCreditBalance"
 		| "indexingStatusUpdate"
 		| "indexCleared"
 		| "codebaseIndexConfig"
@@ -80,7 +73,6 @@ export interface ExtensionMessage {
 		| "customToolsResult"
 		| "modes"
 		| "taskWithAggregatedCosts"
-		| "openAiCodexRateLimits"
 		// Worktree response types
 		| "worktreeList"
 		| "worktreeResult"
@@ -124,9 +116,6 @@ export interface ExtensionMessage {
 	clineMessage?: ClineMessage
 	routerModels?: RouterModels
 	openAiModels?: string[]
-	ollamaModels?: ModelRecord
-	lmStudioModels?: ModelRecord
-	vsCodeLmModels?: { vendor?: string; family?: string; version?: string; id?: string }[]
 	mcpServers?: McpServer[]
 	commits?: GitCommit[]
 	listApiConfig?: ProviderSettingsEntry[]
@@ -219,12 +208,6 @@ export interface ExtensionMessage {
 	path?: string
 }
 
-export interface OpenAiCodexRateLimitsMessage {
-	type: "openAiCodexRateLimits"
-	values?: OpenAiCodexRateLimitInfo
-	error?: string
-}
-
 export type ExtensionState = Pick<
 	GlobalSettings,
 	| "currentApiConfigName"
@@ -274,8 +257,6 @@ export type ExtensionState = Pick<
 	| "profileThresholds"
 	| "includeDiagnosticMessages"
 	| "maxDiagnosticMessages"
-	| "imageGenerationProvider"
-	| "openRouterImageGenerationSelectedModel"
 	| "includeTaskHistoryInEnhance"
 	| "reasoningBlockCollapsed"
 	| "enterBehavior"
@@ -294,7 +275,6 @@ export type ExtensionState = Pick<
 	currentTaskTodos?: TodoItem[] // Initial todos for the current task
 	apiConfiguration: ProviderSettings
 	uriScheme?: string
-	shouldShowAnnouncement: boolean
 
 	taskHistory: HistoryItem[]
 
@@ -329,12 +309,9 @@ export type ExtensionState = Pick<
 	autoCondenseContextPercent: number
 	profileThresholds: Record<string, number>
 	hasOpenedModeSelector: boolean
-	openRouterImageApiKey?: string
 	messageQueue?: QueuedMessage[]
-	lastShownAnnouncementId?: string
 	apiModelId?: string
 	mcpServers?: McpServer[]
-	openAiCodexIsAuthenticated?: boolean
 	debug?: boolean
 
 	/**
@@ -388,7 +365,6 @@ export interface WebviewMessage {
 		| "askResponse"
 		| "terminalOperation"
 		| "clearTask"
-		| "didShowAnnouncement"
 		| "selectImages"
 		| "exportCurrentTask"
 		| "showTaskWithId"
@@ -397,12 +373,8 @@ export interface WebviewMessage {
 		| "importSettings"
 		| "exportSettings"
 		| "resetState"
-		| "flushRouterModels"
 		| "requestRouterModels"
 		| "requestOpenAiModels"
-		| "requestOllamaModels"
-		| "requestLmStudioModels"
-		| "requestVsCodeLmModels"
 		| "openImage"
 		| "saveImage"
 		| "openFile"
@@ -456,8 +428,6 @@ export interface WebviewMessage {
 		| "toggleApiConfigPin"
 		| "hasOpenedModeSelector"
 		| "lockApiConfigAcrossModes"
-		| "openAiCodexSignIn"
-		| "openAiCodexSignOut"
 		| "condenseTaskContextRequest"
 		| "requestIndexingStatus"
 		| "startIndexing"
@@ -483,7 +453,6 @@ export interface WebviewMessage {
 		| "deleteCommand"
 		| "createCommand"
 		| "insertTextIntoTextarea"
-		| "imageGenerationSettings"
 		| "queueMessage"
 		| "removeQueuedMessage"
 		| "editQueuedMessage"
@@ -497,7 +466,6 @@ export interface WebviewMessage {
 		| "openDebugApiHistory"
 		| "openDebugUiHistory"
 		| "downloadErrorDiagnostics"
-		| "requestOpenAiCodexRateLimits"
 		| "refreshCustomTools"
 		| "requestModes"
 		| "switchMode"
@@ -628,10 +596,6 @@ export interface WebviewMessage {
 	worktreeIncludeContent?: string
 }
 
-export interface RequestOpenAiCodexRateLimitsMessage {
-	type: "requestOpenAiCodexRateLimits"
-}
-
 export const checkoutDiffPayloadSchema = z.object({
 	ts: z.number().optional(),
 	previousCommitHash: z.string().optional(),
@@ -704,7 +668,6 @@ export interface ClineSayTool {
 		| "switchMode"
 		| "newTask"
 		| "finishTask"
-		| "generateImage"
 		| "imageGenerated"
 		| "runSlashCommand"
 		| "updateTodoList"

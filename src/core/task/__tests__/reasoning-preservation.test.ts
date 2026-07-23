@@ -149,7 +149,7 @@ describe("Task reasoning preservation", () => {
 
 		mockApiConfiguration = {
 			apiProvider: "openai",
-			apiKey: "test-key",
+			openAiApiKey: "test-key",
 		} as ProviderSettings
 	})
 

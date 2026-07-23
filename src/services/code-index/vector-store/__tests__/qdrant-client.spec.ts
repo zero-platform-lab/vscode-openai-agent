@@ -77,6 +77,7 @@ describe("QdrantVectorStore", () => {
 			host: "mock-qdrant",
 			https: false,
 			port: 6333,
+			prefix: undefined,
 			apiKey: mockApiKey,
 			headers: {
 				"User-Agent": "Agent",
@@ -96,7 +97,7 @@ describe("QdrantVectorStore", () => {
 			host: "localhost",
 			https: false,
 			port: 6333,
-			apiKey: undefined,
+			openAiApiKey: undefined,
 			headers: {
 				"User-Agent": "Agent",
 			},
@@ -110,7 +111,7 @@ describe("QdrantVectorStore", () => {
 			host: "mock-qdrant",
 			https: false,
 			port: 6333,
-			apiKey: undefined,
+			openAiApiKey: undefined,
 			headers: {
 				"User-Agent": "Agent",
 			},
@@ -130,7 +131,7 @@ describe("QdrantVectorStore", () => {
 					https: true,
 					port: 443,
 					prefix: undefined, // No prefix for root path
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -145,7 +146,7 @@ describe("QdrantVectorStore", () => {
 					https: true,
 					port: 9000,
 					prefix: undefined, // No prefix for root path
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -164,7 +165,7 @@ describe("QdrantVectorStore", () => {
 					https: true,
 					port: 443,
 					prefix: "/api/v1", // Should have prefix
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -181,7 +182,7 @@ describe("QdrantVectorStore", () => {
 					https: false,
 					port: 80,
 					prefix: undefined, // No prefix for root path
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -196,7 +197,7 @@ describe("QdrantVectorStore", () => {
 					https: false,
 					port: 8080,
 					prefix: undefined, // No prefix for root path
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -215,7 +216,7 @@ describe("QdrantVectorStore", () => {
 					https: false,
 					port: 80,
 					prefix: "/api/v1", // Should have prefix
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -231,7 +232,7 @@ describe("QdrantVectorStore", () => {
 					host: "qdrant.example.com",
 					https: false,
 					port: 80,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -245,7 +246,7 @@ describe("QdrantVectorStore", () => {
 					host: "localhost",
 					https: false,
 					port: 6333,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -259,7 +260,7 @@ describe("QdrantVectorStore", () => {
 					host: "localhost",
 					https: false,
 					port: 9000,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -275,7 +276,7 @@ describe("QdrantVectorStore", () => {
 					host: "192.168.1.100",
 					https: false,
 					port: 80,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -289,7 +290,7 @@ describe("QdrantVectorStore", () => {
 					host: "192.168.1.100",
 					https: false,
 					port: 6333,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -305,7 +306,7 @@ describe("QdrantVectorStore", () => {
 					host: "localhost",
 					https: false,
 					port: 6333,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -319,7 +320,7 @@ describe("QdrantVectorStore", () => {
 					host: "localhost",
 					https: false,
 					port: 6333,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -333,7 +334,7 @@ describe("QdrantVectorStore", () => {
 					host: "localhost",
 					https: false,
 					port: 6333,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -349,7 +350,7 @@ describe("QdrantVectorStore", () => {
 					host: "invalid-url-format",
 					https: false,
 					port: 80,
-					apiKey: undefined,
+					openAiApiKey: undefined,
 					headers: {
 						"User-Agent": "Agent",
 					},
@@ -371,7 +372,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: "/some/path",
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -390,7 +391,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: undefined,
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -409,7 +410,7 @@ describe("QdrantVectorStore", () => {
 				https: true,
 				port: 443,
 				prefix: "/api",
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -428,7 +429,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: "/api", // Trailing slash should be removed
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -447,7 +448,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: "/api", // All trailing slashes should be removed
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -466,7 +467,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: "/api/v1/qdrant",
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -482,7 +483,7 @@ describe("QdrantVectorStore", () => {
 				https: true,
 				port: 443,
 				prefix: "/ollama/api/v1", // Trailing slash removed, query/fragment ignored
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},
@@ -501,7 +502,7 @@ describe("QdrantVectorStore", () => {
 				https: false,
 				port: 6333,
 				prefix: "/api/path", // Query params and fragment should be ignored
-				apiKey: undefined,
+				openAiApiKey: undefined,
 				headers: {
 					"User-Agent": "Agent",
 				},

@@ -271,7 +271,7 @@ describe("Cline", () => {
 		mockApiConfig = {
 			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
-			apiKey: "test-api-key", // Add API key to mock config
+			openAiApiKey: "test-api-key", // Add API key to mock config
 		}
 
 		// Mock provider methods
@@ -951,7 +951,7 @@ describe("Cline", () => {
 
 				mockApiConfig = {
 					apiProvider: "openai",
-					apiKey: "test-key",
+					openAiApiKey: "test-key",
 					rateLimitSeconds: 5,
 				}
 
@@ -1329,7 +1329,7 @@ describe("Cline", () => {
 
 				mockApiConfig = {
 					apiProvider: "openai",
-					apiKey: "test-key",
+					openAiApiKey: "test-key",
 				}
 
 				mockProvider = {
@@ -1827,7 +1827,7 @@ describe("Queued message processing after condense", () => {
 	const apiConfig: ProviderSettings = {
 		apiProvider: "openai",
 		apiModelId: "claude-3-5-sonnet-20241022",
-		apiKey: "test-api-key",
+		openAiApiKey: "test-api-key",
 	} as any
 
 	it("processes queued message after condense completes", async () => {
@@ -1913,7 +1913,7 @@ describe("pushToolResultToUserContent", () => {
 		mockApiConfig = {
 			apiProvider: "openai",
 			apiModelId: "claude-3-5-sonnet-20241022",
-			apiKey: "test-api-key",
+			openAiApiKey: "test-api-key",
 		}
 
 		const storageUri = { fsPath: path.join(os.tmpdir(), "test-storage") }

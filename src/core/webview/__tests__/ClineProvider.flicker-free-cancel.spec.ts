@@ -71,8 +71,8 @@ describe("ClineProvider flicker-free cancel", () => {
 	let mockTask2: any
 
 	const mockApiConfig: ProviderSettings = {
-		apiProvider: "anthropic",
-		apiKey: "test-key",
+		apiProvider: "openai",
+		openAiApiKey: "test-key",
 	} as ProviderSettings
 
 	beforeEach(() => {
@@ -129,7 +129,6 @@ describe("ClineProvider flicker-free cancel", () => {
 		// Mock private method using any cast
 		;(provider as any).updateGlobalState = vi.fn().mockResolvedValue(undefined)
 		provider.activateProviderProfile = vi.fn().mockResolvedValue(undefined)
-		provider.performPreparationTasks = vi.fn().mockResolvedValue(undefined)
 		provider.getTaskWithId = vi.fn().mockImplementation((id) =>
 			Promise.resolve({
 				historyItem: {

@@ -1,7 +1,7 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
-import { isRetiredProvider, type ProviderSettings, type ModelInfo } from "@openai-agent/types"
+import { type ProviderSettings, type ModelInfo } from "@openai-agent/types"
 
 import { ApiStream } from "./transform/stream"
 
@@ -84,12 +84,6 @@ export interface ApiHandler {
 
 export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 	const { apiProvider, ...options } = configuration
-
-	if (apiProvider && isRetiredProvider(apiProvider)) {
-		throw new Error(
-			"This provider is no longer supported.\n\nPlease select a different provider in your API profile settings.",
-		)
-	}
 
 	switch (apiProvider) {
 		case "openai":

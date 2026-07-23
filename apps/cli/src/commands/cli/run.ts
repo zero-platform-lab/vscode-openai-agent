@@ -120,7 +120,7 @@ export async function run(promptArg: string | undefined, flagOptions: FlagOption
 	const effectiveModel = flagOptions.model || settings.model || DEFAULT_FLAGS.model
 	const effectiveReasoningEffort =
 		flagOptions.reasoningEffort || settings.reasoningEffort || DEFAULT_FLAGS.reasoningEffort
-	const effectiveProvider = flagOptions.provider ?? settings.provider ?? "openrouter"
+	const effectiveProvider = flagOptions.provider ?? settings.provider ?? "openai"
 	const effectiveWorkspacePath = flagOptions.workspace ? path.resolve(flagOptions.workspace) : process.cwd()
 	const legacyRequireApprovalFromSettings =
 		settings.requireApproval ??

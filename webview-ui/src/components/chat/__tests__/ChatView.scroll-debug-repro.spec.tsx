@@ -16,7 +16,6 @@ interface ExtensionStateMessage {
 		version: string
 		clineMessages: ClineMessage[]
 		taskHistory: unknown[]
-		shouldShowAnnouncement: boolean
 		allowedCommands: string[]
 		alwaysAllowExecute: boolean
 		cloudIsAuthenticated: boolean
@@ -76,8 +75,6 @@ vi.mock("../common/VersionIndicator", nullDefaultModule)
 vi.mock("../history/HistoryPreview", nullDefaultModule)
 vi.mock("@src/components/welcome/AgentHero", nullDefaultModule)
 vi.mock("@src/components/welcome/AgentTips", nullDefaultModule)
-vi.mock("../Announcement", nullDefaultModule)
-vi.mock("./TaskHeader", () => ({ default: () => <div data-testid="task-header" /> }))
 vi.mock("./ProfileViolationWarning", nullDefaultModule)
 vi.mock("../common/DismissibleUpsell", nullDefaultModule)
 
@@ -196,8 +193,6 @@ vi.mock("react-virtuoso", () => {
 
 const props: ChatViewProps = {
 	isHidden: false,
-	showAnnouncement: false,
-	hideAnnouncement: () => {},
 }
 
 const sleep = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms))
@@ -240,7 +235,6 @@ const postState = (clineMessages: ClineMessage[]) => {
 			version: "1.0.0",
 			clineMessages,
 			taskHistory: [],
-			shouldShowAnnouncement: false,
 			allowedCommands: [],
 			alwaysAllowExecute: false,
 			cloudIsAuthenticated: false,

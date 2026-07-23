@@ -283,7 +283,6 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 		const id = this.options.openAiModelId ?? ""
 		const info: ModelInfo = this.options.openAiCustomModelInfo ?? openAiModelInfoSaneDefaults
 		const params = getModelParams({
-			format: "openai",
 			modelId: id,
 			model: info,
 			settings: this.options,

@@ -35,27 +35,8 @@ export function getContextWindow(routerModels: RouterModels | null, apiConfigura
  * Different providers store their model ID in different fields of ProviderSettings.
  */
 function getModelIdForProvider(config: ProviderSettings): string | undefined {
-	switch (config.apiProvider) {
-		case "openrouter":
-			return config.openRouterModelId
-		case "ollama":
-			return config.ollamaModelId
-		case "lmstudio":
-			return config.lmStudioModelId
-		case "openai":
-			return config.openAiModelId
-		case "requesty":
-			return config.requestyModelId
-		case "unbound":
-			return config.unboundModelId
-		case "litellm":
-			return config.litellmModelId
-		case "vercel-ai-gateway":
-			return config.vercelAiGatewayModelId
-		default:
-			// For anthropic, bedrock, vertex, gemini, xai, etc.
-			return config.apiModelId
-	}
+	// [INTERNAL] Only the OpenAI Compatible provider is supported in this build.
+	return config.openAiModelId ?? config.apiModelId
 }
 
 export { DEFAULT_CONTEXT_WINDOW }

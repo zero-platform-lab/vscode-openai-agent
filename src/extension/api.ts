@@ -19,7 +19,6 @@ import {
 	isSecretStateKey,
 	IpcOrigin,
 	IpcMessageType,
-	openRouterDefaultModelId,
 } from "@openai-agent/types"
 import { IpcServer } from "@openai-agent/ipc"
 
@@ -27,7 +26,6 @@ import { Package } from "../shared/package"
 import { ClineProvider } from "../core/webview/ClineProvider"
 import { openClineInNewTab } from "../activate/registerCommands"
 import { getCommands } from "../services/command/commands"
-import { getModels } from "../api/providers/fetchers/modelCache"
 
 export class API extends EventEmitter<AgentEvents> implements AgentAPI {
 	private readonly outputChannel: vscode.OutputChannel
@@ -132,18 +130,6 @@ export class API extends EventEmitter<AgentEvents> implements AgentAPI {
 							sendResponse(AgentEventName.ModesResponse, [modes])
 						} catch (error) {
 							sendResponse(AgentEventName.ModesResponse, [[]])
-						}
-
-						break
-					case TaskCommandName.GetModels:
-						try {
-							const models = await getModels({
-								provider: "openrouter",
-							})
-
-							sendResponse(AgentEventName.ModelsResponse, [models || { [openRouterDefaultModelId]: {} }])
-						} catch (error) {
-							sendResponse(AgentEventName.ModelsResponse, [{}])
 						}
 
 						break

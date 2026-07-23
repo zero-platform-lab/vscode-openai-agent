@@ -7,8 +7,8 @@ describe("GLOBAL_STATE_KEYS", () => {
 		expect(GLOBAL_STATE_KEYS).toContain("autoApprovalEnabled")
 	})
 
-	it("should contain provider settings keys", () => {
-		expect(GLOBAL_STATE_KEYS).toContain("anthropicBaseUrl")
+	it("should contain OpenAI Compatible provider settings keys", () => {
+		expect(GLOBAL_STATE_KEYS).toContain("openAiBaseUrl")
 	})
 
 	it("should not contain secret state keys", () => {

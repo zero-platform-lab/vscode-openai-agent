@@ -85,7 +85,7 @@ describe("ProviderSettingsManager", () => {
 							config: {},
 						},
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 						},
 					},
 					migrations: {
@@ -117,11 +117,11 @@ describe("ProviderSettingsManager", () => {
 							rateLimitSeconds: undefined,
 						},
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							rateLimitSeconds: undefined,
 						},
 						existing: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							// this should not really be possible, unless someone has loaded a hand edited config,
 							// but we don't overwrite so we'll check that
 							rateLimitSeconds: 43,
@@ -154,11 +154,11 @@ describe("ProviderSettingsManager", () => {
 							consecutiveMistakeLimit: undefined,
 						},
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							consecutiveMistakeLimit: undefined,
 						},
 						existing: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							// this should not really be possible, unless someone has loaded a hand edited config,
 							// but we don't overwrite so we'll check that
 							consecutiveMistakeLimit: 5,
@@ -194,11 +194,11 @@ describe("ProviderSettingsManager", () => {
 							todoListEnabled: undefined,
 						},
 						test: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							todoListEnabled: undefined,
 						},
 						existing: {
-							apiProvider: "anthropic",
+							apiProvider: "openai",
 							// this should not really be possible, unless someone has loaded a hand edited config,
 							// but we don't overwrite so we'll check that
 							todoListEnabled: false,
@@ -242,7 +242,7 @@ describe("ProviderSettingsManager", () => {
 						id: "default",
 					},
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "openai",
 						id: "test-id",
 					},
 				},
@@ -261,7 +261,7 @@ describe("ProviderSettingsManager", () => {
 			const configs = await providerSettingsManager.listConfig()
 			expect(configs).toEqual([
 				{ name: "default", id: "default", apiProvider: undefined },
-				{ name: "test", id: "test-id", apiProvider: "anthropic" },
+				{ name: "test", id: "test-id", apiProvider: "openai" },
 			])
 		})
 
@@ -311,9 +311,8 @@ describe("ProviderSettingsManager", () => {
 			)
 
 			const newConfig: ProviderSettings = {
-				apiProvider: "vertex",
+				apiProvider: "openai",
 				apiModelId: "gemini-2.5-flash-preview-05-20",
-				vertexKeyFile: "test-key-file",
 			}
 
 			await providerSettingsManager.saveConfig("test", newConfig)
@@ -358,12 +357,11 @@ describe("ProviderSettingsManager", () => {
 			)
 
 			const newConfig: ProviderSettings = {
-				apiProvider: "anthropic",
-				apiKey: "test-key",
+				apiProvider: "openai",
+				openAiApiKey: "test-key",
 			}
 			const newConfigWithExtra: ProviderSettings = {
 				...newConfig,
-				openRouterApiKey: "another-key",
 			}
 
 			await providerSettingsManager.saveConfig("test", newConfigWithExtra)
@@ -397,8 +395,8 @@ describe("ProviderSettingsManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
-						apiKey: "old-key",
+						apiProvider: "openai",
+						openAiApiKey: "old-key",
 						id: "test-id",
 					},
 				},
@@ -410,8 +408,8 @@ describe("ProviderSettingsManager", () => {
 			mockSecrets.get.mockResolvedValue(JSON.stringify(existingConfig))
 
 			const updatedConfig: ProviderSettings = {
-				apiProvider: "anthropic",
-				apiKey: "new-key",
+				apiProvider: "openai",
+				openAiApiKey: "new-key",
 			}
 
 			await providerSettingsManager.saveConfig("test", updatedConfig)
@@ -420,8 +418,8 @@ describe("ProviderSettingsManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
-						apiKey: "new-key",
+						apiProvider: "openai",
+						openAiApiKey: "new-key",
 						id: "test-id",
 					},
 				},
@@ -454,47 +452,6 @@ describe("ProviderSettingsManager", () => {
 				"Failed to save config: Error: Failed to write provider profiles to secrets: Error: Storage failed",
 			)
 		})
-
-		it("should preserve full fields including legacy provider-specific keys when saving retired provider profiles", async () => {
-			mockSecrets.get.mockResolvedValue(
-				JSON.stringify({
-					currentApiConfigName: "default",
-					apiConfigs: {
-						default: {},
-					},
-					modeApiConfigs: {
-						code: "default",
-						architect: "default",
-						ask: "default",
-					},
-				}),
-			)
-
-			// Include a legacy provider-specific field (groqApiKey) that is no
-			// longer in the schema — passthrough() must keep it.
-			const retiredConfig = {
-				apiProvider: "groq",
-				apiKey: "legacy-key",
-				apiModelId: "legacy-model",
-				openAiBaseUrl: "https://legacy.example/v1",
-				openAiApiKey: "legacy-openai-key",
-				modelMaxTokens: 4096,
-				groqApiKey: "legacy-groq-specific-key",
-			} as ProviderSettings
-
-			await providerSettingsManager.saveConfig("retired", retiredConfig)
-
-			const storedConfig = JSON.parse(mockSecrets.store.mock.calls[mockSecrets.store.mock.calls.length - 1][1])
-			expect(storedConfig.apiConfigs.retired.apiProvider).toBe("groq")
-			expect(storedConfig.apiConfigs.retired.apiKey).toBe("legacy-key")
-			expect(storedConfig.apiConfigs.retired.apiModelId).toBe("legacy-model")
-			expect(storedConfig.apiConfigs.retired.openAiBaseUrl).toBe("https://legacy.example/v1")
-			expect(storedConfig.apiConfigs.retired.openAiApiKey).toBe("legacy-openai-key")
-			expect(storedConfig.apiConfigs.retired.modelMaxTokens).toBe(4096)
-			// Verify legacy provider-specific field is preserved via passthrough
-			expect(storedConfig.apiConfigs.retired.groqApiKey).toBe("legacy-groq-specific-key")
-			expect(storedConfig.apiConfigs.retired.id).toBeTruthy()
-		})
 	})
 
 	describe("DeleteConfig", () => {
@@ -506,7 +463,7 @@ describe("ProviderSettingsManager", () => {
 						id: "default",
 					},
 					test: {
-						apiProvider: "anthropic",
+						apiProvider: "openai",
 						id: "test-id",
 					},
 				},
@@ -563,8 +520,8 @@ describe("ProviderSettingsManager", () => {
 				currentApiConfigName: "default",
 				apiConfigs: {
 					test: {
-						apiProvider: "anthropic",
-						apiKey: "test-key",
+						apiProvider: "openai",
+						openAiApiKey: "test-key",
 						id: "test-id",
 					},
 				},
@@ -579,7 +536,7 @@ describe("ProviderSettingsManager", () => {
 			const { name, ...providerSettings } = await providerSettingsManager.activateProfile({ name: "test" })
 
 			expect(name).toBe("test")
-			expect(providerSettings).toEqual({ apiProvider: "anthropic", apiKey: "test-key", id: "test-id" })
+			expect(providerSettings).toEqual({ apiProvider: "openai", openAiApiKey: "test-key", id: "test-id" })
 
 			// Get the stored config to check the structure.
 			const calls = mockSecrets.store.mock.calls
@@ -587,8 +544,8 @@ describe("ProviderSettingsManager", () => {
 			expect(storedConfig.currentApiConfigName).toBe("test")
 
 			expect(storedConfig.apiConfigs.test).toEqual({
-				apiProvider: "anthropic",
-				apiKey: "test-key",
+				apiProvider: "openai",
+				openAiApiKey: "test-key",
 				id: "test-id",
 			})
 		})
@@ -610,7 +567,7 @@ describe("ProviderSettingsManager", () => {
 			mockSecrets.get.mockResolvedValue(
 				JSON.stringify({
 					currentApiConfigName: "default",
-					apiConfigs: { test: { apiProvider: "anthropic", id: "test-id" } },
+					apiConfigs: { test: { apiProvider: "openai", id: "test-id" } },
 					migrations: {
 						rateLimitSecondsMigrated: true,
 						openAiHeadersMigrated: true,
@@ -630,8 +587,8 @@ describe("ProviderSettingsManager", () => {
 				currentApiConfigName: "valid",
 				apiConfigs: {
 					valid: {
-						apiProvider: "anthropic",
-						apiKey: "valid-key",
+						apiProvider: "openai",
+						openAiApiKey: "valid-key",
 						apiModelId: "claude-3-opus-20240229",
 						id: "valid-id",
 					},
@@ -639,7 +596,7 @@ describe("ProviderSettingsManager", () => {
 						// Provider value that is neither active nor retired.
 						id: "removed-id",
 						apiProvider: "invalid-removed-provider",
-						apiKey: "some-key",
+						openAiApiKey: "some-key",
 						apiModelId: "some-model",
 					},
 				},
@@ -662,7 +619,7 @@ describe("ProviderSettingsManager", () => {
 			const storedConfig = JSON.parse(finalStoredConfigJson)
 			// The valid provider should be untouched
 			expect(storedConfig.apiConfigs.valid).toBeDefined()
-			expect(storedConfig.apiConfigs.valid.apiProvider).toBe("anthropic")
+			expect(storedConfig.apiConfigs.valid.apiProvider).toBe("openai")
 
 			// The config with the unknown provider should have its apiProvider reset to undefined
 			// but still be present (not filtered out entirely)
@@ -671,57 +628,13 @@ describe("ProviderSettingsManager", () => {
 			expect(storedConfig.apiConfigs.unknownProvider.id).toBe("removed-id")
 		})
 
-		it("should preserve retired providers and their fields including legacy provider-specific keys during initialize", async () => {
-			const configWithRetiredProvider = {
-				currentApiConfigName: "retiredProvider",
-				apiConfigs: {
-					retiredProvider: {
-						id: "retired-id",
-						apiProvider: "groq",
-						apiKey: "legacy-key",
-						apiModelId: "legacy-model",
-						openAiBaseUrl: "https://legacy.example/v1",
-						modelMaxTokens: 1024,
-						// Legacy provider-specific field no longer in schema
-						groqApiKey: "legacy-groq-key",
-					},
-				},
-				migrations: {
-					rateLimitSecondsMigrated: false,
-					openAiHeadersMigrated: true,
-					consecutiveMistakeLimitMigrated: true,
-					todoListEnabledMigrated: true,
-					claudeCodeLegacySettingsMigrated: true,
-				},
-			}
-
-			mockGlobalState.get.mockResolvedValue(0)
-			mockSecrets.get.mockResolvedValue(JSON.stringify(configWithRetiredProvider))
-
-			await providerSettingsManager.initialize()
-
-			const storeCalls = mockSecrets.store.mock.calls
-			expect(storeCalls.length).toBeGreaterThan(0)
-			const finalStoredConfigJson = storeCalls[storeCalls.length - 1][1]
-			const storedConfig = JSON.parse(finalStoredConfigJson)
-
-			expect(storedConfig.apiConfigs.retiredProvider).toBeDefined()
-			expect(storedConfig.apiConfigs.retiredProvider.apiProvider).toBe("groq")
-			expect(storedConfig.apiConfigs.retiredProvider.apiKey).toBe("legacy-key")
-			expect(storedConfig.apiConfigs.retiredProvider.apiModelId).toBe("legacy-model")
-			expect(storedConfig.apiConfigs.retiredProvider.openAiBaseUrl).toBe("https://legacy.example/v1")
-			expect(storedConfig.apiConfigs.retiredProvider.modelMaxTokens).toBe(1024)
-			// Verify legacy provider-specific field is preserved via passthrough
-			expect(storedConfig.apiConfigs.retiredProvider.groqApiKey).toBe("legacy-groq-key")
-		})
-
 		it("should sanitize invalid providers and remove non-object profiles during load", async () => {
 			const invalidConfig = {
 				currentApiConfigName: "valid",
 				apiConfigs: {
 					valid: {
-						apiProvider: "anthropic",
-						apiKey: "valid-key",
+						apiProvider: "openai",
+						openAiApiKey: "valid-key",
 						apiModelId: "claude-3-opus-20240229",
 						rateLimitSeconds: 0,
 					},
@@ -749,7 +662,7 @@ describe("ProviderSettingsManager", () => {
 			const storedConfig = JSON.parse(finalStoredConfigJson)
 			// Valid config should be untouched
 			expect(storedConfig.apiConfigs.valid).toBeDefined()
-			expect(storedConfig.apiConfigs.valid.apiProvider).toBe("anthropic")
+			expect(storedConfig.apiConfigs.valid.apiProvider).toBe("openai")
 
 			// Invalid provider config should be sanitized - kept but apiProvider reset to undefined
 			expect(storedConfig.apiConfigs.invalidProvider).toBeDefined()
@@ -764,43 +677,13 @@ describe("ProviderSettingsManager", () => {
 		})
 	})
 
-	describe("Export", () => {
-		it("should preserve retired provider profiles with full fields", async () => {
-			const existingConfig: ProviderProfiles = {
-				currentApiConfigName: "retired",
-				apiConfigs: {
-					retired: {
-						id: "retired-id",
-						apiProvider: "groq",
-						apiKey: "legacy-key",
-						apiModelId: "legacy-model",
-						openAiBaseUrl: "https://legacy.example/v1",
-						modelMaxTokens: 4096,
-						modelMaxThinkingTokens: 2048,
-					},
-				},
-			}
-
-			mockSecrets.get.mockResolvedValue(JSON.stringify(existingConfig))
-
-			const exported = await providerSettingsManager.export()
-
-			expect(exported.apiConfigs.retired.apiProvider).toBe("groq")
-			expect(exported.apiConfigs.retired.apiKey).toBe("legacy-key")
-			expect(exported.apiConfigs.retired.apiModelId).toBe("legacy-model")
-			expect(exported.apiConfigs.retired.openAiBaseUrl).toBe("https://legacy.example/v1")
-			expect(exported.apiConfigs.retired.modelMaxTokens).toBe(4096)
-			expect(exported.apiConfigs.retired.modelMaxThinkingTokens).toBe(2048)
-		})
-	})
-
 	describe("ResetAllConfigs", () => {
 		it("should delete all stored configs", async () => {
 			// Setup initial config
 			mockSecrets.get.mockResolvedValue(
 				JSON.stringify({
 					currentApiConfigName: "test",
-					apiConfigs: { test: { apiProvider: "anthropic", id: "test-id" } },
+					apiConfigs: { test: { apiProvider: "openai", id: "test-id" } },
 				}),
 			)
 
@@ -815,7 +698,7 @@ describe("ProviderSettingsManager", () => {
 		it("should return true for existing config", async () => {
 			const existingConfig: ProviderProfiles = {
 				currentApiConfigName: "default",
-				apiConfigs: { default: { id: "default" }, test: { apiProvider: "anthropic", id: "test-id" } },
+				apiConfigs: { default: { id: "default" }, test: { apiProvider: "openai", id: "test-id" } },
 				migrations: { rateLimitSecondsMigrated: false },
 			}
 

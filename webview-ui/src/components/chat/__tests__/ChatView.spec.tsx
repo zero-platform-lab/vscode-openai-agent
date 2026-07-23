@@ -23,7 +23,6 @@ interface ExtensionState {
 	version: string
 	clineMessages: ClineMessage[]
 	taskHistory: any[]
-	shouldShowAnnouncement: boolean
 	allowedCommands: string[]
 	alwaysAllowExecute: boolean
 	[key: string]: any
@@ -248,7 +247,6 @@ const mockPostMessage = (state: Partial<ExtensionState>) => {
 				version: "1.0.0",
 				clineMessages: [],
 				taskHistory: [],
-				shouldShowAnnouncement: false,
 				allowedCommands: [],
 				alwaysAllowExecute: false,
 				cloudIsAuthenticated: false,
@@ -261,8 +259,6 @@ const mockPostMessage = (state: Partial<ExtensionState>) => {
 
 const defaultProps: ChatViewProps = {
 	isHidden: false,
-	showAnnouncement: false,
-	hideAnnouncement: () => {},
 }
 
 const queryClient = new QueryClient()
