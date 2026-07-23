@@ -1,7 +1,7 @@
 # OpenAI Compatible Agent
 
 OpenAI 互換エンドポイント・Azure OpenAI に接続する AI コーディングエージェント（機能限定版）。  
-企業内のローカル LLM エンドポイント（vLLM / Ollama / TGI）や Azure OpenAI での利用を前提としています。
+ローカル環境の OpenAI 互換 LLM エンドポイント（vLLM / Ollama / TGI）や Azure OpenAI での利用を前提としています。
 
 ---
 

@@ -1,6 +1,6 @@
-# OpenAI Compatible Agent
+# Local Agent
 
-A feature-limited AI coding agent for VS Code that connects to OpenAI-compatible endpoints and Azure OpenAI. It is intended for enterprise use with in-house local LLM endpoints (vLLM / Ollama / TGI) or Azure OpenAI.
+A feature-limited AI coding agent for VS Code that connects to OpenAI-compatible endpoints and Azure OpenAI. It is designed for local environments running OpenAI-compatible LLM endpoints (vLLM / Ollama / TGI), as well as Azure OpenAI.
 
 Japanese documentation (primary): see [README-internal.md](./README-internal.md).
 
