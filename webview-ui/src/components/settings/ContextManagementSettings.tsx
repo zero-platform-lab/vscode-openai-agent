@@ -149,7 +149,7 @@ export const ContextManagementSettings = ({
 					settingId="context-open-tabs"
 					section="contextManagement"
 					label={t("settings:contextManagement.openTabs.label")}>
-					<span className="block font-medium mb-1">{t("settings:contextManagement.openTabs.label")}</span>
+					<span className="block mb-1">{t("settings:contextManagement.openTabs.label")}</span>
 					<div className="flex items-center gap-2">
 						<Slider
 							min={0}
@@ -170,9 +170,7 @@ export const ContextManagementSettings = ({
 					settingId="context-workspace-files"
 					section="contextManagement"
 					label={t("settings:contextManagement.workspaceFiles.label")}>
-					<span className="block font-medium mb-1">
-						{t("settings:contextManagement.workspaceFiles.label")}
-					</span>
+					<span className="block mb-1">{t("settings:contextManagement.workspaceFiles.label")}</span>
 					<div className="flex items-center gap-2">
 						<Slider
 							min={0}
@@ -193,9 +191,7 @@ export const ContextManagementSettings = ({
 					settingId="context-max-git-status-files"
 					section="contextManagement"
 					label={t("settings:contextManagement.maxGitStatusFiles.label")}>
-					<span className="block font-medium mb-1">
-						{t("settings:contextManagement.maxGitStatusFiles.label")}
-					</span>
+					<span className="block mb-1">{t("settings:contextManagement.maxGitStatusFiles.label")}</span>
 					<div className="flex items-center gap-2">
 						<Slider
 							min={0}
@@ -220,9 +216,7 @@ export const ContextManagementSettings = ({
 						checked={showAgentIgnoredFiles}
 						onChange={(e: any) => setCachedStateField("showAgentIgnoredFiles", e.target.checked)}
 						data-testid="show-agentignored-files-checkbox">
-						<label className="block font-medium mb-1">
-							{t("settings:contextManagement.agentignore.label")}
-						</label>
+						<label className="block mb-1">{t("settings:contextManagement.agentignore.label")}</label>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1 mb-3">
 						{t("settings:contextManagement.agentignore.description")}
@@ -237,7 +231,7 @@ export const ContextManagementSettings = ({
 						checked={enableSubfolderRules}
 						onChange={(e: any) => setCachedStateField("enableSubfolderRules", e.target.checked)}
 						data-testid="enable-subfolder-rules-checkbox">
-						<label className="block font-medium mb-1">
+						<label className="block mb-1">
 							{t("settings:contextManagement.enableSubfolderRules.label")}
 						</label>
 					</VSCodeCheckbox>
@@ -316,7 +310,7 @@ export const ContextManagementSettings = ({
 						checked={includeDiagnosticMessages}
 						onChange={(e: any) => setCachedStateField("includeDiagnosticMessages", e.target.checked)}
 						data-testid="include-diagnostic-messages-checkbox">
-						<label className="block font-medium mb-1">
+						<label className="block mb-1">
 							{t("settings:contextManagement.diagnostics.includeMessages.label")}
 						</label>
 					</VSCodeCheckbox>
@@ -329,9 +323,7 @@ export const ContextManagementSettings = ({
 					settingId="context-max-diagnostic-messages"
 					section="contextManagement"
 					label={t("settings:contextManagement.diagnostics.maxMessages.label")}>
-					<span className="block font-medium mb-1">
-						{t("settings:contextManagement.diagnostics.maxMessages.label")}
-					</span>
+					<span className="block mb-1">{t("settings:contextManagement.diagnostics.maxMessages.label")}</span>
 					<div className="flex items-center gap-2">
 						<Slider
 							min={1}
@@ -387,7 +379,7 @@ export const ContextManagementSettings = ({
 					settingId="context-write-delay"
 					section="contextManagement"
 					label={t("settings:contextManagement.diagnostics.delayAfterWrite.label")}>
-					<span className="block font-medium mb-1">
+					<span className="block mb-1">
 						{t("settings:contextManagement.diagnostics.delayAfterWrite.label")}
 					</span>
 					<div className="flex items-center gap-2">
@@ -414,9 +406,7 @@ export const ContextManagementSettings = ({
 						checked={includeCurrentTime}
 						onChange={(e: any) => setCachedStateField("includeCurrentTime", e.target.checked)}
 						data-testid="include-current-time-checkbox">
-						<label className="block font-medium mb-1">
-							{t("settings:contextManagement.includeCurrentTime.label")}
-						</label>
+						<label className="block mb-1">{t("settings:contextManagement.includeCurrentTime.label")}</label>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1 mb-3">
 						{t("settings:contextManagement.includeCurrentTime.description")}
@@ -431,9 +421,7 @@ export const ContextManagementSettings = ({
 						checked={includeCurrentCost}
 						onChange={(e: any) => setCachedStateField("includeCurrentCost", e.target.checked)}
 						data-testid="include-current-cost-checkbox">
-						<label className="block font-medium mb-1">
-							{t("settings:contextManagement.includeCurrentCost.label")}
-						</label>
+						<label className="block mb-1">{t("settings:contextManagement.includeCurrentCost.label")}</label>
 					</VSCodeCheckbox>
 					<div className="text-vscode-descriptionForeground text-sm mt-1 mb-3">
 						{t("settings:contextManagement.includeCurrentCost.description")}
@@ -447,7 +435,7 @@ export const ContextManagementSettings = ({
 					section="contextManagement"
 					label={t("prompts:supportPrompts.types.CONDENSE.label")}>
 					<div className="flex justify-between items-center mb-1">
-						<label className="block font-medium">{t("prompts:supportPrompts.types.CONDENSE.label")}</label>
+						<label className="block">{t("prompts:supportPrompts.types.CONDENSE.label")}</label>
 						<StandardTooltip content={t("prompts:supportPrompts.resetPrompt", { promptType: "CONDENSE" })}>
 							<Button variant="ghost" size="icon" onClick={handleCondenseReset}>
 								<span className="codicon codicon-discard"></span>

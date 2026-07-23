@@ -21,7 +21,7 @@ export const Verbosity = ({ apiConfiguration, setApiConfigurationField, modelInf
 	return (
 		<div className="flex flex-col gap-1" data-testid="verbosity">
 			<div className="flex justify-between items-center">
-				<label className="block font-medium mb-1">{t("settings:providers.verbosity.label")}</label>
+				<label className="block mb-1">{t("settings:providers.verbosity.label")}</label>
 			</div>
 			<Select
 				value={apiConfiguration.verbosity || "medium"}

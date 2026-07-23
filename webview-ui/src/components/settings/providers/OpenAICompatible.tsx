@@ -154,7 +154,7 @@ export const OpenAICompatible = ({
 				onInput={handleInputChange("openAiBaseUrl", urlInputEventTransform)}
 				placeholder={t("settings:placeholders.baseUrl")}
 				className="w-full">
-				<label className="block font-medium mb-1">{t("settings:providers.openAiBaseUrl")}</label>
+				<label className="block mb-1">{t("settings:providers.openAiBaseUrl")}</label>
 			</VSCodeTextField>
 			<VSCodeTextField
 				value={apiConfiguration?.openAiApiKey || ""}
@@ -162,7 +162,7 @@ export const OpenAICompatible = ({
 				onInput={handleInputChange("openAiApiKey")}
 				placeholder={t("settings:placeholders.apiKey")}
 				className="w-full">
-				<label className="block font-medium mb-1">{t("settings:providers.apiKey")}</label>
+				<label className="block mb-1">{t("settings:providers.apiKey")}</label>
 			</VSCodeTextField>
 			<div className="flex flex-col gap-1">
 				<Button
@@ -246,7 +246,7 @@ export const OpenAICompatible = ({
 			{/* Custom Headers UI */}
 			<div className="mb-4">
 				<div className="flex justify-between items-center mb-2">
-					<label className="block font-medium">{t("settings:providers.customHeaders")}</label>
+					<label className="block">{t("settings:providers.customHeaders")}</label>
 					<StandardTooltip content={t("settings:common.add")}>
 						<VSCodeButton appearance="icon" onClick={handleAddCustomHeader}>
 							<span className="codicon codicon-add"></span>
@@ -355,9 +355,7 @@ export const OpenAICompatible = ({
 						})}
 						placeholder={t("settings:placeholders.numbers.maxTokens")}
 						className="w-full">
-						<label className="block font-medium mb-1">
-							{t("settings:providers.customModel.maxTokens.label")}
-						</label>
+						<label className="block mb-1">{t("settings:providers.customModel.maxTokens.label")}</label>
 					</VSCodeTextField>
 					<div className="text-sm text-vscode-descriptionForeground">
 						{t("settings:providers.customModel.maxTokens.description")}
@@ -394,9 +392,7 @@ export const OpenAICompatible = ({
 						})}
 						placeholder={t("settings:placeholders.numbers.contextWindow")}
 						className="w-full">
-						<label className="block font-medium mb-1">
-							{t("settings:providers.customModel.contextWindow.label")}
-						</label>
+						<label className="block mb-1">{t("settings:providers.customModel.contextWindow.label")}</label>
 					</VSCodeTextField>
 					<div className="text-sm text-vscode-descriptionForeground">
 						{t("settings:providers.customModel.contextWindow.description")}
@@ -487,7 +483,7 @@ export const OpenAICompatible = ({
 						placeholder={t("settings:placeholders.numbers.inputPrice")}
 						className="w-full">
 						<div className="flex items-center gap-1">
-							<label className="block font-medium mb-1">
+							<label className="block mb-1">
 								{t("settings:providers.customModel.pricing.input.label")}
 							</label>
 							<StandardTooltip content={t("settings:providers.customModel.pricing.input.description")}>
@@ -531,7 +527,7 @@ export const OpenAICompatible = ({
 						placeholder={t("settings:placeholders.numbers.outputPrice")}
 						className="w-full">
 						<div className="flex items-center gap-1">
-							<label className="block font-medium mb-1">
+							<label className="block mb-1">
 								{t("settings:providers.customModel.pricing.output.label")}
 							</label>
 							<StandardTooltip content={t("settings:providers.customModel.pricing.output.description")}>
@@ -617,7 +613,7 @@ export const OpenAICompatible = ({
 								placeholder={t("settings:placeholders.numbers.cacheWritePrice")}
 								className="w-full">
 								<div className="flex items-center gap-1">
-									<label className="block font-medium mb-1">
+									<label className="block mb-1">
 										{t("settings:providers.customModel.pricing.cacheWrites.label")}
 									</label>
 									<StandardTooltip

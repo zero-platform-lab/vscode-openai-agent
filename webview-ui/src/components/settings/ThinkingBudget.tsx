@@ -230,7 +230,7 @@ export const ThinkingBudget = ({ apiConfiguration, setApiConfigurationField, mod
 	) : isReasoningEffortSupported ? (
 		<div className="flex flex-col gap-1" data-testid="reasoning-effort">
 			<div className="flex justify-between items-center">
-				<label className="block font-medium mb-1">{t("settings:providers.reasoningEffort.label")}</label>
+				<label className="block mb-1">{t("settings:providers.reasoningEffort.label")}</label>
 			</div>
 			<Select
 				value={currentReasoningEffort}

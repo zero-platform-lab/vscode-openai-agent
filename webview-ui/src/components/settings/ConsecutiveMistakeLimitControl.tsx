@@ -14,7 +14,7 @@ export const ConsecutiveMistakeLimitControl = ({ value, onChange }: ConsecutiveM
 
 	return (
 		<div className="flex flex-col gap-1">
-			<label className="block font-medium mb-1">{t("settings:providers.consecutiveMistakeLimit.label")}</label>
+			<label className="block mb-1">{t("settings:providers.consecutiveMistakeLimit.label")}</label>
 			<div className="flex items-center gap-2">
 				<Slider
 					value={[value ?? DEFAULT_CONSECUTIVE_MISTAKE_LIMIT]}

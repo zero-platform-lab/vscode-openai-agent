@@ -97,9 +97,7 @@ export const TerminalSettings = ({
 							settingId="terminal-output-preview-size"
 							section="terminal"
 							label={t("settings:terminal.outputPreviewSize.label")}>
-							<label className="block font-medium mb-1">
-								{t("settings:terminal.outputPreviewSize.label")}
-							</label>
+							<label className="block mb-1">{t("settings:terminal.outputPreviewSize.label")}</label>
 							<Select
 								value={terminalOutputPreviewSize || "medium"}
 								onValueChange={(value) =>
@@ -203,7 +201,7 @@ export const TerminalSettings = ({
 									settingId="terminal-shell-integration-timeout"
 									section="terminal"
 									label={t("settings:terminal.shellIntegrationTimeout.label")}>
-									<label className="block font-medium mb-1">
+									<label className="block mb-1">
 										{t("settings:terminal.shellIntegrationTimeout.label")}
 									</label>
 									<div className="flex items-center gap-2">
@@ -241,9 +239,7 @@ export const TerminalSettings = ({
 									settingId="terminal-command-delay"
 									section="terminal"
 									label={t("settings:terminal.commandDelay.label")}>
-									<label className="block font-medium mb-1">
-										{t("settings:terminal.commandDelay.label")}
-									</label>
+									<label className="block mb-1">{t("settings:terminal.commandDelay.label")}</label>
 									<div className="flex items-center gap-2">
 										<Slider
 											min={0}

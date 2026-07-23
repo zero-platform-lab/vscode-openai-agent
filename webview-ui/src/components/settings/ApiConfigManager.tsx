@@ -182,7 +182,7 @@ const ApiConfigManager = ({
 
 	return (
 		<div className="flex flex-col gap-1">
-			<label className="block font-medium mb-1">{t("settings:providers.configProfile")}</label>
+			<label className="block mb-1">{t("settings:providers.configProfile")}</label>
 
 			{isRenaming ? (
 				<div data-testid="rename-form">
