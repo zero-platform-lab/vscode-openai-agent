@@ -23,7 +23,7 @@ export async function run() {
 		openAiModelId: process.env.OPENAI_MODEL_ID ?? "gpt-4.1",
 	})
 
-	await vscode.commands.executeCommand("openai-agent.SidebarProvider.focus")
+	await vscode.commands.executeCommand("openai-compatible-agent.SidebarProvider.focus")
 	await waitFor(() => api.isReady())
 
 	globalThis.api = api

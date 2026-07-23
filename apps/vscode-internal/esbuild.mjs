@@ -99,7 +99,11 @@ async function main() {
 					const generatedPackageJson = generatePackageJson({
 						packageJson,
 						overrideJson,
-						substitution: ["roo-cline", "openai-compatible-agent"],
+						// Rewrite the contribution ID prefix (commands / views / config keys) to match the
+						// runtime extension name (Package.name === "openai-compatible-agent", injected via
+						// PKG_NAME). Without this the menu/command/view IDs stay "openai-agent.*" while the
+						// code registers "openai-compatible-agent.*", so buttons resolve to "command not found".
+						substitution: ["openai-agent", "openai-compatible-agent"],
 					})
 
 					const pkgStr = JSON.stringify(generatedPackageJson, null, 2)
