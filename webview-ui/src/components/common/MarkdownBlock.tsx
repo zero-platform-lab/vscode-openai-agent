@@ -9,7 +9,6 @@ import remarkGfm from "remark-gfm"
 import { vscode } from "@src/utils/vscode"
 
 import CodeBlock from "./CodeBlock"
-import MermaidBlock from "./MermaidBlock"
 
 interface MarkdownBlockProps {
 	markdown?: string
@@ -269,15 +268,6 @@ const MarkdownBlock = memo(({ markdown }: MarkdownBlockProps) => {
 					codeString = codeChildren
 				} else if (Array.isArray(codeChildren)) {
 					codeString = codeChildren.filter((child) => typeof child === "string").join("")
-				}
-
-				// Handle mermaid diagrams
-				if (className.includes("language-mermaid")) {
-					return (
-						<div style={{ margin: "1em 0" }}>
-							<MermaidBlock code={codeString} />
-						</div>
-					)
 				}
 
 				// Extract language from className
