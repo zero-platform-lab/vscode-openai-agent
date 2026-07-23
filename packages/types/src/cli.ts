@@ -1,0 +1,182 @@
+import { z } from "zod"
+
+import { agentSettingsSchema } from "./global-settings.js"
+
+/**
+ * Agent CLI stdin commands
+ */
+
+export const rooCliCommandNames = ["start", "message", "cancel", "ping", "shutdown"] as const
+
+export const rooCliCommandNameSchema = z.enum(rooCliCommandNames)
+
+export type AgentCliCommandName = z.infer<typeof rooCliCommandNameSchema>
+
+export const rooCliCommandBaseSchema = z.object({
+	command: rooCliCommandNameSchema,
+	requestId: z.string().min(1),
+})
+
+export type AgentCliCommandBase = z.infer<typeof rooCliCommandBaseSchema>
+
+const rooCliSessionIdSchema = z
+	.string()
+	.trim()
+	.regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
+
+export const rooCliStartCommandSchema = rooCliCommandBaseSchema.extend({
+	command: z.literal("start"),
+	prompt: z.string(),
+	taskId: rooCliSessionIdSchema.optional(),
+	images: z.array(z.string()).optional(),
+	configuration: agentSettingsSchema.optional(),
+})
+
+export type AgentCliStartCommand = z.infer<typeof rooCliStartCommandSchema>
+
+export const rooCliMessageCommandSchema = rooCliCommandBaseSchema.extend({
+	command: z.literal("message"),
+	prompt: z.string(),
+	images: z.array(z.string()).optional(),
+})
+
+export type AgentCliMessageCommand = z.infer<typeof rooCliMessageCommandSchema>
+
+export const rooCliCancelCommandSchema = rooCliCommandBaseSchema.extend({
+	command: z.literal("cancel"),
+})
+
+export type AgentCliCancelCommand = z.infer<typeof rooCliCancelCommandSchema>
+
+export const rooCliPingCommandSchema = rooCliCommandBaseSchema.extend({
+	command: z.literal("ping"),
+})
+
+export type AgentCliPingCommand = z.infer<typeof rooCliPingCommandSchema>
+
+export const rooCliShutdownCommandSchema = rooCliCommandBaseSchema.extend({
+	command: z.literal("shutdown"),
+})
+
+export type AgentCliShutdownCommand = z.infer<typeof rooCliShutdownCommandSchema>
+
+export const rooCliInputCommandSchema = z.discriminatedUnion("command", [
+	rooCliStartCommandSchema,
+	rooCliMessageCommandSchema,
+	rooCliCancelCommandSchema,
+	rooCliPingCommandSchema,
+	rooCliShutdownCommandSchema,
+])
+
+export type AgentCliInputCommand = z.infer<typeof rooCliInputCommandSchema>
+
+/**
+ * Agent CLI stream-json output
+ */
+
+export const rooCliOutputFormats = ["text", "json", "stream-json"] as const
+
+export const rooCliOutputFormatSchema = z.enum(rooCliOutputFormats)
+
+export type AgentCliOutputFormat = z.infer<typeof rooCliOutputFormatSchema>
+
+export const rooCliEventTypes = [
+	"system",
+	"control",
+	"queue",
+	"assistant",
+	"user",
+	"tool_use",
+	"tool_result",
+	"thinking",
+	"error",
+	"result",
+] as const
+
+export const rooCliEventTypeSchema = z.enum(rooCliEventTypes)
+
+export type AgentCliEventType = z.infer<typeof rooCliEventTypeSchema>
+
+export const rooCliControlSubtypes = ["ack", "done", "error"] as const
+
+export const rooCliControlSubtypeSchema = z.enum(rooCliControlSubtypes)
+
+export type AgentCliControlSubtype = z.infer<typeof rooCliControlSubtypeSchema>
+
+export const rooCliQueueItemSchema = z.object({
+	id: z.string().min(1),
+	text: z.string().optional(),
+	imageCount: z.number().optional(),
+	timestamp: z.number().optional(),
+})
+
+export type AgentCliQueueItem = z.infer<typeof rooCliQueueItemSchema>
+
+export const rooCliToolUseSchema = z.object({
+	name: z.string(),
+	input: z.record(z.unknown()).optional(),
+})
+
+export type AgentCliToolUse = z.infer<typeof rooCliToolUseSchema>
+
+export const rooCliToolResultSchema = z.object({
+	name: z.string(),
+	output: z.string().optional(),
+	error: z.string().optional(),
+	exitCode: z.number().optional(),
+})
+
+export type AgentCliToolResult = z.infer<typeof rooCliToolResultSchema>
+
+export const rooCliCostSchema = z.object({
+	totalCost: z.number().optional(),
+	inputTokens: z.number().optional(),
+	outputTokens: z.number().optional(),
+	cacheWrites: z.number().optional(),
+	cacheReads: z.number().optional(),
+})
+
+export type AgentCliCost = z.infer<typeof rooCliCostSchema>
+
+export const rooCliStreamEventSchema = z
+	.object({
+		type: rooCliEventTypeSchema.optional(),
+		subtype: z.string().optional(),
+		requestId: z.string().optional(),
+		command: rooCliCommandNameSchema.optional(),
+		taskId: z.string().optional(),
+		code: z.string().optional(),
+		content: z.string().optional(),
+		success: z.boolean().optional(),
+		id: z.number().optional(),
+		done: z.boolean().optional(),
+		queueDepth: z.number().optional(),
+		queue: z.array(rooCliQueueItemSchema).optional(),
+		schemaVersion: z.number().optional(),
+		protocol: z.string().optional(),
+		capabilities: z.array(z.string()).optional(),
+		tool_use: rooCliToolUseSchema.optional(),
+		tool_result: rooCliToolResultSchema.optional(),
+		cost: rooCliCostSchema.optional(),
+	})
+	.passthrough()
+
+export type AgentCliStreamEvent = z.infer<typeof rooCliStreamEventSchema>
+
+export const rooCliControlEventSchema = rooCliStreamEventSchema.extend({
+	type: z.literal("control"),
+	subtype: rooCliControlSubtypeSchema,
+	requestId: z.string().min(1),
+})
+
+export type AgentCliControlEvent = z.infer<typeof rooCliControlEventSchema>
+
+export const rooCliFinalOutputSchema = z.object({
+	type: z.literal("result"),
+	success: z.boolean(),
+	content: z.string().optional(),
+	cost: rooCliCostSchema.optional(),
+	events: z.array(rooCliStreamEventSchema),
+})
+
+export type AgentCliFinalOutput = z.infer<typeof rooCliFinalOutputSchema>
