@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { Lock, FilePen, Zap, type LucideIcon } from "lucide-react"
+import { Lock, FilePen, Zap, ClipboardList, type LucideIcon } from "lucide-react"
 
 import { type AutonomyMode, nextAutonomyMode } from "@openai-agent/types"
 
@@ -13,6 +13,7 @@ const MODE_META: Record<AutonomyMode, { icon: LucideIcon; labelKey: string; clas
 	manual: { icon: Lock, labelKey: "chat:autonomy.manual", className: "text-vscode-descriptionForeground" },
 	autoEdit: { icon: FilePen, labelKey: "chat:autonomy.autoEdit", className: "text-vscode-charts-blue" },
 	auto: { icon: Zap, labelKey: "chat:autonomy.auto", className: "text-vscode-charts-yellow" },
+	plan: { icon: ClipboardList, labelKey: "chat:autonomy.plan", className: "text-vscode-charts-green" },
 }
 
 /**

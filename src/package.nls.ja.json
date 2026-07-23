@@ -27,6 +27,7 @@
 	"command.setAutonomyModeManual.title": "自律モード: Manual（すべて確認）",
 	"command.setAutonomyModeAutoEdit.title": "自律モード: Auto-Edit（編集は自動・コマンドは確認）",
 	"command.setAutonomyModeAuto.title": "自律モード: Auto（自律実行・破壊的コマンドはブロック）",
+	"command.setAutonomyModePlan.title": "自律モード: Plan（読み取り専用・編集/コマンド不可）",
 	"configuration.title": "OpenAI Compatible Agent",
 	"commands.allowedCommands.description": "'常に実行操作を承認する'が有効な場合に自動実行できるコマンド",
 	"commands.deniedCommands.description": "承認を求めずに自動的に拒否されるコマンドプレフィックス。許可されたコマンドとの競合がある場合、最長プレフィックスマッチが優先されます。すべてのコマンドを拒否するには * を追加してください。",

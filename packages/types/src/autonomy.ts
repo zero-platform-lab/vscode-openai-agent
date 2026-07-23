@@ -8,7 +8,7 @@ import { z } from "zod"
  * IMPORTANT: autonomy is user-controlled ONLY. The model must never be able to raise its
  * own autonomy level — otherwise the destructive-command denylist could be bypassed.
  */
-export const autonomyModes = ["manual", "autoEdit", "auto"] as const
+export const autonomyModes = ["manual", "autoEdit", "auto", "plan"] as const
 
 export const autonomyModeSchema = z.enum(autonomyModes)
 
@@ -17,7 +17,18 @@ export type AutonomyMode = z.infer<typeof autonomyModeSchema>
 export const DEFAULT_AUTONOMY_MODE: AutonomyMode = "manual"
 
 /** Order used when cycling with the keyboard shortcut / badge click. */
-export const AUTONOMY_MODE_CYCLE: readonly AutonomyMode[] = ["manual", "autoEdit", "auto"] as const
+export const AUTONOMY_MODE_CYCLE: readonly AutonomyMode[] = ["manual", "autoEdit", "auto", "plan"] as const
+
+/**
+ * Read-only autonomy modes. In these modes the agent may investigate (read/search) but
+ * must not change files, run commands, or otherwise mutate state — enforced at the
+ * tool-validation layer, independent of the role mode.
+ */
+export const READ_ONLY_AUTONOMY_MODES: readonly AutonomyMode[] = ["plan"] as const
+
+export function isReadOnlyAutonomyMode(mode: AutonomyMode | undefined): boolean {
+	return !!mode && READ_ONLY_AUTONOMY_MODES.includes(mode)
+}
 
 /**
  * The auto-approval flags each mode applies. Applying a mode overwrites exactly these
@@ -64,6 +75,18 @@ export const AUTONOMY_PRESETS: Record<AutonomyMode, AutonomyPreset> = {
 		alwaysAllowExecute: true,
 		alwaysAllowMcp: true,
 		alwaysAllowSubtasks: true,
+	},
+	// Read-only planning: reads flow without asking, but edits/commands are blocked
+	// entirely at the tool-validation layer (see isReadOnlyAutonomyMode). The write/
+	// execute flags are false so nothing mutating could be auto-approved even if the
+	// gate were bypassed.
+	plan: {
+		autoApprovalEnabled: true,
+		alwaysAllowReadOnly: true,
+		alwaysAllowWrite: false,
+		alwaysAllowExecute: false,
+		alwaysAllowMcp: false,
+		alwaysAllowSubtasks: false,
 	},
 }
 

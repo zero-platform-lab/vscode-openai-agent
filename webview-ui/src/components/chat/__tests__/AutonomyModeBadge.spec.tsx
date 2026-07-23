@@ -39,8 +39,15 @@ describe("AutonomyModeBadge", () => {
 		expect(vscode.postMessage).toHaveBeenCalledWith({ type: "setAutonomyMode", autonomyMode: "autoEdit" })
 	})
 
-	it("wraps auto -> manual on click", () => {
+	it("cycles auto -> plan on click", () => {
 		mockAutonomyMode = "auto"
+		render(<AutonomyModeBadge />)
+		fireEvent.click(screen.getByTestId("autonomy-mode-badge"))
+		expect(vscode.postMessage).toHaveBeenCalledWith({ type: "setAutonomyMode", autonomyMode: "plan" })
+	})
+
+	it("wraps plan -> manual on click", () => {
+		mockAutonomyMode = "plan"
 		render(<AutonomyModeBadge />)
 		fireEvent.click(screen.getByTestId("autonomy-mode-badge"))
 		expect(vscode.postMessage).toHaveBeenCalledWith({ type: "setAutonomyMode", autonomyMode: "manual" })
