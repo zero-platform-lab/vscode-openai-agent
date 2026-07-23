@@ -597,17 +597,6 @@
 		"RUN_SLASH_COMMAND": {
 			"name": "Enable model-initiated slash commands",
 			"description": "When enabled, Agent can run your slash commands to execute workflows."
-		},
-		"CUSTOM_TOOLS": {
-			"name": "Enable custom tools",
-			"description": "When enabled, Agent can load and use custom TypeScript/JavaScript tools from your project's .agent/tools directory or ~/.agent/tools for global tools. Note: these tools will automatically be auto-approved.",
-			"toolsHeader": "Available Custom Tools",
-			"noTools": "No custom tools loaded. Add .ts or .js files to your project's .agent/tools directory or ~/.agent/tools for global tools.",
-			"refreshButton": "Refresh",
-			"refreshing": "Refreshing...",
-			"refreshSuccess": "Tools refreshed successfully",
-			"refreshError": "Failed to refresh tools",
-			"toolParameters": "Parameters"
 		}
 	},
 	"promptCaching": {

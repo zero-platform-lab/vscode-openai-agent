@@ -19,7 +19,6 @@ import {
 	checkoutDiffPayloadSchema,
 	checkoutRestorePayloadSchema,
 } from "@openai-agent/types"
-import { customToolRegistry } from "@openai-agent/core"
 
 import { type ApiMessage } from "../task-persistence/apiMessages"
 import { saveTaskMessages } from "../task-persistence"
@@ -1490,25 +1489,6 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			if (Array.isArray(todos)) {
 				await setPendingTodoList(todos)
 			}
-			break
-		}
-		case "refreshCustomTools": {
-			try {
-				const toolDirs = getAgentDirectoriesForCwd(getCurrentCwd()).map((dir) => path.join(dir, "tools"))
-				await customToolRegistry.loadFromDirectories(toolDirs)
-
-				await provider.postMessageToWebview({
-					type: "customToolsResult",
-					tools: customToolRegistry.getAllSerialized(),
-				})
-			} catch (error) {
-				await provider.postMessageToWebview({
-					type: "customToolsResult",
-					tools: [],
-					error: error instanceof Error ? error.message : String(error),
-				})
-			}
-
 			break
 		}
 		case "saveApiConfiguration":

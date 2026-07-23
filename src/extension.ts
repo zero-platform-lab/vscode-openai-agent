@@ -17,8 +17,6 @@ if (fs.existsSync(envPath)) {
 	}
 }
 
-import { customToolRegistry } from "@openai-agent/core"
-
 import "./utils/path" // Necessary to have access to String.prototype.toPosix.
 import { initializeNetworkProxy } from "./utils/networkProxy"
 
@@ -109,9 +107,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	// When proxyUrl is configured, all HTTP/HTTPS traffic will be routed through it.
 	// Only applied in debug mode (F5).
 	await initializeNetworkProxy(context, outputChannel)
-
-	// Set extension path for custom tool registry to find bundled esbuild
-	customToolRegistry.setExtensionPath(context.extensionPath)
 
 	// Migrate old settings to new
 	await migrateSettings(context, outputChannel)

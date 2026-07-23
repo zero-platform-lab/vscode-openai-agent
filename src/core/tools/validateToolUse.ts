@@ -1,6 +1,5 @@
 import type { ToolName, ModeConfig, ExperimentId, GroupOptions, GroupEntry, AutonomyMode } from "@openai-agent/types"
 import { toolNames as validToolNames, isReadOnlyAutonomyMode } from "@openai-agent/types"
-import { customToolRegistry } from "@openai-agent/core"
 
 import { type Mode, FileRestrictionError, getModeBySlug, getGroupName } from "../../shared/modes"
 import { EXPERIMENT_IDS } from "../../shared/experiments"
@@ -14,10 +13,6 @@ import { TOOL_GROUPS, ALWAYS_AVAILABLE_TOOLS, TOOL_ALIASES } from "../../shared/
 export function isValidToolName(toolName: string, experiments?: Record<string, boolean>): toolName is ToolName {
 	// Check if it's a valid static tool
 	if ((validToolNames as readonly string[]).includes(toolName)) {
-		return true
-	}
-
-	if (experiments?.customTools && customToolRegistry.has(toolName)) {
 		return true
 	}
 
@@ -176,12 +171,6 @@ export function isToolAllowedForMode(
 
 	// Always allow these tools (unless explicitly disabled above)
 	if (ALWAYS_AVAILABLE_TOOLS.includes(tool as any)) {
-		return true
-	}
-
-	// For now, allow all custom tools in any mode.
-	// As a follow-up we should expand the custom tool definition to include mode restrictions.
-	if (experiments?.customTools && customToolRegistry.has(tool)) {
 		return true
 	}
 

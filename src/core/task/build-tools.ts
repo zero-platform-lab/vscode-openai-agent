@@ -3,7 +3,6 @@ import path from "path"
 import type OpenAI from "openai"
 
 import type { ProviderSettings, ModeConfig, ModelInfo } from "@openai-agent/types"
-import { customToolRegistry, formatNative } from "@openai-agent/core"
 
 import type { ClineProvider } from "../webview/ClineProvider"
 import { getAgentDirectoriesForCwd } from "../../services/agent-config/index.js"
@@ -128,27 +127,14 @@ export async function buildNativeToolsArrayWithRestrictions(options: BuildToolsO
 	const mcpTools = getMcpServerTools(mcpHub)
 	const filteredMcpTools = filterMcpToolsForMode(mcpTools, mode, customModes, experiments)
 
-	// Add custom tools if they are available and the experiment is enabled.
-	let nativeCustomTools: OpenAI.Chat.ChatCompletionFunctionTool[] = []
-
-	if (experiments?.customTools) {
-		const toolDirs = getAgentDirectoriesForCwd(cwd).map((dir) => path.join(dir, "tools"))
-		await customToolRegistry.loadFromDirectoriesIfStale(toolDirs)
-		const customTools = customToolRegistry.getAllSerialized()
-
-		if (customTools.length > 0) {
-			nativeCustomTools = customTools.map(formatNative)
-		}
-	}
-
 	// Combine filtered tools (for backward compatibility and for allowedFunctionNames)
-	const filteredTools = [...filteredNativeTools, ...filteredMcpTools, ...nativeCustomTools]
+	const filteredTools = [...filteredNativeTools, ...filteredMcpTools]
 
 	// If includeAllToolsWithRestrictions is true, return ALL tools but provide
 	// allowed names based on mode filtering
 	if (includeAllToolsWithRestrictions) {
 		// Combine ALL tools (unfiltered native + all MCP + custom)
-		const allTools = [...nativeTools, ...mcpTools, ...nativeCustomTools]
+		const allTools = [...nativeTools, ...mcpTools]
 
 		// Extract names of tools that are allowed based on mode filtering.
 		// Resolve any alias names to canonical names to ensure consistency with allTools
