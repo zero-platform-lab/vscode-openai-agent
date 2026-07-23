@@ -90,8 +90,11 @@ export default defineConfig(({ mode }) => {
 
 		define["process.env.PKG_NAME"] = JSON.stringify(internalPkg.name)
 		define["process.env.PKG_VERSION"] = JSON.stringify(internalPkg.version)
-		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("OpenAI-Compatible-Agent")
+		define["process.env.PKG_OUTPUT_CHANNEL"] = JSON.stringify("Local-Agent")
 	}
+
+	// Distributed builds (internal / nightly .vsix): ship minified, no source maps.
+	const isLeanBuild = mode === "internal" || mode === "nightly"
 
 	const plugins: PluginOption[] = [
 		react({
@@ -102,7 +105,8 @@ export default defineConfig(({ mode }) => {
 		tailwindcss(),
 		persistPortPlugin(),
 		wasmPlugin(),
-		sourcemapPlugin(),
+		// The sourcemap plugin force-copies .map files into the build; skip it for lean builds.
+		...(isLeanBuild ? [] : [sourcemapPlugin()]),
 	]
 
 	return {
@@ -118,10 +122,10 @@ export default defineConfig(({ mode }) => {
 			outDir,
 			emptyOutDir: true,
 			reportCompressedSize: false,
-			// Generate complete source maps with original TypeScript sources
-			sourcemap: true,
-			// Ensure source maps are properly included in the build
-			minify: mode === "production" ? "esbuild" : false,
+			// Source maps for dev/debug builds only; distributed .vsix builds ship without them.
+			sourcemap: !isLeanBuild,
+			// Minify production and distributed (internal / nightly) builds.
+			minify: mode === "production" || isLeanBuild ? "esbuild" : false,
 			// Use a single combined CSS bundle so all webviews share styles
 			cssCodeSplit: false,
 			rollupOptions: {
