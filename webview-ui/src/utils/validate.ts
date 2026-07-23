@@ -32,7 +32,9 @@ export function validateApiConfiguration(
 function validateModelsAndKeysProvided(apiConfiguration: ProviderSettings): string | undefined {
 	switch (apiConfiguration.apiProvider) {
 		case "openai":
-			if (!apiConfiguration.openAiBaseUrl || !apiConfiguration.openAiApiKey || !apiConfiguration.openAiModelId) {
+			// The API key is optional: in-house OpenAI-compatible endpoints (vLLM / Ollama / TGI)
+			// commonly require no authentication. Only the base URL and model id are mandatory.
+			if (!apiConfiguration.openAiBaseUrl || !apiConfiguration.openAiModelId) {
 				return i18next.t("settings:validation.openAi")
 			}
 			break
