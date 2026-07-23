@@ -1033,9 +1033,6 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 				!lastMessage.text.startsWith("{") // not a json object
 			) {
 				let text = lastMessage?.text || ""
-				const mermaidRegex = /```mermaid[\s\S]*?```/g
-				// remove mermaid diagrams from text
-				text = text.replace(mermaidRegex, "")
 				// remove markdown from text
 				text = removeMd(text)
 

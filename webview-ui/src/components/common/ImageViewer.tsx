@@ -2,7 +2,7 @@ import { useState, useCallback } from "react"
 import { useCopyToClipboard } from "@src/utils/clipboard"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { vscode } from "@src/utils/vscode"
-import { MermaidActionButtons } from "./MermaidActionButtons"
+import { ImageActionButtons } from "./ImageActionButtons"
 import { Modal } from "./Modal"
 import { TabButton } from "./TabButton"
 import { IconButton } from "./IconButton"
@@ -97,7 +97,7 @@ export function ImageViewer({
 				text: imagePath,
 			})
 		} else if (imageUri) {
-			// Fallback to opening image URI if no path is available (for Mermaid diagrams)
+			// Fallback to opening image URI if no path is available (for diagrams)
 			vscode.postMessage({
 				type: "openImage",
 				text: imageUri,
@@ -224,7 +224,7 @@ export function ImageViewer({
 				)}
 				{showControls && isHovering && (
 					<div className="absolute bottom-2 right-2 flex gap-1 bg-vscode-editor-background/90 rounded p-0.5 z-10 opacity-100 transition-opacity duration-200 ease-in-out">
-						<MermaidActionButtons
+						<ImageActionButtons
 							onZoom={handleZoom}
 							onCopy={handleCopy}
 							onSave={handleSave}
@@ -247,7 +247,7 @@ export function ImageViewer({
 					</div>
 
 					<div className="pr-3">
-						<StandardTooltip content={t("common:mermaid.buttons.close")}>
+						<StandardTooltip content={t("common:imageActions.buttons.close")}>
 							<IconButton icon="close" onClick={() => setShowModal(false)} />
 						</StandardTooltip>
 					</div>
@@ -293,19 +293,19 @@ export function ImageViewer({
 				<div className="absolute bottom-0 right-0 left-0 p-3 flex items-center justify-end gap-2 bg-vscode-editor-background border-t border-vscode-editorGroup-border rounded-b">
 					<ZoomControls
 						zoomLevel={zoomLevel}
-						zoomInTitle={t("common:mermaid.buttons.zoomIn")}
-						zoomOutTitle={t("common:mermaid.buttons.zoomOut")}
+						zoomInTitle={t("common:imageActions.buttons.zoomIn")}
+						zoomOutTitle={t("common:imageActions.buttons.zoomOut")}
 						useContinuousZoom={true}
 						adjustZoom={adjustZoom}
 						zoomInStep={0.2}
 						zoomOutStep={-0.2}
 					/>
 					{imagePath && (
-						<StandardTooltip content={t("common:mermaid.buttons.copy")}>
+						<StandardTooltip content={t("common:imageActions.buttons.copy")}>
 							<IconButton icon={copyFeedback ? "check" : "copy"} onClick={handleCopy} />
 						</StandardTooltip>
 					)}
-					<StandardTooltip content={t("common:mermaid.buttons.save")}>
+					<StandardTooltip content={t("common:imageActions.buttons.save")}>
 						<IconButton icon="save" onClick={handleSave} />
 					</StandardTooltip>
 				</div>
