@@ -53,7 +53,7 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"viewsContainers": {
-			"secondarySideBar": [
+			"secondarySidebar": [
 				{
 					"id": "openai-agent-ActivityBar",
 					"title": "%views.activitybar.title%",
