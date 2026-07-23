@@ -8,7 +8,12 @@ async function main() {
 	try {
 		// The folder containing the Extension Manifest package.json
 		// Passed to `--extensionDevelopmentPath`
-		const extensionDevelopmentPath = path.resolve(__dirname, "../../../src")
+		// Defaults to the dev extension (src). Set E2E_EXTENSION_PATH to the built internal
+		// extension (apps/vscode-internal/build) to exercise the shipped "openai-compatible-agent"
+		// manifest — the only variant that can reproduce build-time ID-substitution regressions.
+		const extensionDevelopmentPath = process.env.E2E_EXTENSION_PATH
+			? path.resolve(process.env.E2E_EXTENSION_PATH)
+			: path.resolve(__dirname, "../../../src")
 
 		// The path to the extension test script
 		// Passed to --extensionTestsPath

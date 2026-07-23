@@ -32,12 +32,11 @@ suite("OpenAI Compatible Agent Extension", function () {
 			"terminalExplainCommand",
 		]
 
-		const commands = new Set(
-			(await vscode.commands.getCommands(true)).filter((cmd) => cmd.startsWith("openai-compatible-agent")),
-		)
+		const prefix = globalThis.commandPrefix
+		const commands = new Set((await vscode.commands.getCommands(true)).filter((cmd) => cmd.startsWith(prefix)))
 
 		for (const command of expectedCommands) {
-			assert.ok(commands.has(`openai-compatible-agent.${command}`), `Command ${command} should be registered`)
+			assert.ok(commands.has(`${prefix}.${command}`), `Command ${prefix}.${command} should be registered`)
 		}
 	})
 })

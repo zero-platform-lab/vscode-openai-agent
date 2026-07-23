@@ -8,22 +8,32 @@ import type { AgentAPI } from "@openai-agent/types"
 import { waitFor } from "./utils"
 
 export async function run() {
-	const extension = vscode.extensions.getExtension<AgentAPI>("internal.openai-agent")
+	// Works whether VS Code loads the dev extension (src → "internal.openai-agent") or the built
+	// internal extension (→ "internal.openai-compatible-agent"). The command/view prefix equals the
+	// loaded extension's package name, so we derive it rather than hard-coding it.
+	const extension =
+		vscode.extensions.getExtension<AgentAPI>("internal.openai-compatible-agent") ??
+		vscode.extensions.getExtension<AgentAPI>("internal.openai-agent")
 
 	if (!extension) {
 		throw new Error("Extension not found")
 	}
 
+	const commandPrefix: string = extension.packageJSON.name
+	globalThis.commandPrefix = commandPrefix
+
 	const api = extension.isActive ? extension.exports : await extension.activate()
 
 	await api.setConfiguration({
 		apiProvider: "openai" as const,
-		openAiBaseUrl: process.env.OPENAI_BASE_URL!,
-		openAiApiKey: process.env.OPENAI_API_KEY!,
-		openAiModelId: process.env.OPENAI_MODEL_ID ?? "gpt-4.1",
+		// A reachable endpoint is not required to launch the sidebar webview (isReady === viewLaunched),
+		// so a mock base URL is enough to exercise activation / command / view registration.
+		openAiBaseUrl: process.env.OPENAI_BASE_URL ?? "http://127.0.0.1:65000/v1",
+		openAiApiKey: process.env.OPENAI_API_KEY ?? "mock",
+		openAiModelId: process.env.OPENAI_MODEL_ID ?? "mock-model",
 	})
 
-	await vscode.commands.executeCommand("openai-compatible-agent.SidebarProvider.focus")
+	await vscode.commands.executeCommand(`${commandPrefix}.SidebarProvider.focus`)
 	await waitFor(() => api.isReady())
 
 	globalThis.api = api
