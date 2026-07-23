@@ -15,6 +15,7 @@ import {
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { Button, StandardTooltip } from "@src/components/ui"
+import { vscode } from "@src/utils/vscode"
 
 import { convertHeadersToObject } from "../utils/headers"
 import { inputEventTransform, urlInputEventTransform, noTransform } from "../transforms"
@@ -46,6 +47,10 @@ export const OpenAICompatible = ({
 	const [azureApiVersionSelected, setAzureApiVersionSelected] = useState(!!apiConfiguration?.azureApiVersion)
 
 	const [openAiModels, setOpenAiModels] = useState<Record<string, ModelInfo> | null>(null)
+
+	// Connection test (verifies the endpoint is reachable / usable).
+	const [isTestingConnection, setIsTestingConnection] = useState(false)
+	const [connectionTestResult, setConnectionTestResult] = useState<{ success: boolean; message: string } | null>(null)
 
 	const [customHeaders, setCustomHeaders] = useState<[string, string][]>(() => {
 		const headers = apiConfiguration?.openAiHeaders || {}
@@ -118,10 +123,28 @@ export const OpenAICompatible = ({
 				setOpenAiModels(Object.fromEntries(updatedModels.map((item) => [item, openAiModelInfoSaneDefaults])))
 				break
 			}
+			case "apiConnectionTest": {
+				setIsTestingConnection(false)
+				setConnectionTestResult({ success: message.success ?? false, message: message.text ?? "" })
+				break
+			}
 		}
 	}, [])
 
 	useEvent("message", onMessage)
+
+	const handleTestConnection = useCallback(() => {
+		setConnectionTestResult(null)
+		setIsTestingConnection(true)
+		vscode.postMessage({
+			type: "testApiConnection",
+			values: {
+				baseUrl: apiConfiguration?.openAiBaseUrl,
+				apiKey: apiConfiguration?.openAiApiKey,
+				openAiHeaders: convertHeadersToObject(customHeaders),
+			},
+		})
+	}, [apiConfiguration?.openAiBaseUrl, apiConfiguration?.openAiApiKey, customHeaders])
 
 	return (
 		<>
@@ -141,6 +164,27 @@ export const OpenAICompatible = ({
 				className="w-full">
 				<label className="block font-medium mb-1">{t("settings:providers.apiKey")}</label>
 			</VSCodeTextField>
+			<div className="flex flex-col gap-1">
+				<Button
+					variant="secondary"
+					onClick={handleTestConnection}
+					disabled={isTestingConnection || !apiConfiguration?.openAiBaseUrl}
+					data-testid="test-connection-button">
+					{isTestingConnection
+						? t("settings:providers.testingConnection")
+						: t("settings:providers.testConnection")}
+				</Button>
+				{connectionTestResult && (
+					<p
+						className={`text-sm mt-1 mb-0 ${
+							connectionTestResult.success ? "text-vscode-charts-green" : "text-vscode-errorForeground"
+						}`}
+						data-testid="test-connection-result">
+						{connectionTestResult.success ? "✓ " : "✕ "}
+						{connectionTestResult.message}
+					</p>
+				)}
+			</div>
 			<ModelPicker
 				apiConfiguration={apiConfiguration}
 				setApiConfigurationField={setApiConfigurationField}

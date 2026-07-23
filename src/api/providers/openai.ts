@@ -567,3 +567,90 @@ export async function getOpenAiModels(baseUrl?: string, apiKey?: string, openAiH
 		return []
 	}
 }
+
+export type ApiConnectionTestResult = { success: boolean; message: string }
+
+/**
+ * Verifies that the configured OpenAI-compatible endpoint is reachable and usable, returning a
+ * human-readable diagnosis. Classifies the common failure causes (unreachable host, auth failure,
+ * proxy, TLS/SSL, timeout) so users can tell what is wrong without digging through logs.
+ */
+export async function testOpenAiConnection(
+	baseUrl?: string,
+	apiKey?: string,
+	openAiHeaders?: Record<string, string>,
+): Promise<ApiConnectionTestResult> {
+	if (!baseUrl || !baseUrl.trim()) {
+		return { success: false, message: "Base URL が未設定です。" }
+	}
+
+	const trimmedBaseUrl = baseUrl.trim()
+
+	if (!URL.canParse(trimmedBaseUrl)) {
+		return { success: false, message: `Base URL の形式が不正です: ${trimmedBaseUrl}` }
+	}
+
+	const headers: Record<string, string> = { ...DEFAULT_HEADERS, ...(openAiHeaders || {}) }
+	if (apiKey) {
+		headers["Authorization"] = `Bearer ${apiKey}`
+	}
+
+	try {
+		const response = await axios.get(`${trimmedBaseUrl}/models`, { headers, timeout: 15_000 })
+		const count = Array.isArray(response.data?.data) ? response.data.data.length : undefined
+		return {
+			success: true,
+			message: count !== undefined ? `接続成功（モデル ${count} 件を取得）。` : "接続成功。",
+		}
+	} catch (error: any) {
+		// HTTP response received → authentication / server-side issue.
+		if (error?.response) {
+			const status = error.response.status
+			if (status === 401 || status === 403) {
+				return { success: false, message: `認証エラー（HTTP ${status}）。API キー / 権限を確認してください。` }
+			}
+			if (status === 404) {
+				return {
+					success: false,
+					message: `エンドポイントが見つかりません（HTTP 404）。Base URL に /v1 等のパスが必要か確認してください。`,
+				}
+			}
+			return { success: false, message: `サーバーがエラーを返しました（HTTP ${status}）。` }
+		}
+
+		// No response → network / TLS / proxy layer.
+		const code: string = error?.code || ""
+		const msg: string = error?.message || String(error)
+		const tlsCodes = [
+			"DEPTH_ZERO_SELF_SIGNED_CERT",
+			"SELF_SIGNED_CERT_IN_CHAIN",
+			"UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+			"CERT_HAS_EXPIRED",
+			"ERR_TLS_CERT_ALTNAME_INVALID",
+			"UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
+		]
+
+		if (tlsCodes.includes(code)) {
+			return { success: false, message: `SSL/証明書エラー（${code}）。証明書または CA 設定を確認してください。` }
+		}
+		if (code === "ENOTFOUND" || code === "EAI_AGAIN") {
+			return {
+				success: false,
+				message: `宛先ホストが見つかりません（DNS 解決失敗）。Base URL のホスト名を確認してください。`,
+			}
+		}
+		if (code === "ECONNREFUSED") {
+			return {
+				success: false,
+				message: `接続を拒否されました（ECONNREFUSED）。ホスト/ポート/到達性を確認してください。`,
+			}
+		}
+		if (code === "ETIMEDOUT" || code === "ECONNABORTED" || /timeout/i.test(msg)) {
+			return { success: false, message: `タイムアウトしました。到達性やプロキシ設定を確認してください。` }
+		}
+		if (/proxy/i.test(msg)) {
+			return { success: false, message: `プロキシ経由の接続に失敗しました: ${msg}` }
+		}
+		return { success: false, message: `接続に失敗しました: ${msg}` }
+	}
+}

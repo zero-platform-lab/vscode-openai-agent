@@ -316,7 +316,9 @@
 			"low": "低",
 			"description": "モデルの応答の詳細度を制御します。冗長性が低いと簡潔な回答が生成され、高いと詳細な説明が提供されます。"
 		},
-		"setReasoningLevel": "推論労力を有効にする"
+		"setReasoningLevel": "推論労力を有効にする",
+		"testConnection": "接続テスト",
+		"testingConnection": "テスト中…"
 	},
 	"checkpoints": {
 		"timeout": {

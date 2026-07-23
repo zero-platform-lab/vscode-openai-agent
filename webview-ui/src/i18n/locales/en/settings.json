@@ -378,7 +378,9 @@
 			"low": "Low",
 			"description": "Controls how detailed the model's responses are. Low verbosity produces concise answers, while high verbosity provides thorough explanations."
 		},
-		"setReasoningLevel": "Enable Reasoning Effort"
+		"setReasoningLevel": "Enable Reasoning Effort",
+		"testConnection": "Test connection",
+		"testingConnection": "Testing…"
 	},
 	"checkpoints": {
 		"timeout": {

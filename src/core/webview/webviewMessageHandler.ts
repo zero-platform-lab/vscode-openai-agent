@@ -51,7 +51,7 @@ import { fileExistsAtPath } from "../../utils/fs"
 import { playTts, setTtsEnabled, setTtsSpeed, stopTts } from "../../utils/tts"
 import { searchCommits } from "../../utils/git"
 import { exportSettings, importSettingsWithFeedback } from "../config/importExport"
-import { getOpenAiModels } from "../../api/providers/openai"
+import { getOpenAiModels, testOpenAiConnection } from "../../api/providers/openai"
 import { openMention } from "../mentions"
 import { resolveImageMentions } from "../mentions/resolveImageMentions"
 import { AgentIgnoreController } from "../ignore/AgentIgnoreController"
@@ -869,6 +869,19 @@ export const webviewMessageHandler = async (provider: ClineProvider, message: We
 			}
 
 			break
+		case "testApiConnection": {
+			const result = await testOpenAiConnection(
+				message?.values?.baseUrl,
+				message?.values?.apiKey,
+				message?.values?.openAiHeaders,
+			)
+			provider.postMessageToWebview({
+				type: "apiConnectionTest",
+				success: result.success,
+				text: result.message,
+			})
+			break
+		}
 		case "openImage":
 			openImage(message.text!, { values: message.values })
 			break
