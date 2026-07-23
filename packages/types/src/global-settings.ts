@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { type Keys } from "./type-fu.js"
+import { autonomyModeSchema } from "./autonomy.js"
 import {
 	type ProviderSettings,
 	PROVIDER_SETTINGS_KEYS,
@@ -88,6 +89,7 @@ export const globalSettingsSchema = z.object({
 
 	customCondensingPrompt: z.string().optional(),
 
+	autonomyMode: autonomyModeSchema.optional(),
 	autoApprovalEnabled: z.boolean().optional(),
 	alwaysAllowReadOnly: z.boolean().optional(),
 	alwaysAllowReadOnlyOutsideWorkspace: z.boolean().optional(),

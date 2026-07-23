@@ -1,4 +1,10 @@
 {
+	"autonomy": {
+		"manual": "Manual",
+		"autoEdit": "Auto-Edit",
+		"auto": "Auto",
+		"tooltip": "Autonomy: {{mode}}. Click to switch to {{next}} (Ctrl+Shift+A)."
+	},
 	"greeting": "Welcome to OpenAI Compatible Agent!",
 	"task": {
 		"title": "Task",

@@ -195,6 +195,7 @@ export const ExtensionStateContextProvider: React.FC<{ children: React.ReactNode
 		experiments: experimentDefault,
 		enhancementApiConfigId: "",
 		hasOpenedModeSelector: false, // Default to false (not opened yet)
+		autonomyMode: "manual",
 		autoApprovalEnabled: false,
 		customModes: [],
 		maxOpenTabsContext: 20,

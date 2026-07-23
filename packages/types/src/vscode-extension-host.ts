@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import type { GlobalSettings, AgentSettings } from "./global-settings.js"
+import type { AutonomyMode } from "./autonomy.js"
 import type { ProviderSettings, ProviderSettingsEntry } from "./provider-settings.js"
 import type { HistoryItem } from "./history.js"
 import type { ModeConfig, PromptComponent } from "./mode.js"
@@ -216,6 +217,7 @@ export type ExtensionState = Pick<
 	| "pinnedApiConfigs"
 	| "customInstructions"
 	| "dismissedUpsells"
+	| "autonomyMode"
 	| "autoApprovalEnabled"
 	| "alwaysAllowReadOnly"
 	| "alwaysAllowReadOnlyOutsideWorkspace"
@@ -377,6 +379,7 @@ export interface WebviewMessage {
 		| "requestRouterModels"
 		| "requestOpenAiModels"
 		| "testApiConnection"
+		| "setAutonomyMode"
 		| "openImage"
 		| "saveImage"
 		| "openFile"
@@ -513,6 +516,7 @@ export interface WebviewMessage {
 	alwaysAllow?: boolean
 	isEnabled?: boolean
 	mode?: string
+	autonomyMode?: AutonomyMode
 	promptMode?: string | "enhance"
 	customPrompt?: PromptComponent
 	dataUrls?: string[]

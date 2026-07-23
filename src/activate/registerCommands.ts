@@ -1,7 +1,7 @@
 import * as vscode from "vscode"
 import delay from "delay"
 
-import type { CommandId } from "@openai-agent/types"
+import { type CommandId, type AutonomyMode, nextAutonomyMode } from "@openai-agent/types"
 
 import { Package } from "../shared/package"
 import { getCommand } from "../utils/commands"
@@ -169,7 +169,30 @@ const getCommandsMap = ({ context, outputChannel, provider }: RegisterCommandOpt
 			action: "toggleAutoApprove",
 		})
 	},
+	cycleAutonomyMode: async () => {
+		const visibleProvider = getVisibleProviderOrLog(outputChannel)
+
+		if (!visibleProvider) {
+			return
+		}
+
+		const { autonomyMode } = await visibleProvider.getState()
+		await visibleProvider.setAutonomyMode(nextAutonomyMode(autonomyMode))
+	},
+	setAutonomyModeManual: () => setAutonomyModeCommand(outputChannel, "manual"),
+	setAutonomyModeAutoEdit: () => setAutonomyModeCommand(outputChannel, "autoEdit"),
+	setAutonomyModeAuto: () => setAutonomyModeCommand(outputChannel, "auto"),
 })
+
+const setAutonomyModeCommand = async (outputChannel: vscode.OutputChannel, mode: AutonomyMode) => {
+	const visibleProvider = getVisibleProviderOrLog(outputChannel)
+
+	if (!visibleProvider) {
+		return
+	}
+
+	await visibleProvider.setAutonomyMode(mode)
+}
 
 export const openClineInNewTab = async ({ context, outputChannel }: Omit<RegisterCommandOptions, "provider">) => {
 	// (This example uses webviewProvider activation event which is necessary to

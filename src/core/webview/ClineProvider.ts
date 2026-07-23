@@ -27,11 +27,14 @@ import {
 	type ToolUsage,
 	type ExtensionMessage,
 	type ExtensionState,
+	type AutonomyMode,
 	AgentEventName,
 	DEFAULT_WRITE_DELAY_MS,
 	ORGANIZATION_ALLOW_ALL,
 	DEFAULT_MODES,
 	DEFAULT_CHECKPOINT_TIMEOUT_SECONDS,
+	DEFAULT_AUTONOMY_MODE,
+	AUTONOMY_PRESETS,
 	getModelId,
 } from "@openai-agent/types"
 import { aggregateTaskCostsRecursive, type AggregatedCosts } from "./aggregateTaskCosts"
@@ -1733,6 +1736,30 @@ export class ClineProvider
 	}
 
 	/**
+	 * Apply an autonomy mode preset (Claude Code-style permission modes).
+	 *
+	 * Overwrites exactly the auto-approval flags in the preset and records the selected
+	 * mode. Command policy (allowedCommands / deniedCommands) and the *OutsideWorkspace /
+	 * *Protected escalations are intentionally left untouched so a mode switch never
+	 * silently widens them. This is user-driven only — never call it from tool handling.
+	 */
+	async setAutonomyMode(mode: AutonomyMode) {
+		const preset = AUTONOMY_PRESETS[mode]
+
+		await Promise.all([
+			this.contextProxy.setValue("autonomyMode", mode),
+			this.contextProxy.setValue("autoApprovalEnabled", preset.autoApprovalEnabled),
+			this.contextProxy.setValue("alwaysAllowReadOnly", preset.alwaysAllowReadOnly),
+			this.contextProxy.setValue("alwaysAllowWrite", preset.alwaysAllowWrite),
+			this.contextProxy.setValue("alwaysAllowExecute", preset.alwaysAllowExecute),
+			this.contextProxy.setValue("alwaysAllowMcp", preset.alwaysAllowMcp),
+			this.contextProxy.setValue("alwaysAllowSubtasks", preset.alwaysAllowSubtasks),
+		])
+
+		await this.postStateToWebview()
+	}
+
+	/**
 	 * Like postStateToWebview but intentionally omits taskHistory.
 	 *
 	 * Rationale:
@@ -1867,6 +1894,7 @@ export class ClineProvider
 			customModePrompts,
 			customSupportPrompts,
 			enhancementApiConfigId,
+			autonomyMode,
 			autoApprovalEnabled,
 			customModes,
 			experiments,
@@ -1951,6 +1979,7 @@ export class ClineProvider
 			customModePrompts: customModePrompts ?? {},
 			customSupportPrompts: customSupportPrompts ?? {},
 			enhancementApiConfigId,
+			autonomyMode: autonomyMode ?? DEFAULT_AUTONOMY_MODE,
 			autoApprovalEnabled: autoApprovalEnabled ?? false,
 			customModes,
 			experiments: experiments ?? experimentDefault,
@@ -2075,6 +2104,7 @@ export class ClineProvider
 			customSupportPrompts: stateValues.customSupportPrompts ?? {},
 			enhancementApiConfigId: stateValues.enhancementApiConfigId,
 			experiments: stateValues.experiments ?? experimentDefault,
+			autonomyMode: stateValues.autonomyMode ?? DEFAULT_AUTONOMY_MODE,
 			autoApprovalEnabled: stateValues.autoApprovalEnabled ?? false,
 			customModes,
 			maxOpenTabsContext: stateValues.maxOpenTabsContext ?? 20,
