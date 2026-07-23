@@ -1,7 +1,6 @@
 import { parseJSON } from "partial-json"
 
 import { type ToolName, toolNames, type FileEntry } from "@openai-agent/types"
-import { customToolRegistry } from "@openai-agent/core"
 
 import {
 	type ToolUse,
@@ -680,7 +679,7 @@ export class NativeToolCallParser {
 		const resolvedName = resolveToolAlias(toolCall.name as string) as TName
 
 		// Validate tool name (after alias resolution).
-		if (!toolNames.includes(resolvedName as ToolName) && !customToolRegistry.has(resolvedName)) {
+		if (!toolNames.includes(resolvedName as ToolName)) {
 			console.error(`Invalid tool name: ${toolCall.name} (resolved: ${resolvedName})`)
 			console.error(`Valid tool names:`, toolNames)
 			return null
@@ -696,7 +695,7 @@ export class NativeToolCallParser {
 
 			for (const [key, value] of Object.entries(args)) {
 				// Validate parameter name
-				if (!toolParamNames.includes(key as ToolParamName) && !customToolRegistry.has(resolvedName)) {
+				if (!toolParamNames.includes(key as ToolParamName)) {
 					console.warn(`Unknown parameter '${key}' for tool '${resolvedName}'`)
 					console.warn(`Valid param names:`, toolParamNames)
 					continue
@@ -967,16 +966,12 @@ export class NativeToolCallParser {
 					break
 
 				default:
-					if (customToolRegistry.has(resolvedName)) {
-						nativeArgs = args as NativeArgsFor<TName>
-					}
-
 					break
 			}
 
 			// Native-only: core tools must always have typed nativeArgs.
 			// If we couldn't construct it, the model produced an invalid tool call payload.
-			if (!nativeArgs && !customToolRegistry.has(resolvedName)) {
+			if (!nativeArgs) {
 				throw new Error(
 					`[NativeToolCallParser] Invalid arguments for tool '${resolvedName}'. ` +
 						`Native tool calls require a valid JSON payload matching the tool schema. ` +

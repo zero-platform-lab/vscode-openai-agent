@@ -3,7 +3,6 @@ import type { AssertEqual, Equals, Keys, Values, ExperimentId, Experiments } fro
 export const EXPERIMENT_IDS = {
 	PREVENT_FOCUS_DISRUPTION: "preventFocusDisruption",
 	RUN_SLASH_COMMAND: "runSlashCommand",
-	CUSTOM_TOOLS: "customTools",
 } as const satisfies Record<string, ExperimentId>
 
 type _AssertExperimentIds = AssertEqual<Equals<ExperimentId, Values<typeof EXPERIMENT_IDS>>>
@@ -17,7 +16,6 @@ interface ExperimentConfig {
 export const experimentConfigsMap: Record<ExperimentKey, ExperimentConfig> = {
 	PREVENT_FOCUS_DISRUPTION: { enabled: false },
 	RUN_SLASH_COMMAND: { enabled: false },
-	CUSTOM_TOOLS: { enabled: false },
 }
 
 export const experimentDefault = Object.fromEntries(

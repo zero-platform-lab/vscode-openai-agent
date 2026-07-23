@@ -19,7 +19,6 @@ describe("experiments", () => {
 			const experiments: Record<ExperimentId, boolean> = {
 				preventFocusDisruption: false,
 				runSlashCommand: false,
-				customTools: false,
 			}
 			expect(Experiments.isEnabled(experiments, EXPERIMENT_IDS.PREVENT_FOCUS_DISRUPTION)).toBe(false)
 		})
@@ -28,7 +27,6 @@ describe("experiments", () => {
 			const experiments: Record<ExperimentId, boolean> = {
 				preventFocusDisruption: true,
 				runSlashCommand: false,
-				customTools: false,
 			}
 			expect(Experiments.isEnabled(experiments, EXPERIMENT_IDS.PREVENT_FOCUS_DISRUPTION)).toBe(true)
 		})
@@ -37,7 +35,6 @@ describe("experiments", () => {
 			const experiments: Record<ExperimentId, boolean> = {
 				preventFocusDisruption: false,
 				runSlashCommand: false,
-				customTools: false,
 			}
 			expect(Experiments.isEnabled(experiments, EXPERIMENT_IDS.PREVENT_FOCUS_DISRUPTION)).toBe(false)
 		})

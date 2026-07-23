@@ -9,7 +9,6 @@ import type { Experiments } from "./experiment.js"
 import type { ClineMessage, QueuedMessage } from "./message.js"
 import type { TodoItem } from "./todo.js"
 import type { OrganizationAllowList } from "./organization.js"
-import type { SerializedCustomToolDefinition } from "./custom-tool.js"
 import type { GitCommit } from "./git.js"
 import type { McpServer } from "./mcp.js"
 import type { RouterModels } from "./model.js"
@@ -72,7 +71,6 @@ export interface ExtensionMessage {
 		| "insertTextIntoTextarea"
 		| "dismissedUpsells"
 		| "interactionRequired"
-		| "customToolsResult"
 		| "modes"
 		| "taskWithAggregatedCosts"
 		// Worktree response types
@@ -148,7 +146,6 @@ export interface ExtensionMessage {
 	commands?: Command[]
 	queuedMessages?: QueuedMessage[]
 	list?: string[] // For dismissedUpsells
-	tools?: SerializedCustomToolDefinition[] // For customToolsResult
 	skills?: SkillMetadata[] // For skills response
 	modes?: { slug: string; name: string }[] // For modes response
 	aggregatedCosts?: {
@@ -471,7 +468,6 @@ export interface WebviewMessage {
 		| "openDebugApiHistory"
 		| "openDebugUiHistory"
 		| "downloadErrorDiagnostics"
-		| "refreshCustomTools"
 		| "requestModes"
 		| "switchMode"
 		| "debugSetting"

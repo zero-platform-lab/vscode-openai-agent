@@ -2,7 +2,6 @@ import { serializeError } from "serialize-error"
 import { Anthropic } from "@anthropic-ai/sdk"
 
 import type { ToolName, ClineAsk, ToolProgressStatus } from "@openai-agent/types"
-import { customToolRegistry } from "@openai-agent/core"
 
 import { t } from "../../i18n"
 
@@ -410,9 +409,8 @@ export async function presentAssistantMessage(cline: Task) {
 			// This avoids executing an invalid tool_use block and prevents duplicate/fragmented
 			// error reporting.
 			if (!block.partial) {
-				const customTool = stateExperiments?.customTools ? customToolRegistry.get(block.name) : undefined
 				const isKnownTool = isValidToolName(String(block.name), stateExperiments)
-				if (isKnownTool && !block.nativeArgs && !customTool) {
+				if (isKnownTool && !block.nativeArgs) {
 					const errorMessage =
 						`Invalid tool call for '${block.name}': missing nativeArgs. ` +
 						`This usually means the model streamed invalid or incomplete arguments and the call could not be finalized.`
@@ -548,10 +546,7 @@ export async function presentAssistantMessage(cline: Task) {
 			}
 
 			if (!block.partial) {
-				// Check if this is a custom tool - if so, record as "custom_tool" (like MCP tools)
-				const isCustomTool = stateExperiments?.customTools && customToolRegistry.has(block.name)
-				const recordName = isCustomTool ? "custom_tool" : block.name
-				cline.recordToolUsage(recordName)
+				cline.recordToolUsage(block.name)
 			}
 
 			// Validate tool use before execution - ONLY for complete (non-partial) blocks.
@@ -823,47 +818,7 @@ export async function presentAssistantMessage(cline: Task) {
 						break
 					}
 
-					const customTool = stateExperiments?.customTools ? customToolRegistry.get(block.name) : undefined
-
-					if (customTool) {
-						try {
-							let customToolArgs
-
-							if (customTool.parameters) {
-								try {
-									customToolArgs = customTool.parameters.parse(block.nativeArgs || block.params || {})
-								} catch (parseParamsError) {
-									const message = `Custom tool "${block.name}" argument validation failed: ${parseParamsError.message}`
-									console.error(message)
-									cline.consecutiveMistakeCount++
-									await cline.say("error", message)
-									pushToolResult(formatResponse.toolError(message))
-									break
-								}
-							}
-
-							const result = await customTool.execute(customToolArgs, {
-								mode: mode ?? defaultModeSlug,
-								task: cline,
-							})
-
-							console.log(
-								`${customTool.name}.execute(): ${JSON.stringify(customToolArgs)} -> ${JSON.stringify(result)}`,
-							)
-
-							pushToolResult(result)
-							cline.consecutiveMistakeCount = 0
-						} catch (executionError: any) {
-							cline.consecutiveMistakeCount++
-							// Record custom tool error with static name
-							cline.recordToolError("custom_tool", executionError.message)
-							await handleError(`executing custom tool "${block.name}"`, executionError)
-						}
-
-						break
-					}
-
-					// Not a custom tool - handle as unknown tool error
+					// Unknown tool error
 					const errorMessage = `Unknown tool "${block.name}". This tool does not exist. Please use one of the available tools.`
 					cline.consecutiveMistakeCount++
 					cline.recordToolError(block.name as ToolName, errorMessage)

@@ -12,7 +12,6 @@ import { SectionHeader } from "./SectionHeader"
 import { Section } from "./Section"
 import { SearchableSetting } from "./SearchableSetting"
 import { ExperimentalFeature } from "./ExperimentalFeature"
-import { CustomToolsSettings } from "./CustomToolsSettings"
 
 type ExperimentalSettingsProps = HTMLAttributes<HTMLDivElement> & {
 	experiments: Experiments
@@ -43,22 +42,6 @@ export const ExperimentalSettings = ({
 						const experimentKey = config[0]
 						const label = t(`settings:experimental.${experimentKey}.name`)
 
-						if (config[0] === "CUSTOM_TOOLS") {
-							return (
-								<SearchableSetting
-									key={config[0]}
-									settingId={`experimental-${config[0].toLowerCase()}`}
-									section="experimental"
-									label={label}>
-									<CustomToolsSettings
-										enabled={experiments[EXPERIMENT_IDS.CUSTOM_TOOLS] ?? false}
-										onChange={(enabled) =>
-											setExperimentEnabled(EXPERIMENT_IDS.CUSTOM_TOOLS, enabled)
-										}
-									/>
-								</SearchableSetting>
-							)
-						}
 						return (
 							<SearchableSetting
 								key={config[0]}
