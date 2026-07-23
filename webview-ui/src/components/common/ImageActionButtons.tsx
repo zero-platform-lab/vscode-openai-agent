@@ -4,7 +4,7 @@ import { IconButton } from "./IconButton"
 import { ZoomControls } from "./ZoomControls"
 import { StandardTooltip } from "@/components/ui"
 
-interface MermaidActionButtonsProps {
+interface ImageActionButtonsProps {
 	onZoom?: (e: React.MouseEvent) => void
 	onZoomIn?: () => void
 	onZoomOut?: () => void
@@ -17,7 +17,7 @@ interface MermaidActionButtonsProps {
 	zoomLevel?: number
 }
 
-export const MermaidActionButtons: React.FC<MermaidActionButtonsProps> = ({
+export const ImageActionButtons: React.FC<ImageActionButtonsProps> = ({
 	onZoom,
 	onZoomIn,
 	onZoomOut,
@@ -38,10 +38,10 @@ export const MermaidActionButtons: React.FC<MermaidActionButtonsProps> = ({
 					zoomLevel={zoomLevel}
 					onZoomIn={onZoomIn}
 					onZoomOut={onZoomOut}
-					zoomInTitle={t("common:mermaid.buttons.zoomIn")}
-					zoomOutTitle={t("common:mermaid.buttons.zoomOut")}
+					zoomInTitle={t("common:imageActions.buttons.zoomIn")}
+					zoomOutTitle={t("common:imageActions.buttons.zoomOut")}
 				/>
-				<StandardTooltip content={t("common:mermaid.buttons.viewCode")}>
+				<StandardTooltip content={t("common:imageActions.buttons.viewCode")}>
 					<IconButton
 						icon="code"
 						onClick={(e: React.MouseEvent) => {
@@ -50,7 +50,7 @@ export const MermaidActionButtons: React.FC<MermaidActionButtonsProps> = ({
 						}}
 					/>
 				</StandardTooltip>
-				<StandardTooltip content={t("common:mermaid.buttons.copy")}>
+				<StandardTooltip content={t("common:imageActions.buttons.copy")}>
 					<IconButton icon={copyFeedback ? "check" : "copy"} onClick={onCopy} />
 				</StandardTooltip>
 			</>
@@ -60,11 +60,11 @@ export const MermaidActionButtons: React.FC<MermaidActionButtonsProps> = ({
 	return (
 		<>
 			{onZoom && (
-				<StandardTooltip content={t("common:mermaid.buttons.zoom")}>
+				<StandardTooltip content={t("common:imageActions.buttons.zoom")}>
 					<IconButton icon="zoom-in" onClick={onZoom} />
 				</StandardTooltip>
 			)}
-			<StandardTooltip content={t("common:mermaid.buttons.viewCode")}>
+			<StandardTooltip content={t("common:imageActions.buttons.viewCode")}>
 				<IconButton
 					icon="code"
 					onClick={(e: React.MouseEvent) => {
@@ -73,16 +73,16 @@ export const MermaidActionButtons: React.FC<MermaidActionButtonsProps> = ({
 					}}
 				/>
 			</StandardTooltip>
-			<StandardTooltip content={t("common:mermaid.buttons.copy")}>
+			<StandardTooltip content={t("common:imageActions.buttons.copy")}>
 				<IconButton icon={copyFeedback ? "check" : "copy"} onClick={onCopy} />
 			</StandardTooltip>
 			{onSave && (
-				<StandardTooltip content={t("common:mermaid.buttons.save")}>
+				<StandardTooltip content={t("common:imageActions.buttons.save")}>
 					<IconButton icon="save" onClick={onSave} />
 				</StandardTooltip>
 			)}
 			{onClose && (
-				<StandardTooltip content={t("common:mermaid.buttons.close")}>
+				<StandardTooltip content={t("common:imageActions.buttons.close")}>
 					<IconButton icon="close" onClick={onClose} />
 				</StandardTooltip>
 			)}

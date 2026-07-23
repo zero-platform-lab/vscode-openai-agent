@@ -22,14 +22,14 @@ interface ImageBlockProps {
 	/**
 	 * Base64 data or regular URL for backward compatibility.
 	 * @deprecated Use imageUri instead for new implementations.
-	 * This is maintained for compatibility with Mermaid diagrams and legacy code.
+	 * This is maintained for compatibility with diagrams and legacy code.
 	 */
 	imageData?: string
 
 	/**
-	 * Optional path for Mermaid diagrams.
+	 * Optional path for diagrams.
 	 * @deprecated Use imagePath instead for new implementations.
-	 * This is maintained for backward compatibility with existing Mermaid diagram rendering.
+	 * This is maintained for backward compatibility with existing diagram rendering.
 	 */
 	path?: string
 }
@@ -44,7 +44,7 @@ export default function ImageBlock({ imageUri, imagePath, imageData, path }: Ima
 		finalImageUri = imageUri
 		finalImagePath = imagePath
 	} else if (imageData) {
-		// Legacy format: use imageData as direct URI (for Mermaid diagrams)
+		// Legacy format: use imageData as direct URI (for diagrams)
 		finalImageUri = imageData
 		finalImagePath = path
 	} else {
