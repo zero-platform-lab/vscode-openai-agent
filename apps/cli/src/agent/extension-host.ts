@@ -229,9 +229,7 @@ export class ExtensionHost extends EventEmitter implements ExtensionHostInterfac
 			consecutiveMistakeLimit: this.options.consecutiveMistakeLimit ?? DEFAULT_FLAGS.consecutiveMistakeLimit,
 			commandExecutionTimeout: 300,
 			enableCheckpoints: false,
-			experiments: {
-				customTools: true,
-			},
+			experiments: {},
 			...getProviderSettings(this.options.provider, this.options.apiKey, this.options.model),
 		}
 
