@@ -31,7 +31,7 @@ vi.mock("vscode", () => ({
 		registerCodeActionsProvider: vi.fn(),
 	},
 	commands: {
-		executeCommand: vi.fn(),
+		executeCommand: vi.fn().mockResolvedValue(undefined),
 	},
 	env: {
 		language: "en",
