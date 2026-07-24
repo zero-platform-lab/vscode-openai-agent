@@ -85,6 +85,7 @@ import { readApiMessages, saveApiMessages, saveTaskMessages, TaskHistoryStore } 
 import { readTaskMessages } from "../task-persistence/taskMessages"
 import { WebviewContentGenerator } from "./WebviewContentGenerator"
 import { PendingEditOperationManager } from "./PendingEditOperationManager"
+import { mergeAllowedCommands, mergeDeniedCommands } from "./mergeCommandLists"
 import { validateAndFixToolResultIds } from "../task/validateToolResultIds"
 
 /**
@@ -1549,62 +1550,6 @@ export class ClineProvider
 		this.postMessageToWebview({ type: "state", state: rest })
 	}
 
-	/**
-	 * Merges allowed commands from global state and workspace configuration
-	 * with proper validation and deduplication
-	 */
-	private mergeAllowedCommands(globalStateCommands?: string[]): string[] {
-		return this.mergeCommandLists("allowedCommands", "allowed", globalStateCommands)
-	}
-
-	/**
-	 * Merges denied commands from global state and workspace configuration
-	 * with proper validation and deduplication
-	 */
-	private mergeDeniedCommands(globalStateCommands?: string[]): string[] {
-		return this.mergeCommandLists("deniedCommands", "denied", globalStateCommands)
-	}
-
-	/**
-	 * Common utility for merging command lists from global state and workspace configuration.
-	 * Implements the Command Denylist feature's merging strategy with proper validation.
-	 *
-	 * @param configKey - VSCode workspace configuration key
-	 * @param commandType - Type of commands for error logging
-	 * @param globalStateCommands - Commands from global state
-	 * @returns Merged and deduplicated command list
-	 */
-	private mergeCommandLists(
-		configKey: "allowedCommands" | "deniedCommands",
-		commandType: "allowed" | "denied",
-		globalStateCommands?: string[],
-	): string[] {
-		try {
-			// Validate and sanitize global state commands
-			const validGlobalCommands = Array.isArray(globalStateCommands)
-				? globalStateCommands.filter((cmd) => typeof cmd === "string" && cmd.trim().length > 0)
-				: []
-
-			// Get workspace configuration commands
-			const workspaceCommands = vscode.workspace.getConfiguration(Package.name).get<string[]>(configKey) || []
-
-			// Validate and sanitize workspace commands
-			const validWorkspaceCommands = Array.isArray(workspaceCommands)
-				? workspaceCommands.filter((cmd) => typeof cmd === "string" && cmd.trim().length > 0)
-				: []
-
-			// Combine and deduplicate commands
-			// Global state takes precedence over workspace configuration
-			const mergedCommands = [...new Set([...validGlobalCommands, ...validWorkspaceCommands])]
-
-			return mergedCommands
-		} catch (error) {
-			console.error(`Error merging ${commandType} commands:`, error)
-			// Return empty array as fallback to prevent crashes
-			return []
-		}
-	}
-
 	async getStateToPostToWebview(): Promise<ExtensionState> {
 		// Ensure the store is initialized before reading task history
 		await this.taskHistoryStore.initialized
@@ -1682,8 +1627,8 @@ export class ClineProvider
 			lockApiConfigAcrossModes,
 		} = await this.getState()
 
-		const mergedAllowedCommands = this.mergeAllowedCommands(allowedCommands)
-		const mergedDeniedCommands = this.mergeDeniedCommands(deniedCommands)
+		const mergedAllowedCommands = mergeAllowedCommands(allowedCommands)
+		const mergedDeniedCommands = mergeDeniedCommands(deniedCommands)
 		const cwd = this.cwd
 		const currentTask = this.getCurrentTask()
 
