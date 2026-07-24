@@ -101,14 +101,7 @@ import { NativeToolCallParser } from "../assistant-message/NativeToolCallParser"
 import { manageContext, willManageContext } from "../context-management"
 import { ClineProvider } from "../webview/ClineProvider"
 import { MultiSearchReplaceDiffStrategy } from "../diff/strategies/multi-search-replace"
-import {
-	type ApiMessage,
-	readApiMessages,
-	saveApiMessages,
-	readTaskMessages,
-	saveTaskMessages,
-	taskMetadata,
-} from "../task-persistence"
+import { type ApiMessage, taskMetadata } from "../task-persistence"
 import { getEnvironmentDetails } from "../environment/getEnvironmentDetails"
 import { checkContextWindowExceededError } from "../context/context-management/context-error-handling"
 import {
@@ -127,6 +120,7 @@ import { MessageManager } from "../message-manager"
 import { validateAndFixToolResultIds } from "./validateToolResultIds"
 import { mergeConsecutiveApiMessages } from "./mergeConsecutiveApiMessages"
 import { buildCleanConversationHistory } from "./buildCleanConversationHistory"
+import { TaskMessageStore } from "./TaskMessageStore"
 
 const MAX_EXPONENTIAL_BACKOFF_SECONDS = 600 // 10 minutes
 const DEFAULT_USAGE_COLLECTION_TIMEOUT_MS = 5000 // 5 seconds
@@ -300,9 +294,22 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	diffStrategy?: DiffStrategy
 	didEditFile: boolean = false
 
-	// LLM Messages & Chat Messages
-	apiConversationHistory: ApiMessage[] = []
-	clineMessages: ClineMessage[] = []
+	// LLM Messages & Chat Messages — storage/IO is owned by TaskMessageStore.
+	// The arrays are proxied via get/set so existing direct accesses keep working.
+	private readonly messageStore: TaskMessageStore
+
+	get apiConversationHistory(): ApiMessage[] {
+		return this.messageStore.apiConversationHistory
+	}
+	set apiConversationHistory(value: ApiMessage[]) {
+		this.messageStore.apiConversationHistory = value
+	}
+	get clineMessages(): ClineMessage[] {
+		return this.messageStore.clineMessages
+	}
+	set clineMessages(value: ClineMessage[]) {
+		this.messageStore.clineMessages = value
+	}
 
 	// Ask
 	private askResponse?: ClineAskResponse
@@ -483,6 +490,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		this.consecutiveMistakeLimit = consecutiveMistakeLimit ?? DEFAULT_CONSECUTIVE_MISTAKE_LIMIT
 		this.providerRef = new WeakRef(provider)
 		this.globalStoragePath = provider.context.globalStorageUri.fsPath
+		this.messageStore = new TaskMessageStore(this.taskId, this.globalStoragePath)
 		this.diffViewProvider = new DiffViewProvider(this.cwd, this)
 		this.enableCheckpoints = enableCheckpoints
 		this.checkpointTimeout = checkpointTimeout
@@ -844,7 +852,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	// API Messages
 
 	private async getSavedApiConversationHistory(): Promise<ApiMessage[]> {
-		return readApiMessages({ taskId: this.taskId, globalStoragePath: this.globalStoragePath })
+		return this.messageStore.readApiConversationHistory()
 	}
 
 	private async addToApiConversationHistory(message: Anthropic.MessageParam, reasoning?: string) {
@@ -1068,17 +1076,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	}
 
 	private async saveApiConversationHistory(): Promise<boolean> {
-		try {
-			await saveApiMessages({
-				messages: structuredClone(this.apiConversationHistory),
-				taskId: this.taskId,
-				globalStoragePath: this.globalStoragePath,
-			})
-			return true
-		} catch (error) {
-			console.error("Failed to save API conversation history:", error)
-			return false
-		}
+		return this.messageStore.saveApiConversationHistory()
 	}
 
 	/**
@@ -1108,7 +1106,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	// Cline Messages
 
 	private async getSavedClineMessages(): Promise<ClineMessage[]> {
-		return readTaskMessages({ taskId: this.taskId, globalStoragePath: this.globalStoragePath })
+		return this.messageStore.readClineMessages()
 	}
 
 	private async addToClineMessages(message: ClineMessage) {
@@ -1135,11 +1133,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 	private async saveClineMessages(): Promise<boolean> {
 		try {
-			await saveTaskMessages({
-				messages: structuredClone(this.clineMessages),
-				taskId: this.taskId,
-				globalStoragePath: this.globalStoragePath,
-			})
+			await this.messageStore.saveClineMessagesToDisk()
 
 			if (this._taskApiConfigName === undefined) {
 				await this.taskApiConfigReady
@@ -1174,13 +1168,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	}
 
 	private findMessageByTimestamp(ts: number): ClineMessage | undefined {
-		for (let i = this.clineMessages.length - 1; i >= 0; i--) {
-			if (this.clineMessages[i].ts === ts) {
-				return this.clineMessages[i]
-			}
-		}
-
-		return undefined
+		return this.messageStore.findMessageByTimestamp(ts)
 	}
 
 	// Note that `partial` has three valid states true (partial message),
