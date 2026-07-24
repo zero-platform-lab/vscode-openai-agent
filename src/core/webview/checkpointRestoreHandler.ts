@@ -44,7 +44,7 @@ export async function handleCheckpointRestoreOperation(config: CheckpointRestore
 		// For edit operations, set up pending edit data before restoration
 		if (operation === "edit" && editData) {
 			const operationId = `task-${currentCline.taskId}`
-			provider.setPendingEditOperation(operationId, {
+			provider.pendingEditOperations.set(operationId, {
 				messageTs,
 				editedContent: editData.editedContent,
 				images: editData.images,

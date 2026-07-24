@@ -52,7 +52,7 @@ describe("checkpointRestoreHandler", () => {
 				historyItem: { id: "test-task-123", messages: mockCline.clineMessages },
 			})),
 			createTaskWithHistoryItem: vi.fn(),
-			setPendingEditOperation: vi.fn(),
+			pendingEditOperations: { set: vi.fn() },
 			contextProxy: {
 				globalStorageUri: { fsPath: "/test/storage" },
 			},
@@ -128,7 +128,7 @@ describe("checkpointRestoreHandler", () => {
 			expect(mockCline.abortTask).not.toHaveBeenCalled()
 
 			// Verify pending edit operation was set
-			expect(mockProvider.setPendingEditOperation).toHaveBeenCalledWith("task-test-task-123", {
+			expect(mockProvider.pendingEditOperations.set).toHaveBeenCalledWith("task-test-task-123", {
 				messageTs: 3,
 				editedContent: "Edited content",
 				images: ["image1.png"],
