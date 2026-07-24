@@ -7,7 +7,15 @@ import { fileExistsAtPath } from "../../utils/fs"
 import fs from "fs/promises"
 import { ContextProxy } from "../config/ContextProxy"
 import type { FileMetadataEntry, RecordSource, TaskMetadata } from "./FileContextTrackerTypes"
-import { ClineProvider } from "../webview/ClineProvider"
+
+/**
+ * FileContextTracker が provider に必要とする最小表面。
+ * ClineProvider は構造的にこれを満たすため、具象型（＝webview 層）への
+ * 依存を持たずに済み、FileContextTracker -> ClineProvider の循環依存を断てる。
+ */
+export interface FileContextProvider {
+	readonly contextProxy: ContextProxy
+}
 
 // This class is responsible for tracking file operations that may result in stale context.
 // If a user modifies a file outside of Agent, the context may become stale and need to be updated.
@@ -22,7 +30,7 @@ import { ClineProvider } from "../webview/ClineProvider"
 // If a file is modified outside of Agent, we detect and track this change to prevent stale context.
 export class FileContextTracker {
 	readonly taskId: string
-	private providerRef: WeakRef<ClineProvider>
+	private providerRef: WeakRef<FileContextProvider>
 
 	// File tracking and watching
 	private fileWatchers = new Map<string, vscode.FileSystemWatcher>()
@@ -30,7 +38,7 @@ export class FileContextTracker {
 	private recentlyEditedByAgent = new Set<string>()
 	private checkpointPossibleFiles = new Set<string>()
 
-	constructor(provider: ClineProvider, taskId: string) {
+	constructor(provider: FileContextProvider, taskId: string) {
 		this.providerRef = new WeakRef(provider)
 		this.taskId = taskId
 	}

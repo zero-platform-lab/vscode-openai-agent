@@ -3,7 +3,7 @@ import * as path from "path"
 import * as vscode from "vscode"
 import matter from "gray-matter"
 
-import type { ClineProvider } from "../../core/webview/ClineProvider"
+import type { CustomModesManager } from "../../core/config/CustomModesManager"
 import { getGlobalAgentDirectory, getGlobalAgentsDirectory, getProjectAgentsDirectoryForCwd } from "../agent-config"
 import { directoryExists, fileExists } from "../agent-config"
 import { SkillMetadata, SkillContent } from "../../shared/skills"
@@ -18,13 +18,23 @@ import { t } from "../../i18n"
 // Re-export for convenience
 export type { SkillMetadata, SkillContent }
 
+/**
+ * SkillsManager が provider に必要とする最小表面。
+ * ClineProvider は構造的にこれを満たすため、具象型（＝webview 層）への
+ * 依存を持たずに済み、SkillsManager -> ClineProvider の循環依存を断てる。
+ */
+export interface SkillsManagerProvider {
+	readonly cwd: string
+	readonly customModesManager: CustomModesManager
+}
+
 export class SkillsManager {
 	private skills: Map<string, SkillMetadata> = new Map()
-	private providerRef: WeakRef<ClineProvider>
+	private providerRef: WeakRef<SkillsManagerProvider>
 	private disposables: vscode.Disposable[] = []
 	private isDisposed = false
 
-	constructor(provider: ClineProvider) {
+	constructor(provider: SkillsManagerProvider) {
 		this.providerRef = new WeakRef(provider)
 	}
 

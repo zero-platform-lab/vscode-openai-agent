@@ -40,6 +40,8 @@ jobs:
               run: pnpm lint
             - name: Check types
               run: pnpm check-types
+            - name: Check for new circular dependencies
+              run: pnpm lint:cycles
 
     unit-test:
         name: platform-unit-test (${{ matrix.name }})
