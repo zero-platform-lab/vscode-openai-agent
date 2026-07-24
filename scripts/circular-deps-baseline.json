@@ -1,6 +1,6 @@
 {
 	"comment": "循環依存のベースライン。cyclicEdges = 同一 SCC 内の辺（＝いずれかの循環に関与する辺）。新規の循環辺はCIで拒否される。減らしたら `node scripts/check-circular-deps.mjs --update` で締め直す。",
-	"count": 152,
+	"count": 150,
 	"cyclicEdges": [
 		"src/activate/handleTask.ts -> src/core/webview/ClineProvider.ts",
 		"src/activate/registerCommands.ts -> src/activate/handleTask.ts",
@@ -116,7 +116,6 @@
 		"src/core/webview/ClineProvider.ts -> src/activate/registerCommands.ts",
 		"src/core/webview/ClineProvider.ts -> src/core/task/Task.ts",
 		"src/core/webview/ClineProvider.ts -> src/core/webview/webviewMessageHandler.ts",
-		"src/core/webview/ClineProvider.ts -> src/integrations/workspace/WorkspaceTracker.ts",
 		"src/core/webview/ClineProvider.ts -> src/services/mcp/McpHub.ts",
 		"src/core/webview/ClineProvider.ts -> src/services/mcp/McpServerManager.ts",
 		"src/core/webview/ClineProvider.ts -> src/services/skills/SkillsManager.ts",
@@ -146,7 +145,6 @@
 		"src/integrations/terminal/__tests__/streamUtils/index.ts -> src/integrations/terminal/__tests__/streamUtils/pwshStream.ts",
 		"src/integrations/terminal/__tests__/streamUtils/mockStream.ts -> src/integrations/terminal/__tests__/streamUtils/index.ts",
 		"src/integrations/terminal/__tests__/streamUtils/pwshStream.ts -> src/integrations/terminal/__tests__/streamUtils/index.ts",
-		"src/integrations/workspace/WorkspaceTracker.ts -> src/core/webview/ClineProvider.ts",
 		"src/services/command/built-in-commands.ts -> src/services/command/commands.ts",
 		"src/services/command/commands.ts -> src/services/command/built-in-commands.ts",
 		"src/services/mcp/McpHub.ts -> src/core/webview/ClineProvider.ts",
