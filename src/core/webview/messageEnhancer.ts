@@ -2,7 +2,6 @@ import { ProviderSettings, ClineMessage, GlobalState } from "@openai-agent/types
 import { supportPrompt } from "../../shared/support-prompt"
 import { singleCompletionHandler } from "../../utils/single-completion-handler"
 import { ProviderSettingsManager } from "../config/ProviderSettingsManager"
-import { ClineProvider } from "./ClineProvider"
 
 export interface MessageEnhancerOptions {
 	text: string

@@ -1,6 +1,6 @@
 {
 	"comment": "循環依存のベースライン。cyclicEdges = 同一 SCC 内の辺（＝いずれかの循環に関与する辺）。新規の循環辺はCIで拒否される。減らしたら `node scripts/check-circular-deps.mjs --update` で締め直す。",
-	"count": 145,
+	"count": 143,
 	"cyclicEdges": [
 		"src/activate/handleTask.ts -> src/core/webview/ClineProvider.ts",
 		"src/activate/registerCommands.ts -> src/activate/handleTask.ts",
@@ -119,13 +119,11 @@
 		"src/core/webview/checkpointRestoreHandler.ts -> src/core/webview/ClineProvider.ts",
 		"src/core/webview/generateSystemPrompt.ts -> src/core/prompts/system.ts",
 		"src/core/webview/generateSystemPrompt.ts -> src/core/webview/ClineProvider.ts",
-		"src/core/webview/messageEnhancer.ts -> src/core/webview/ClineProvider.ts",
 		"src/core/webview/skillsMessageHandler.ts -> src/core/webview/ClineProvider.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/tools/UpdateTodoListTool.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/ClineProvider.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/checkpointRestoreHandler.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/generateSystemPrompt.ts",
-		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/messageEnhancer.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/skillsMessageHandler.ts",
 		"src/core/webview/webviewMessageHandler.ts -> src/core/webview/worktree/index.ts",
 		"src/core/webview/worktree/handlers.ts -> src/core/webview/ClineProvider.ts",
