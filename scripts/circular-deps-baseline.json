@@ -1,6 +1,6 @@
 {
 	"comment": "循環依存のベースライン。cyclicEdges = 同一 SCC 内の辺（＝いずれかの循環に関与する辺）。新規の循環辺はCIで拒否される。減らしたら `node scripts/check-circular-deps.mjs --update` で締め直す。",
-	"count": 150,
+	"count": 145,
 	"cyclicEdges": [
 		"src/activate/handleTask.ts -> src/core/webview/ClineProvider.ts",
 		"src/activate/registerCommands.ts -> src/activate/handleTask.ts",
@@ -46,11 +46,8 @@
 		"src/core/message-manager/index.ts -> src/core/task/Task.ts",
 		"src/core/prompts/sections/capabilities.ts -> src/services/mcp/McpHub.ts",
 		"src/core/prompts/sections/index.ts -> src/core/prompts/sections/capabilities.ts",
-		"src/core/prompts/sections/index.ts -> src/core/prompts/sections/skills.ts",
-		"src/core/prompts/sections/skills.ts -> src/services/skills/SkillsManager.ts",
 		"src/core/prompts/system.ts -> src/core/prompts/sections/index.ts",
 		"src/core/prompts/system.ts -> src/services/mcp/McpHub.ts",
-		"src/core/prompts/system.ts -> src/services/skills/SkillsManager.ts",
 		"src/core/prompts/tools/filter-tools-for-mode.ts -> src/services/mcp/McpHub.ts",
 		"src/core/prompts/tools/native-tools/index.ts -> src/core/prompts/tools/native-tools/mcp_server.ts",
 		"src/core/prompts/tools/native-tools/mcp_server.ts -> src/services/mcp/McpHub.ts",
@@ -118,7 +115,6 @@
 		"src/core/webview/ClineProvider.ts -> src/core/webview/webviewMessageHandler.ts",
 		"src/core/webview/ClineProvider.ts -> src/services/mcp/McpHub.ts",
 		"src/core/webview/ClineProvider.ts -> src/services/mcp/McpServerManager.ts",
-		"src/core/webview/ClineProvider.ts -> src/services/skills/SkillsManager.ts",
 		"src/core/webview/checkpointRestoreHandler.ts -> src/core/task/Task.ts",
 		"src/core/webview/checkpointRestoreHandler.ts -> src/core/webview/ClineProvider.ts",
 		"src/core/webview/generateSystemPrompt.ts -> src/core/prompts/system.ts",
@@ -150,7 +146,6 @@
 		"src/services/mcp/McpHub.ts -> src/core/webview/ClineProvider.ts",
 		"src/services/mcp/McpServerManager.ts -> src/core/webview/ClineProvider.ts",
 		"src/services/mcp/McpServerManager.ts -> src/services/mcp/McpHub.ts",
-		"src/services/skills/SkillsManager.ts -> src/core/webview/ClineProvider.ts",
 		"src/utils/focusPanel.ts -> src/core/webview/ClineProvider.ts"
 	]
 }
