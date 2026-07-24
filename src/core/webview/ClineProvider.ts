@@ -84,6 +84,7 @@ import type { ClineMessage, TodoItem } from "@openai-agent/types"
 import { readApiMessages, saveApiMessages, saveTaskMessages, TaskHistoryStore } from "../task-persistence"
 import { readTaskMessages } from "../task-persistence/taskMessages"
 import { WebviewContentGenerator } from "./WebviewContentGenerator"
+import { PendingEditOperationManager } from "./PendingEditOperationManager"
 import { validateAndFixToolResultIds } from "../task/validateToolResultIds"
 
 /**
@@ -93,16 +94,6 @@ import { validateAndFixToolResultIds } from "../task/validateToolResultIds"
 
 export type ClineProviderEvents = {
 	clineCreated: [cline: Task]
-}
-
-interface PendingEditOperation {
-	messageTs: number
-	editedContent: string
-	images?: string[]
-	messageIndex: number
-	apiConversationHistoryIndex: number
-	timeoutId: NodeJS.Timeout
-	createdAt: number
 }
 
 export class ClineProvider
@@ -134,8 +125,7 @@ export class ClineProvider
 	private taskHistoryStoreInitialized = false
 	private globalStateWriteThroughTimer: ReturnType<typeof setTimeout> | null = null
 	private static readonly GLOBAL_STATE_WRITE_THROUGH_DEBOUNCE_MS = 5000 // 5 seconds
-	private pendingOperations: Map<string, PendingEditOperation> = new Map()
-	private static readonly PENDING_OPERATION_TIMEOUT_MS = 30000 // 30 seconds
+	public readonly pendingEditOperations: PendingEditOperationManager
 
 	/**
 	 * Monotonically increasing sequence number for clineMessages state pushes.
@@ -177,6 +167,8 @@ export class ClineProvider
 		this._workspaceTracker = new WorkspaceTracker(this)
 
 		this.webviewContent = new WebviewContentGenerator(this.contextProxy.extensionUri)
+
+		this.pendingEditOperations = new PendingEditOperationManager((message) => this.log(message))
 
 		this.providerSettingsManager = new ProviderSettingsManager(this.context)
 
@@ -437,70 +429,6 @@ export class ClineProvider
 
 	// Pending Edit Operations Management
 
-	/**
-	 * Sets a pending edit operation with automatic timeout cleanup
-	 */
-	public setPendingEditOperation(
-		operationId: string,
-		editData: {
-			messageTs: number
-			editedContent: string
-			images?: string[]
-			messageIndex: number
-			apiConversationHistoryIndex: number
-		},
-	): void {
-		// Clear any existing operation with the same ID
-		this.clearPendingEditOperation(operationId)
-
-		// Create timeout for automatic cleanup
-		const timeoutId = setTimeout(() => {
-			this.clearPendingEditOperation(operationId)
-			this.log(`[setPendingEditOperation] Automatically cleared stale pending operation: ${operationId}`)
-		}, ClineProvider.PENDING_OPERATION_TIMEOUT_MS)
-
-		// Store the operation
-		this.pendingOperations.set(operationId, {
-			...editData,
-			timeoutId,
-			createdAt: Date.now(),
-		})
-
-		this.log(`[setPendingEditOperation] Set pending operation: ${operationId}`)
-	}
-
-	/**
-	 * Gets a pending edit operation by ID
-	 */
-	private getPendingEditOperation(operationId: string): PendingEditOperation | undefined {
-		return this.pendingOperations.get(operationId)
-	}
-
-	/**
-	 * Clears a specific pending edit operation
-	 */
-	private clearPendingEditOperation(operationId: string): boolean {
-		const operation = this.pendingOperations.get(operationId)
-		if (operation) {
-			clearTimeout(operation.timeoutId)
-			this.pendingOperations.delete(operationId)
-			this.log(`[clearPendingEditOperation] Cleared pending operation: ${operationId}`)
-			return true
-		}
-		return false
-	}
-
-	/**
-	 * Clears all pending edit operations
-	 */
-	private clearAllPendingEditOperations(): void {
-		for (const [operationId, operation] of this.pendingOperations) {
-			clearTimeout(operation.timeoutId)
-		}
-		this.pendingOperations.clear()
-		this.log(`[clearAllPendingEditOperations] Cleared all pending operations`)
-	}
-
 	/*
 	VSCode extensions use the disposable pattern to clean up resources when the sidebar/editor tab is closed by the user or system. This applies to event listening, commands, interacting with the UI, etc.
 	- https://vscode-docs.readthedocs.io/en/stable/extensions/patterns-and-principles/
@@ -531,7 +459,7 @@ export class ClineProvider
 		this.log("Cleared all tasks")
 
 		// Clear all pending edit operations to prevent memory leaks
-		this.clearAllPendingEditOperations()
+		this.pendingEditOperations.clearAll()
 		this.log("Cleared pending operations")
 
 		if (this.view && "dispose" in this.view) {
@@ -972,9 +900,9 @@ export class ClineProvider
 
 		// Check if there's a pending edit after checkpoint restoration
 		const operationId = `task-${task.taskId}`
-		const pendingEdit = this.getPendingEditOperation(operationId)
+		const pendingEdit = this.pendingEditOperations.get(operationId)
 		if (pendingEdit) {
-			this.clearPendingEditOperation(operationId) // Clear the pending edit
+			this.pendingEditOperations.clear(operationId) // Clear the pending edit
 
 			this.log(`[createTaskWithHistoryItem] Processing pending edit after checkpoint restoration`)
 

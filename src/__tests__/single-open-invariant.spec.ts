@@ -97,9 +97,8 @@ describe("Single-open-task invariant", () => {
 				cloudUserInfo: null,
 				taskSyncEnabled: false,
 			}),
-			// Methods used by createTaskWithHistoryItem for pending edit cleanup
-			getPendingEditOperation: vi.fn().mockReturnValue(undefined),
-			clearPendingEditOperation: vi.fn(),
+			// Used by createTaskWithHistoryItem for pending edit cleanup
+			pendingEditOperations: { get: vi.fn().mockReturnValue(undefined), clear: vi.fn() },
 			context: { extension: { packageJSON: {} }, globalStorageUri: { fsPath: "/tmp" } },
 			contextProxy: {
 				extensionUri: {},

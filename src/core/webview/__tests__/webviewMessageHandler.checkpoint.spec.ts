@@ -51,7 +51,7 @@ describe("webviewMessageHandler - checkpoint operations", () => {
 				historyItem: { id: "test-task-123", messages: mockCline.clineMessages },
 			})),
 			createTaskWithHistoryItem: vi.fn(),
-			setPendingEditOperation: vi.fn(),
+			pendingEditOperations: { set: vi.fn(), get: vi.fn(), clear: vi.fn(), clearAll: vi.fn() },
 			contextProxy: {
 				globalStorageUri: { fsPath: "/test/storage" },
 			},
